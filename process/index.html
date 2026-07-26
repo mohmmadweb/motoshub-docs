@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Motoshub — برنامه‌ی تحویل: تسک‌های تیم Front و Backend</title>
+<style>
+  :root{
+    --bg:#eef1f4;--panel:#ffffff;--line:#d6dce3;--line2:#e6eaef;
+    --ink:#131a24;--ink2:#3a4655;--muted:#68727f;
+    --front:#1f6f9e;--front-bg:#e8f2f9;
+    --back:#7a41ad;--back-bg:#f2ebf9;
+    --p1:#b23a52;--p2:#b47a1e;--p3:#3f7d63;
+    --done:#2c7a56;--part:#a9791f;--todo:#a8394f;
+    --est:#0f4c75;
+    --mono:"SF Mono",ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:"Vazirmatn","Segoe UI",Tahoma,system-ui,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#0c1116;--panel:#141b23;--line:#28323d;--line2:#1d252e;
+      --ink:#e9eef4;--ink2:#c2ccd6;--muted:#8b96a3;
+      --front:#5aa6d8;--front-bg:#14222e;--back:#b389df;--back-bg:#211a2e;
+      --p1:#e07387;--p2:#d9ab5a;--p3:#63c495;
+      --done:#5cc48d;--part:#d9ab5a;--todo:#e07387;--est:#6fb2e0;}
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+    line-height:1.85;padding:26px 16px}
+  .wrap{max-width:1060px;margin:0 auto}
+  .kicker{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+  h1{font-size:clamp(24px,4.4vw,33px);font-weight:800;letter-spacing:-.01em;margin:0 0 10px}
+  .lede{color:var(--ink2);font-size:15.5px;margin:0 0 8px;max-width:70ch}
+  .meta-line{font-family:var(--mono);font-size:12px;color:var(--muted);margin:0 0 22px}
+  .legend{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:16px 0;font-size:13px}
+  .legend b{font-size:13.5px}
+  .row{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:8px;align-items:center}
+  .pill{font-family:var(--mono);font-size:10.5px;padding:2px 8px;border-radius:20px;white-space:nowrap;font-weight:600}
+  .p-done{background:rgba(44,122,86,.16);color:var(--done)} .p-part{background:rgba(169,121,31,.17);color:var(--part)} .p-todo{background:rgba(168,57,79,.15);color:var(--todo)}
+  .p-p1{background:rgba(178,58,82,.14);color:var(--p1)} .p-p2{background:rgba(180,122,30,.15);color:var(--p2)} .p-p3{background:rgba(63,125,99,.15);color:var(--p3)}
+  .est{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--est);background:rgba(15,76,117,.10);padding:2px 8px;border-radius:6px;white-space:nowrap}
+  @media (prefers-color-scheme:dark){.est{background:rgba(111,178,224,.12)}}
+  .toc{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin:16px 0;font-size:13px;columns:2;column-gap:26px}
+  .toc a{display:block;color:var(--front);text-decoration:none;padding:2px 0;break-inside:avoid}
+  .toc a:hover{text-decoration:underline}
+  @media (max-width:640px){.toc{columns:1}}
+  .tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:11px;margin:12px 0}
+  table{border-collapse:collapse;width:100%;font-size:12.7px;min-width:560px}
+  th,td{padding:8px 11px;text-align:right;border-bottom:1px solid var(--line2);vertical-align:top}
+  th{background:rgba(120,130,140,.07);font-weight:700}
+  tr:last-child td{border-bottom:none}
+  td.n,th.n{white-space:nowrap;font-family:var(--mono);font-size:11.5px;text-align:center;width:1%}
+  tfoot td{font-weight:800;background:rgba(120,130,140,.05)}
+  .phase{margin:40px 0 8px}
+  .phase-h{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--line);padding-bottom:9px}
+  .phase-n{font-family:var(--mono);font-size:26px;font-weight:800;color:var(--muted);line-height:1}
+  .phase-h h2{font-size:21px;margin:0;font-weight:800}
+  .phase-goal{color:var(--muted);font-size:13.5px;margin:8px 0 0}
+  .band{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:11px;font-weight:700;padding:3px 11px;border-radius:20px;margin:18px 0 4px}
+  .band.f{background:var(--front-bg);color:var(--front)}
+  .band.b{background:var(--back-bg);color:var(--back)}
+  .task{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:15px 18px;margin:12px 0}
+  .task.f{border-inline-start:3px solid var(--front)}
+  .task.b{border-inline-start:3px solid var(--back)}
+  .task-h{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .task-id{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--muted)}
+  .task-h b{font-size:15.5px}
+  .task-h .spacer{flex:1}
+  .story{background:rgba(120,130,140,.06);border-radius:9px;padding:9px 13px;margin:11px 0;font-size:13.3px}
+  .story .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:2px}
+  .desc{font-size:13.6px;color:var(--ink2);margin:10px 0}
+  .desc code,td code,.ac code,.story code,.ears code{font-family:var(--mono);font-size:11.3px;background:rgba(120,130,140,.14);padding:1px 6px;border-radius:5px;color:var(--ink)}
+  .ears{border-inline-start:3px solid var(--muted);padding:2px 12px;margin:9px 0;font-size:13px;color:var(--ink2);font-style:italic}
+  .ac{margin:10px 0 4px;font-size:12.9px}
+  .ac .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
+  .ac ul{margin:0;padding-inline-start:18px}
+  .ac li{margin:3px 0}
+  .dep{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:9px}
+  .subhd{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:12px 0 4px}
+  .note{background:var(--panel);border:1px solid var(--line);border-inline-start:3px solid var(--p2);border-radius:10px;padding:12px 16px;margin:16px 0;font-size:13.4px}
+  .foot{margin-top:46px;padding-top:16px;border-top:1px solid var(--line);font-family:var(--mono);font-size:11.5px;color:var(--muted);text-align:center;line-height:2}
+  a{color:var(--front)}
+</style>
+<body>
+<div class="wrap">
+  <p class="kicker">Motoshub · Delivery Process</p>
+  <h1>فرآیند تحویل، تست و کیفیت — از develop تا Product Owner</h1>
+  <p class="lede">خط لوله‌ی الزامی برای هر تسکِ هر دو تیم — به همراه محیط‌ها، نقش‌ها و قواعد ریلیز. مرجع تسک‌ها: <a href="../tasks/frontend/">Front</a> · <a href="../tasks/backend/">Backend</a></p>
+<section class="phase" id="pipeline">
+    <div class="phase-h"><span class="phase-n">✓</span><h2>پایپ‌لاین تحویل و کیفیت (الزامی برای هر دو تیم)</h2></div>
+    <p class="phase-goal">هیچ تسکی «انجام‌شده» نیست مگر از همه‌ی این گیت‌ها عبور کند. هدف: کارِ اضافه نه، اما هر کاری که انجام می‌شود چندبار و در چند لایه تست شده باشد. هر گیت مسئول مشخص دارد و هیچ مرحله‌ای «به عهده‌ی بعداً» نیست.</p>
+
+    <div class="band f">◆ مسیر عبور هر تسک (Front و Backend یکسان)</div>
+    <div class="tblwrap"><table>
+      <thead><tr><th>#</th><th>گیت</th><th>مسئول</th><th>معیار عبور (بدون ابهام)</th></tr></thead>
+      <tbody>
+        <tr><td class="n">۱</td><td><b>آماده‌ی شروع (DoR)</b></td><td>PO</td><td>تسک شماره‌ی issue دارد؛ User Story + معیارهای پذیرش در همین صفحه/ایشو مشخص است؛ وابستگی‌هایش باز نیست. تسکِ بدون معیار پذیرش شروع نمی‌شود.</td></tr>
+        <tr><td class="n">۲</td><td><b>توسعه روی برنچ ایشو</b></td><td>Dev</td><td>برنچ <code>issue-N</code> از <code>main</code>؛ کامیت‌ها با پیشوند <code>#N</code>. مستقیم روی main کامیت ممنوع (CI هم بلاک می‌کند).</td></tr>
+        <tr><td class="n">۳</td><td><b>تستِ لایه‌ی ۱ — واحد</b></td><td>Dev</td><td>Backend: تست pytest/Pest برای هر endpoint جدید (سناریو موفق + ۴۰۱/۴۰۳/۴۲۲ + یک edge). Front: تست کامپوننت برای منطق غیربدیهی + <code>tsc</code> و ESLint سبز. کدِ بدون تستِ همراه، merge نمی‌شود.</td></tr>
+        <tr><td class="n">۴</td><td><b>Self-review + چک‌لیست MR</b></td><td>Dev</td><td>قالب MR پر شده: «چه چیزی، چرا، چطور تست شد» + برای Front اسکرین‌شات/فیلم قبل‌وبعد (لایت و دارک، دسکتاپ و ۳۷۵px) + برای Backend نمونه‌ی curl درخواست/پاسخ.</td></tr>
+        <tr><td class="n">۵</td><td><b>CI سبز — لایه‌ی ۲</b></td><td>خودکار</td><td>lint + type-check + کل تست‌ها + build + (Backend: تستِ قرارداد علیه OpenAPI؛ Front: build بدون warning جدید). قرمز = merge غیرممکن.</td></tr>
+        <tr><td class="n">۶</td><td><b>Code review همتا</b></td><td>Dev دوم</td><td>حداقل ۱ تایید از غیرنویسنده؛ SLA بررسی ۲۴ ساعت کاری. تمرکز review: درستی، امنیت (IDOR/مجوز)، سازگاری با قراردادِ پاکت پاسخ.</td></tr>
+        <tr><td class="n">۷</td><td><b>Merge به main → دیپلوی staging خودکار</b></td><td>خودکار</td><td>Front: motonextfront.shub.ir · Backend: motonext staging. دیپلوی شکسته = بازگردانی فوری (revert اول، دیباگ بعد).</td></tr>
+        <tr><td class="n">۸</td><td><b>تستِ لایه‌ی ۳ — پذیرش روی staging</b></td><td>PO / QA</td><td>اجرای معیارهای پذیرش روی staging: Front در دو مرورگر + موبایل واقعی؛ Backend با کالکشن Postman ماژول (همه‌ی حالت‌ها). فقط بعد از این تیک، وضعیت تسک «انجام‌شده» می‌شود.</td></tr>
+        <tr><td class="n">۹</td><td><b>رگرسیون هفتگی</b></td><td>تیم (چرخشی)</td><td>پایان هر هفته: چک‌لیست ۳۰ دقیقه‌ای مسیرهای حیاتی (ورود، فید، ایجاد محتوا، چت، آپلود، اعلان) روی staging. شکستِ رگرسیون = اولویت P1 هفته‌ی بعد.</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="band b">◆ قواعد مکمل کیفیت</div>
+    <div class="note"><b>قانون باگ.</b> هر باگی که پیدا شد، اول یک تستِ بازتولیدکننده نوشته می‌شود که قرمز شود، بعد فیکس — تا همان باگ هیچ‌وقت برنگردد.</div>
+    <div class="note"><b>تعریفِ «انجام‌شده» (DoD).</b> کد merge شده + تست‌های هر سه لایه پاس + روی staging توسط PO پذیرفته + بدون TODO/console.log باقی‌مانده + مستند (endpoint جدید در Swagger / کامپوننت جدید با props مستند).</div>
+    <div class="note"><b>بدون کار اضافه.</b> هر چیزی خارج از معیارهای پذیرشِ تسک = تسک جدید برای PO؛ داخل همان MR نمی‌آید. MRهای بزرگ‌تر از ~۴۰۰ خط تغییر باید شکسته شوند.</div>
+    <div class="note"><b>ادغام مکرر.</b> برنچ ایشو بیش از ۳ روز کاری زنده نمی‌ماند؛ کار بزرگ‌تر از آن یعنی تسک درست شکسته نشده (برگشت به گیت ۱).</div>
+  </section>
+
+  <section class="phase" id="flow">
+    <div class="phase-h"><span class="phase-n">⇄</span><h2>جریان کامل: از develop تا تحویل به Product Owner</h2></div>
+    <div class="tblwrap"><table>
+      <thead><tr><th>محیط</th><th>چه چیزی آنجاست</th><th>چه کسی/چه زمانی</th></tr></thead>
+      <tbody>
+        <tr><td><b>لوکال توسعه‌دهنده</b></td><td>برنچ issue-N + تست‌های واحد سبز</td><td>Dev — حین توسعه</td></tr>
+        <tr><td><b>CI (هر push)</b></td><td>lint + type + کل تست‌ها + build + تست قرارداد</td><td>خودکار — گیت merge</td></tr>
+        <tr><td><b>Staging</b></td><td>Front: motonextfront.shub.ir · API: motonext staging — دیپلوی خودکار از main</td><td>خودکار بعد از merge</td></tr>
+        <tr><td><b>پذیرش PO</b></td><td>اجرای معیارهای پذیرش روی staging؛ فقط بعد از این تیک، تسک «انجام‌شده» است</td><td>PO/QA — حداکثر ۴۸ ساعت بعد از merge</td></tr>
+        <tr><td><b>Production</b></td><td>ریلیز برچسب‌خورده؛ سوییچ Gateway برای مسیرهای Django-آماده</td><td>DevOps — پس از تایید PO، پنجره‌ی هفتگی</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note"><b>نقش‌ها.</b> مالک هر workstream ثابت است (جدول در صفحه‌ی تسک‌ها)؛ QA مالک گیت‌های ۸-۹؛ DevOps مالک CI/استقرار/سوییچ Gateway؛ PO مالک DoR و پذیرش نهایی.</div>
+    <div class="note"><b>ریلیز و برگشت.</b> هر ریلیز production یک tag دارد؛ رول‌بک = برگرداندن tag قبلی + برگرداندن سوییچ‌های Gateway. هیچ hotfix بدون تست بازتولیدکننده merge نمی‌شود.</div>
+  </section>
+
+</div>
+</body>
+</html>

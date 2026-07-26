@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Motoshub — برنامه‌ی تحویل: تسک‌های تیم Front و Backend</title>
+<style>
+  :root{
+    --bg:#eef1f4;--panel:#ffffff;--line:#d6dce3;--line2:#e6eaef;
+    --ink:#131a24;--ink2:#3a4655;--muted:#68727f;
+    --front:#1f6f9e;--front-bg:#e8f2f9;
+    --back:#7a41ad;--back-bg:#f2ebf9;
+    --p1:#b23a52;--p2:#b47a1e;--p3:#3f7d63;
+    --done:#2c7a56;--part:#a9791f;--todo:#a8394f;
+    --est:#0f4c75;
+    --mono:"SF Mono",ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:"Vazirmatn","Segoe UI",Tahoma,system-ui,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#0c1116;--panel:#141b23;--line:#28323d;--line2:#1d252e;
+      --ink:#e9eef4;--ink2:#c2ccd6;--muted:#8b96a3;
+      --front:#5aa6d8;--front-bg:#14222e;--back:#b389df;--back-bg:#211a2e;
+      --p1:#e07387;--p2:#d9ab5a;--p3:#63c495;
+      --done:#5cc48d;--part:#d9ab5a;--todo:#e07387;--est:#6fb2e0;}
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+    line-height:1.85;padding:26px 16px}
+  .wrap{max-width:1060px;margin:0 auto}
+  .kicker{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+  h1{font-size:clamp(24px,4.4vw,33px);font-weight:800;letter-spacing:-.01em;margin:0 0 10px}
+  .lede{color:var(--ink2);font-size:15.5px;margin:0 0 8px;max-width:70ch}
+  .meta-line{font-family:var(--mono);font-size:12px;color:var(--muted);margin:0 0 22px}
+  .legend{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:16px 0;font-size:13px}
+  .legend b{font-size:13.5px}
+  .row{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:8px;align-items:center}
+  .pill{font-family:var(--mono);font-size:10.5px;padding:2px 8px;border-radius:20px;white-space:nowrap;font-weight:600}
+  .p-done{background:rgba(44,122,86,.16);color:var(--done)} .p-part{background:rgba(169,121,31,.17);color:var(--part)} .p-todo{background:rgba(168,57,79,.15);color:var(--todo)}
+  .p-p1{background:rgba(178,58,82,.14);color:var(--p1)} .p-p2{background:rgba(180,122,30,.15);color:var(--p2)} .p-p3{background:rgba(63,125,99,.15);color:var(--p3)}
+  .est{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--est);background:rgba(15,76,117,.10);padding:2px 8px;border-radius:6px;white-space:nowrap}
+  @media (prefers-color-scheme:dark){.est{background:rgba(111,178,224,.12)}}
+  .toc{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin:16px 0;font-size:13px;columns:2;column-gap:26px}
+  .toc a{display:block;color:var(--front);text-decoration:none;padding:2px 0;break-inside:avoid}
+  .toc a:hover{text-decoration:underline}
+  @media (max-width:640px){.toc{columns:1}}
+  .tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:11px;margin:12px 0}
+  table{border-collapse:collapse;width:100%;font-size:12.7px;min-width:560px}
+  th,td{padding:8px 11px;text-align:right;border-bottom:1px solid var(--line2);vertical-align:top}
+  th{background:rgba(120,130,140,.07);font-weight:700}
+  tr:last-child td{border-bottom:none}
+  td.n,th.n{white-space:nowrap;font-family:var(--mono);font-size:11.5px;text-align:center;width:1%}
+  tfoot td{font-weight:800;background:rgba(120,130,140,.05)}
+  .phase{margin:40px 0 8px}
+  .phase-h{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--line);padding-bottom:9px}
+  .phase-n{font-family:var(--mono);font-size:26px;font-weight:800;color:var(--muted);line-height:1}
+  .phase-h h2{font-size:21px;margin:0;font-weight:800}
+  .phase-goal{color:var(--muted);font-size:13.5px;margin:8px 0 0}
+  .band{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:11px;font-weight:700;padding:3px 11px;border-radius:20px;margin:18px 0 4px}
+  .band.f{background:var(--front-bg);color:var(--front)}
+  .band.b{background:var(--back-bg);color:var(--back)}
+  .task{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:15px 18px;margin:12px 0}
+  .task.f{border-inline-start:3px solid var(--front)}
+  .task.b{border-inline-start:3px solid var(--back)}
+  .task-h{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .task-id{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--muted)}
+  .task-h b{font-size:15.5px}
+  .task-h .spacer{flex:1}
+  .story{background:rgba(120,130,140,.06);border-radius:9px;padding:9px 13px;margin:11px 0;font-size:13.3px}
+  .story .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:2px}
+  .desc{font-size:13.6px;color:var(--ink2);margin:10px 0}
+  .desc code,td code,.ac code,.story code,.ears code{font-family:var(--mono);font-size:11.3px;background:rgba(120,130,140,.14);padding:1px 6px;border-radius:5px;color:var(--ink)}
+  .ears{border-inline-start:3px solid var(--muted);padding:2px 12px;margin:9px 0;font-size:13px;color:var(--ink2);font-style:italic}
+  .ac{margin:10px 0 4px;font-size:12.9px}
+  .ac .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
+  .ac ul{margin:0;padding-inline-start:18px}
+  .ac li{margin:3px 0}
+  .dep{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:9px}
+  .subhd{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:12px 0 4px}
+  .note{background:var(--panel);border:1px solid var(--line);border-inline-start:3px solid var(--p2);border-radius:10px;padding:12px 16px;margin:16px 0;font-size:13.4px}
+  .foot{margin-top:46px;padding-top:16px;border-top:1px solid var(--line);font-family:var(--mono);font-size:11.5px;color:var(--muted);text-align:center;line-height:2}
+  a{color:var(--front)}
+</style>
+<body>
+<div class="wrap">
+  <p class="kicker">Motoshub · Delivery Plan · Backend</p>
+  <h1>تسک‌های تیم Backend — با جزئیات پیاده‌سازی</h1>
+  <p class="lede">همه‌ی تسک‌های بک‌اند با subtask، تخمین، User Story و معیار پذیرش. مرجع رفتار: <a href="https://demo.shub.ir">demo.shub.ir</a> · خط لوله‌ی الزامی تحویل: <a href="../../process/">فرآیند تحویل و کیفیت</a> · <a href="../frontend/">تسک‌های Front</a></p>
+  <div class="toc"><a href="#guide">راهنمای پیاده‌سازی</a><a href="#summary">زمان‌بندی</a><a href="#arch">تصمیم‌های الزام‌آور</a><a href="#p0">فاز ۰</a><a href="#p1">فاز ۱</a><a href="#p2">فاز ۲</a><a href="#p3">فاز ۳</a><a href="#p4">فاز ۴</a><a href="#p5">فاز ۵</a><a href="#p6">فاز ۶</a></div>
+
+  <section class="phase" id="guide">
+    <div class="phase-h"><span class="phase-n">¶</span><h2>راهنمای پیاده‌سازی تیم Backend</h2></div>
+    <div class="note"><b>استک و قراردادها.</b> Django 5 + DRF + SimpleJWT روی MariaDB (دیتابیس مشترک Oxwall به‌صورت خواندنی از طریق مدل‌های unmanaged در <code>legacy/</code>). قرارداد پاسخ ثابت: پاکت <code>{data, links, meta}</code>، خطاهای ۴۰۱/۴۰۳/۴۰۴/۴۲۲ با بدنه‌ی یکسان — مرجع: Swagger زنده‌ی PHP در motonext.shub.ir/api/v1/docs.</div>
+    <div class="note"><b>auth مشترک.</b> JWT HS256 با راز <code>OW_PASSWORD_PEPPER</code> و claims <code>{iat, exp, sub}</code> — توکن صادرشده توسط PHP باید در Django معتبر باشد و برعکس (تست سازگاری متقابل در B2.4 اجباری است).</div>
+    <div class="note"><b>الگوی هر ماژول.</b> Model (یا legacy-map) ← Serializer ← ViewSet + Permission ← urls ← تست pytest (سناریوی موفق + ۴۰۱/۴۰۳/۴۲۲ + یک edge + تست IDOR برای منابع مالک‌دار). هیچ endpoint بدون تست merge نمی‌شود.</div>
+    <div class="note"><b>سوییچ تدریجی.</b> هر ماژول که برابری قراردادش با PHP تایید شد، مسیرش در Gateway به Django سوییچ می‌شود (B19.3)؛ تا آن روز PHP پاسخ‌گوی production است — مهاجرت strangler-fig، بدون big-bang.</div>
+  </section>
+
+<section class="phase" id="summary">
+    <div class="phase-h"><span class="phase-n">Σ</span><h2>خلاصه‌ی زمان‌بندی و فازها</h2></div>
+    <p class="phase-goal">دو مسیرِ موازی. چون PHP <code>api/v1</code> همین حالا هر ۲۹۳ عملیات را پاسخ می‌دهد، تیم Front از فاز ۱ به‌بعد به آن وصل می‌شود و منتظرِ Django نمی‌ماند؛ Backend به‌موازات همان قرارداد را در Django بازمی‌سازد و Gateway هر مسیرِ آماده را سوییچ می‌کند.</p>
+    <div class="tblwrap"><table>
+      <thead><tr><th>فاز</th><th>محتوا</th><th class="n">Front</th><th class="n">Backend</th><th class="n">موازی</th></tr></thead>
+      <tbody>
+        <tr><td class="n">۰</td><td>پایه: axios/design-system · REST-infra/auth-JWT/deploy/data-model</td><td class="n">۵.۵ روز</td><td class="n">۱۲ روز</td><td class="n">~۱۲ روز</td></tr>
+        <tr><td class="n">۱</td><td>احراز هویت، پوسته و ناوبری، لایه‌ی داده · endpointهای auth + مدل‌ها</td><td class="n">۹.۵ روز</td><td class="n">۶ روز</td><td class="n">~۱۰ روز</td></tr>
+        <tr><td class="n">۲</td><td>هسته: داشبورد، تازه‌ها، بلاگ، کاربران/پروفایل</td><td class="n">۱۷ روز</td><td class="n">۱۶ روز</td><td class="n">~۱۷ روز</td></tr>
+        <tr><td class="n">۳</td><td>اجتماعی: گروه‌ها، اخبار، رویدادها، رسانه، فروم</td><td class="n">۲۴ روز</td><td class="n">۲۵ روز</td><td class="n">~۲۵ روز</td></tr>
+        <tr><td class="n">۴</td><td>ارتباط: چت، دانش، پروژه · پیام‌رسان، دوستان/اعلان، دانش/پروژه</td><td class="n">۱۶ روز</td><td class="n">۱۶ روز</td><td class="n">~۱۶ روز</td></tr>
+        <tr><td class="n">۵</td><td>سازمانی: قرارداد/صندوق/پژوهش/آموزش · نظرسنجی/مسابقات</td><td class="n">۸ روز</td><td class="n">۱۳ روز</td><td class="n">~۱۳ روز</td></tr>
+        <tr><td class="n">۶</td><td>راهبری، ظاهر، گزارش، اعلان، جستجو، راهنما، دستیار، پولیش، تست</td><td class="n">۱۶ روز</td><td class="n">۴ روز</td><td class="n">~۱۶ روز</td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="2">مجموع (تک‌نفره، بدون همپوشانی)</td><td class="n">~۹۶ روز</td><td class="n">~۹۲ روز</td><td class="n">~۱۰۹ روز</td></tr></tfoot>
+    </table></div>
+    <div class="note">
+      <b>تفسیرِ زمان.</b> با <b>۲ توسعه‌دهنده‌ی Front + ۲ Backend</b> و اجرای موازیِ فازها، بازه‌ی واقع‌بینانه‌ی رسیدن به پروتوتایپِ کامل حدود <b>۱۳ تا ۱۶ هفته‌ی کاری</b> است. «حداقلِ محصولِ قابل‌نمایش» (فاز ۰ تا ۲) در حدود <b>۵ تا ۶ هفته</b> به‌دست می‌آید. این اعداد تخمینی‌اند و باید در Planningِ هر Sprint دوباره کالیبره شوند.
+    </div>
+    <h3 style="margin:18px 0 8px;font-size:15px">سناریوهای اندازه‌ی تیم</h3>
+    <div class="tblwrap"><table>
+      <thead><tr><th>ترکیب تیم</th><th class="n">MVP (فاز ۰-۲)</th><th class="n">پروتوتایپ کامل</th><th>ملاحظات</th></tr></thead>
+      <tbody>
+        <tr><td>۱ Front + ۱ Backend</td><td class="n">~۹-۱۰ هفته</td><td class="n">~۲۲-۲۶ هفته</td><td>ارزان‌ترین؛ ریسک گلوگاه تک‌نفره و ریزش. توصیه نمی‌شود.</td></tr>
+        <tr><td><b>۲ Front + ۲ Backend (خط پایه)</b></td><td class="n"><b>۵-۶ هفته</b></td><td class="n"><b>۱۳-۱۶ هفته</b></td><td>ترکیب فعلی. هر فاز دو workstream موازی؛ review متقابل ممکن است.</td></tr>
+        <tr><td>۲F + ۲B + ۱ نفر QA/تست‌خودکار</td><td class="n">۵-۶ هفته</td><td class="n">۱۲-۱۴ هفته</td><td>زمان زیاد کم نمی‌شود اما دوباره‌کاری و باگِ برگشتی به‌شدت کم می‌شود؛ <b>پیشنهاد PO</b>.</td></tr>
+        <tr><td>۳ Front + ۳ Backend + QA</td><td class="n">۴-۵ هفته</td><td class="n">۹-۱۱ هفته</td><td>بازده نزولی: مسیر بحرانی (auth→چت realtime→گزارش) کوتاه‌تر از این نمی‌شود.</td></tr>
+        <tr style="background:rgba(34,197,94,.07)"><td><b>تیم واقعی: ۴F + ۳B + ۱QA + ۱DevOps</b></td><td class="n"><b>~۴ هفته</b></td><td class="n"><b>~۹-۱۱ هفته</b></td><td><b>ترکیب فعلی ما.</b> DevOps تسک‌های B3/استقرار/CI را برمی‌دارد و Backend خالص فیچر می‌زند؛ QA از هفته‌ی ۱ گیت‌های ۸ و ۹ پایپ‌لاین را مالک است.</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note">
+      <b>مسیر بحرانی</b> مستقل از تعداد نفرات: فاز ۰ (زیرساخت) ← auth ← لایه‌ی داده ← ماژول‌های وابسته به فایل/اعلان ← چتِ بی‌درنگ ← پولیش. حداقل تقویمیِ عبوری از این زنجیره ~۹ هفته است؛ نفرِ اضافه فقط پهنای موازی را زیاد می‌کند، نه عمق زنجیره را. <b>با تیم ۹ نفره، گلوگاه = Backend (۳ نفر / ~۸۰ روزنفرِ باقی‌مانده پس از واگذاری استقرار به DevOps).</b>
+    </div>
+
+    <h3 style="margin:18px 0 8px;font-size:15px">تقسیم کار پیشنهادی تیم واقعی (workstreamهای پایدار — هر نفر مالک یک رشته)</h3>
+    <div class="tblwrap"><table>
+      <thead><tr><th>نقش</th><th>مالکیت (رشته‌ی کاری ثابت)</th><th>تسک‌ها به ترتیب</th></tr></thead>
+      <tbody>
+        <tr><td><b>Front ۱ (لید)</b></td><td>زیرساخت فرانت، auth، لایه‌ی داده، سپس چت</td><td>F1 → F3 → F5 → F15 → F20.5</td></tr>
+        <tr><td><b>Front ۲</b></td><td>پوسته/ناوبری + هسته‌ی محتوا</td><td>F2 → F4 → F6 → F7 → F8</td></tr>
+        <tr><td><b>Front ۳</b></td><td>فضاهای اجتماعی</td><td>F9 → F10 → F11 → F12 → F13 → F14</td></tr>
+        <tr><td><b>Front ۴</b></td><td>دانش/پروژه + ماژول‌های سازمانی + راهبری</td><td>F16 → F17 → F18 → F19 → F20.1-3</td></tr>
+        <tr><td><b>Backend ۱ (لید)</b></td><td>زیرساخت REST + auth مشترک + پیام‌رسان</td><td>B1 → B2 → B4 → B5 → B14</td></tr>
+        <tr><td><b>Backend ۲</b></td><td>هسته‌ی محتوا: کاربران/فید/بلاگ/اخبار</td><td>B6 → B7 → B8 → B9 → B15</td></tr>
+        <tr><td><b>Backend ۳</b></td><td>اجتماعی + سازمانی: گروه/رویداد/رسانه/فروم → دانش/پروژه → سازمانی</td><td>B10 → B11 → B12 → B13 → B16 → B17 → B18</td></tr>
+        <tr><td><b>QA</b></td><td>مالک گیت‌های ۸-۹ پایپ‌لاین: کالکشن Postman هر ماژول، تست قرارداد، E2E (Playwright) مسیرهای حیاتی، رگرسیون هفتگی</td><td>از هفته ۱ موازی با همه؛ B19.2 و F20.6 با اوست</td></tr>
+        <tr><td><b>DevOps</b></td><td>B3 کامل + CI enforcement + staging دو سرویس + مانیتورینگ/لاگ + بکاپ + سوییچ Gateway</td><td>B3 → CI هر دو ریپو → B19.3 → پایداری production</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note">
+      <b>ریسک برنامه و پادزهر:</b> (۱) Front چهارنفره زودتر از Backend تمام می‌کند (~هفته ۷) — از آن نقطه Front ۳ و ۴ به E2E/پولیش/دواپسِ فرانت شیفت می‌شوند، نه فیچرِ جدید. (۲) وابستگی همه به فاز ۰: هفته‌ی اول همه‌ی تمرکز دو لید + DevOps روی B1/B2/B3/F1/F2 است؛ بقیه در همان هفته کالکشن تست و شناخت قرارداد API را آماده می‌کنند. (۳) هر workstream مالک ثابت دارد تا context-switching حذف شود؛ جابه‌جایی فقط با تصمیم PO.
+    </div>
+  </section>
+<section class="phase" id="arch">
+    <div class="phase-h"><span class="phase-n">!</span><h2>تصمیم‌های معماریِ الزام‌آور</h2></div>
+    <p class="phase-goal">پیش‌فرض‌هایی که هر دو تیم باید رعایت کنند تا کارها به هم برسند.</p>
+    <div class="note" style="border-inline-start-color:var(--p1)">
+      <b>۱) مبدأ داده‌ی Front مستقل از پیاده‌ساز است.</b> Front فقط با قراردادِ <code>api/v1</code> کار می‌کند؛ نباید بداند پاسخ از PHP می‌آید یا Django. همه‌ی مسیرها از <code>libs/axios.ts</code> با <code>baseURL=/api/v1</code> و rewrite در <code>next.config.ts</code>.
+    </div>
+    <div class="note" style="border-inline-start-color:var(--p1)">
+      <b>۲) auth واحد.</b> استانداردِ توکن = JWT HS256 با رازِ مشترک <code>OW_PASSWORD_PEPPER</code> و claims <code>{iat, exp, sub:userId}</code>. Django باید همین را verify (و در فاز بعد صادر) کند، نه صرفاً خواندنِ <code>ow_base_user_auth_token</code>.
+    </div>
+    <div class="note" style="border-inline-start-color:var(--p1)">
+      <b>۳) قراردادِ پاسخ ثابت است.</b> فهرست‌ها همیشه پاکتِ <code>{data, links, meta}</code> با <code>meta.current_page/per_page/total</code>؛ خطاها با کدهای <code>401/403/404/422</code> و بدنه‌ی یکسان. مرجعِ فیلدها: <a href="../reports/api-reference.html">مرجع API</a> و <a href="../reports/swagger.html">Swagger</a>.
+    </div>
+  </section>
+<section class="phase" id="p0">
+    <div class="phase-h"><span class="phase-n">۰</span><h2>پایه و زیرساخت</h2></div>
+    <p class="phase-goal">پیش‌نیازِ هر چیزِ دیگر. بدون این‌ها هر تسکِ بعدی روی شن ساخته می‌شود. دو تیم موازی کار می‌کنند.</p>
+
+    <div class="band b">◆ تیم Backend</div>
+
+    <div class="task b">
+      <div class="task-h"><span class="task-id">B1</span><b>زیرساختِ REST مشترک (پاکت، صفحه‌بندی، خطا، CORS، آپلود)</b><span class="spacer"></span><span class="pill p-p1">P1</span><span class="pill p-todo">نساخته</span><span class="est">۴ روز</span></div>
+      <p class="desc">قبل از هر منبع، لایه‌های عرضیِ DRF باید ساخته شوند تا همه‌ی endpointها دقیقاً قراردادِ PHP را بدهند. الان هیچ‌کدام وجود ندارد.</p>
+      <p class="ears">EARS: هرگاه یک درخواستِ فهرست پردازش شود، سامانه باید پاسخ را در پاکتِ <code>{data, links, meta}</code> با <code>meta.current_page/per_page/total</code> بازگرداند.</p>
+      <div class="subhd">Subtaskها</div>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th>جزئیات فنی</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">B1.1</td><td>Pagination class</td><td><code>PageNumberPagination</code> سفارشی با خروجیِ دقیقِ <code>data/links/meta</code></td><td class="n">۵ ساعت</td></tr>
+          <tr><td class="n">B1.2</td><td>Exception handler</td><td>هندلرِ سراسری برای فرمتِ یکسانِ خطا در ۴۰۱/۴۰۳/۴۰۴/۴۲۲</td><td class="n">۵ ساعت</td></tr>
+          <tr><td class="n">B1.3</td><td>فیلتر/جستجو/مرتب‌سازی</td><td>backendهای مشترک با نام‌پارامترهای یکسان با PHP</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">B1.4</td><td>CORS و هدرها</td><td>نصب/پیکربندی <code>django-cors-headers</code> (نصب نیست)، هدرهای امنیتی</td><td class="n">۳ ساعت</td></tr>
+          <tr><td class="n">B1.5</td><td>آپلود فایل/رسانه</td><td><code>MultiPartParser</code>، اعتبارسنجی نوع/اندازه، مسیرِ سازگار با اکسوال</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">B1.6</td><td>پایه‌ی تست</td><td>راه‌اندازی <code>pytest-django</code> + factory + APIClient مبنا</td><td class="n">۵ ساعت</td></tr>
+        </tbody>
+      </table></div>
+      <div class="dep">وابستگی: ندارد (نقطه‌ی شروعِ Backend).</div>
+    </div>
+
+    <div class="task b">
+      <div class="task-h"><span class="task-id">B2</span><b>استراتژیِ auth واحد PHP↔Django (JWT مشترک)</b><span class="spacer"></span><span class="pill p-p1">P1</span><span class="pill p-todo">نساخته</span><span class="est">۳ روز</span></div>
+      <p class="desc">بلوکِ <code>SIMPLE_JWT</code> در <code>config/settings/base.py</code> نیست. Django باید همان JWT HS256 با رازِ مشترک و claimهای اکسوال را verify کند تا توکنِ PHP در Django معتبر باشد و بالعکس.</p>
+      <div class="subhd">Subtaskها</div>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th>جزئیات فنی</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">B2.1</td><td>پیکربندی SimpleJWT</td><td>HS256، <code>SIGNING_KEY = sha256(OW_PASSWORD_PEPPER)</code>، claim <code>sub</code>→userId، طولِ عمرِ منطبق</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">B2.2</td><td>Authentication class</td><td>کلاسِ سفارشیِ DRF: verify JWTِ PHP و resolve کاربرِ legacy</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">B2.3</td><td>Permission mapping</td><td>ترجمه‌ی مجوزِ پلاگینیِ اکسوال (<code>isAuthorized</code>) به permissionهای DRF</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">B2.4</td><td>تستِ سازگاری متقابل</td><td>توکنِ رازِ PHP در Django بپذیرد؛ بدون‌امضا/منقضی رد شود</td><td class="n">۶ ساعت</td></tr>
+        </tbody>
+      </table></div>
+      <div class="ac"><span class="lbl">معیار پذیرش</span><ul>
+        <li>Given یک JWTِ معتبرِ PHP، When به endpointِ محافظت‌شده‌ی Django فرستاده شود، Then ۲۰۰ و همان کاربر resolve شود.</li>
+        <li>Given توکنِ منقضی/دست‌کاری‌شده، When فرستاده شود، Then ۴۰۱ برگردد.</li>
+      </ul></div>
+      <div class="dep">وابستگی: B1. مرجع: <a href="../reports/system-architecture.html">معماری — بخش auth</a>.</div>
+    </div>
+
+    <div class="task b">
+      <div class="task-h"><span class="task-id">B3</span><b>رفعِ خطاهای استقرار و پیکربندیِ production</b><span class="spacer"></span><span class="pill p-p1">P1</span><span class="pill p-todo">نساخته</span><span class="est">۲ روز</span></div>
+      <p class="desc"><code>production.py</code> خالی است؛ <code>docker/Dockerfile</code> ENTRYPOINT اشتباه دارد (<code>shub.asgi</code>، Celery <code>SharifAutoEDA</code> — کپی از پروژه‌ی دیگر)؛ <code>requirements</code> فاقد gunicorn/uvicorn/pytest است.</p>
+      <div class="subhd">Subtaskها</div>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th>جزئیات فنی</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">B3.1</td><td>production.py</td><td>DEBUG=False، ALLOWED_HOSTS، DB از env، static/media، logging</td><td class="n">۴ ساعت</td></tr>
+          <tr><td class="n">B3.2</td><td>Dockerfile</td><td>اصلاحِ ENTRYPOINT، حذف ارجاعِ Celery غلط، multi-stage تمیز</td><td class="n">۴ ساعت</td></tr>
+          <tr><td class="n">B3.3</td><td>requirements و env</td><td>افزودن gunicorn/uvicorn/pytest؛ اصلاحِ <code>.env.example</code> برای دو DB</td><td class="n">۳ ساعت</td></tr>
+          <tr><td class="n">B3.4</td><td>healthcheck و اجرای محلی</td><td>تأیید بالاآمدنِ کانتینر، <code>/api/v1/health</code>، اتصالِ دو DB</td><td class="n">۵ ساعت</td></tr>
+        </tbody>
+      </table></div>
+      <div class="dep">وابستگی: مستقل؛ موازیِ B1/B2.</div>
+    </div>
+  </section>
+<section class="phase" id="p1">
+    <div class="phase-h"><span class="phase-n">۱</span><h2>احراز هویت، پوسته و لایه‌ی داده</h2></div>
+    <p class="phase-goal">دروازه‌ی ورود و اسکلتِ همه‌ی صفحه‌های بعدی. تا اینجا تمام نشود، هیچ صفحه‌ی محتوایی قابلِ‌اتکا نیست.</p>
+
+    <div class="band b">◆ تیم Backend</div>
+
+    <div class="task b">
+      <div class="task-h"><span class="task-id">B4</span><b>endpointهای احراز هویت</b><span class="spacer"></span><span class="pill p-p1">P1</span><span class="pill p-part">ناقص</span><span class="est">۳ روز</span></div>
+      <p class="desc">فقط <code>/me</code> و <code>/health</code> هست. مجموعه‌ی کاملِ auth منطبق بر قراردادِ PHP، روی مدلِ کاربرِ legacy.</p>
+      <div class="subhd">Subtaskها</div>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th>جزئیات فنی</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">B4.1</td><td>login</td><td><code>POST /auth/login</code>: راستیِ رمز به‌شیوه‌ی اکسوال (pepper+hash)، صدور JWT</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">B4.2</td><td>refresh + logout</td><td><code>POST /auth/refresh</code>، ابطال، چرخشِ refresh</td><td class="n">۵ ساعت</td></tr>
+          <tr><td class="n">B4.3</td><td>register</td><td><code>POST /auth/register</code>: اعتبارسنجی، ایجادِ کاربر در جداولِ اکسوال</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">B4.4</td><td>change-password + permissions</td><td><code>PATCH /auth/change-password</code>، <code>GET /auth/permissions</code></td><td class="n">۴ ساعت</td></tr>
+          <tr><td class="n">B4.5</td><td>تست</td><td>login/refresh/register/۴۲۲؛ برابری با پاسخِ PHP</td><td class="n">۳ ساعت</td></tr>
+        </tbody>
+      </table></div>
+      <div class="dep">وابستگی: B1، B2.</div>
+    </div>
+
+    <div class="task b">
+      <div class="task-h"><span class="task-id">B5</span><b>تصمیمِ داده + مدل‌های پایه‌ی legacy</b><span class="spacer"></span><span class="pill p-p1">P1</span><span class="pill p-part">ناقص</span><span class="est">۳ روز</span></div>
+      <p class="desc">الان فقط ۲ جدول (<code>ow_base_user</code>, <code>ow_base_user_auth_token</code>) با <code>managed=False</code> نگاشت شده. سیاستِ داده تثبیت شود: خواندنِ مستقیم از <code>ow_</code> در برابر مهاجرت به <code>motoshub_new</code>؛ و مدل‌های پایه ساخته شوند.</p>
+      <div class="subhd">Subtaskها</div>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th>جزئیات فنی</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">B5.1</td><td>سندِ تصمیمِ داده (ADR)</td><td>کدام منابع مستقیم از <code>ow_</code>، کدام مهاجرت؛ روترِ DB</td><td class="n">۴ ساعت</td></tr>
+          <tr><td class="n">B5.2</td><td>introspect جداول</td><td><code>inspectdb</code> روی جداولِ کلیدی، پاک‌سازیِ مدل‌ها، <code>managed=False</code></td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">B5.3</td><td>مدلِ کاربر و پروفایل</td><td>تکمیلِ <code>LegacyUser</code>، پروفایل/آواتار، رابطه‌ها</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">B5.4</td><td>سرویس‌های مشترک</td><td>لایه‌ی سرویسِ پایه، تراکنش روی دو DB، تستِ اتصال</td><td class="n">۴ ساعت</td></tr>
+        </tbody>
+      </table></div>
+      <div class="dep">وابستگی: B1. پیش‌نیازِ همه‌ی منابعِ B6 به بعد.</div>
+    </div>
+  </section>
+<section class="phase" id="p2">
+    <div class="phase-h"><span class="phase-n">۲</span><h2>هسته‌ی محتوا</h2></div>
+    <p class="phase-goal">پرتکرارترین بخش‌هایی که کاربر روزانه می‌بیند: داشبورد، تازه‌ها، بلاگ، کاربران/پروفایل. رسیدن تا اینجا = «محصولِ قابلِ‌نمایش».</p>
+
+    <div class="band b">◆ تیم Backend</div>
+
+    <div class="task b">
+      <div class="task-h"><span class="task-id">B6</span><b>منبعِ کاربران و پروفایل</b><span class="spacer"></span><span class="pill p-p1">P1</span><span class="pill p-todo">نساخته</span><span class="est">۴ روز</span></div>
+      <p class="desc">منبعِ پرکاربردِ همه‌ی بخش‌ها. مطابقِ endpointهای PHP: فهرست، پروفایل، ویرایش، آواتار، مسدودها و نشست‌ها.</p>
+      <div class="subhd">Subtaskها</div>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th>جزئیات فنی</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">B6.1</td><td>Model + Serializer</td><td>نگاشتِ کاربر/پروفایل/فیلدهای پویا (<code>ow_base_question*</code>)</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">B6.2</td><td>list + detail</td><td><code>GET /users</code>، <code>GET /users/:id</code> با فیلتر/جستجو/صفحه‌بندی</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">B6.3</td><td>update + avatar</td><td><code>PATCH /users/me</code>، <code>POST /users/me/avatar</code></td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">B6.4</td><td>blocked + sessions</td><td><code>/users/blocked</code>، <code>/sessions</code></td><td class="n">۴ ساعت</td></tr>
+          <tr><td class="n">B6.5</td><td>تست + مجوز</td><td>تست‌های دسترسی/مالکیت، برابری با PHP</td><td class="n">۴ ساعت</td></tr>
+        </tbody>
+      </table></div>
+      <div class="dep">وابستگی: B4، B5.</div>
+    </div>
+
+    <div class="task b">
+      <div class="task-h"><span class="task-id">B7</span><b>منبعِ تازه‌ها (فید) + دسته‌بندیِ انتشار</b><span class="spacer"></span><span class="pill p-p1">P1</span><span class="pill p-todo">نساخته</span><span class="est">۶ روز</span></div>
+      <p class="desc">پیچیده‌ترین منبعِ فاز: فید، انتشار با پیوست، لایک/نظر/فوروارد و دسته‌بندیِ انتشارِ عمومی (منطبق با فیچرِ <code>iisnewsfeedpin</code>).</p>
+      <div class="subhd">Subtaskها</div>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th>جزئیات فنی</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">B7.1</td><td>مدل‌های فید</td><td>نگاشتِ <code>ow_newsfeed_*</code>، اکشن/آیتم/محتوا</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">B7.2</td><td>list فید</td><td><code>GET /newsfeed</code> با scope (feed/site/user)، صفحه‌بندی</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">B7.3</td><td>create + attachment</td><td><code>POST /newsfeed</code>، پیوستِ PDF/Word/عکس</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B7.4</td><td>لایک/نظر/فوروارد</td><td>endpointهای تعامل منطبق بر PHP</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B7.5</td><td>دسته‌بندیِ انتشار</td><td>منبعِ دسته‌ی درختی + فیلترِ فیدِ عمومی بر اساس دسته</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B7.6</td><td>تست</td><td>انتشار/تعامل/فیلترِ دسته</td><td class="n">۴ ساعت</td></tr>
+        </tbody>
+      </table></div>
+      <div class="dep">وابستگی: B5، B6.</div>
+    </div>
+
+    <div class="task b">
+      <div class="task-h"><span class="task-id">B8</span><b>منبعِ بلاگ</b><span class="spacer"></span><span class="pill p-p2">P2</span><span class="pill p-todo">نساخته</span><span class="est">۳ روز</span></div>
+      <div class="subhd">Subtaskها</div>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th>جزئیات فنی</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">B8.1</td><td>Model + Serializer</td><td>نگاشتِ <code>ow_blogs_post</code> و نظرات/برچسب</td><td class="n">۴ ساعت</td></tr>
+          <tr><td class="n">B8.2</td><td>CRUD</td><td><code>GET/POST/PATCH/DELETE /blogs</code>، <code>GET /blogs/:id</code></td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B8.3</td><td>مالکیت/مجوز</td><td>چکِ مالکیت در ویرایش/حذف، منطبق بر منطقِ PHP</td><td class="n">۴ ساعت</td></tr>
+          <tr><td class="n">B8.4</td><td>تست</td><td>lifecycle + دسترسی</td><td class="n">۴ ساعت</td></tr>
+        </tbody>
+      </table></div>
+      <div class="dep">وابستگی: B5.</div>
+    </div>
+  </section>
+<section class="phase" id="p3">
+    <div class="phase-h"><span class="phase-n">۳</span><h2>فضاهای اجتماعی</h2></div>
+    <p class="phase-goal">بخش‌های تعاملیِ سازمان: گروه‌ها، اخبار، رویدادها، رسانه، فروم. الگوهای فاز ۲ اینجا تکرار و مقیاس‌پذیر می‌شوند.</p>
+
+    <div class="band b">◆ تیم Backend</div>
+
+    <div class="task b">
+      <div class="task-h"><span class="task-id">B9</span><b>منبعِ اخبار</b><span class="spacer"></span><span class="pill p-p2">P2</span><span class="pill p-todo">نساخته</span><span class="est">۳ روز</span></div>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th>جزئیات فنی</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">B9.1</td><td>Model + Serializer</td><td>نگاشتِ منبعِ خبر و دسته/رسانه</td><td class="n">۴ ساعت</td></tr>
+          <tr><td class="n">B9.2</td><td>CRUD + list</td><td><code>GET/POST/PATCH /news</code>، <code>/news/:id</code></td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B9.3</td><td>مجوزِ انتشار</td><td>محدودسازیِ انتشار به نقشِ مدیرِ محتوا</td><td class="n">۴ ساعت</td></tr>
+          <tr><td class="n">B9.4</td><td>تست</td><td>lifecycle + دسترسی</td><td class="n">۴ ساعت</td></tr>
+        </tbody>
+      </table></div>
+      <div class="dep">وابستگی: B5.</div>
+    </div>
+
+    <div class="task b">
+      <div class="task-h"><span class="task-id">B10</span><b>منبعِ گروه‌ها</b><span class="spacer"></span><span class="pill p-p2">P2</span><span class="pill p-todo">نساخته</span><span class="est">۶ روز</span></div>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th>جزئیات فنی</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">B10.1</td><td>مدل‌ها</td><td>گروه/عضویت/نقش/دعوت، نگاشتِ جداولِ اکسوال</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">B10.2</td><td>CRUD گروه</td><td><code>GET/POST/PATCH/DELETE /groups</code>، <code>/groups/:id</code></td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B10.3</td><td>اعضا/عضویت</td><td><code>/members</code>، <code>/join</code>، <code>/invites</code>، نقش/مجوز</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B10.4</td><td>دیوار/فایل</td><td>فیدِ گروه، <code>/files</code> آپلود/دانلود</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B10.5</td><td>تست</td><td>عضویت/مجوز/فایل</td><td class="n">۴ ساعت</td></tr>
+        </tbody>
+      </table></div>
+      <div class="dep">وابستگی: B5، B7 (الگوی فید).</div>
+    </div>
+
+    <div class="task b">
+      <div class="task-h"><span class="task-id">B11</span><b>منبعِ رویدادها</b><span class="spacer"></span><span class="pill p-p2">P2</span><span class="pill p-done">آماده در PHP</span><span class="est">۵ روز</span></div>
+      <p class="desc">قراردادِ PHP و تست‌های Pest موجودند (نمونه: <code>EventControllerTest</code>). این تسک بازسازیِ همان در Django است.</p>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th>جزئیات فنی</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">B11.1</td><td>مدل‌ها</td><td>رویداد/دعوت/شرکت‌کننده/فایل</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">B11.2</td><td>CRUD</td><td><code>GET/POST/PATCH/DELETE /events</code>، اعتبارسنجیِ زمان</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B11.3</td><td>دعوت/RSVP</td><td><code>/invites</code>، حضور، سطحِ دید/دعوت</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B11.4</td><td>تست معادلِ Pest</td><td>پورتِ سناریوهای <code>EventControllerTest</code> به pytest</td><td class="n">۴ ساعت</td></tr>
+        </tbody>
+      </table></div>
+      <div class="dep">وابستگی: B5.</div>
+    </div>
+
+    <div class="task b">
+      <div class="task-h"><span class="task-id">B12</span><b>منبعِ رسانه (عکس/آلبوم/ویدیو)</b><span class="spacer"></span><span class="pill p-p2">P2</span><span class="pill p-done">آماده در PHP</span><span class="est">۶ روز</span></div>
+      <p class="desc">در PHP کامل و امن‌شده است (اصلاحاتِ IDOR و چکِ مالکیت در <code>PhotoService</code>/<code>AlbumService</code>). Django باید همان قرارداد و چک‌های مالکیت را بدهد.</p>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th>جزئیات فنی</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">B12.1</td><td>مدل‌ها</td><td>عکس/آلبوم/کاور/ویدیو، نگاشتِ <code>ow_photo_*</code></td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">B12.2</td><td>آلبوم CRUD</td><td><code>/albums</code> با چکِ مالکیت (مثلِ PHP: مالک یا ناظر)</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B12.3</td><td>عکس CRUD + آپلود</td><td><code>/photos</code>، آپلود، به‌روزرسانیِ کاور، PATCH جزئی (بدون null‌کردن)</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B12.4</td><td>ویدیو</td><td><code>/videos</code> CRUD + پردازش/embed</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">B12.5</td><td>تست IDOR</td><td>عدمِ دسترسیِ غیرمالک به ویرایش/حذف</td><td class="n">۴ ساعت</td></tr>
+        </tbody>
+      </table></div>
+      <div class="dep">وابستگی: B5، B1.5 (آپلود).</div>
+    </div>
+
+    <div class="task b">
+      <div class="task-h"><span class="task-id">B13</span><b>منبعِ فروم</b><span class="spacer"></span><span class="pill p-p2">P2</span><span class="pill p-todo">نساخته</span><span class="est">۵ روز</span></div>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th>جزئیات فنی</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">B13.1</td><td>مدل‌ها</td><td>بخش/موضوع/پست، نگاشتِ <code>ow_forum_*</code></td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">B13.2</td><td>موضوع‌ها</td><td><code>GET/POST /forum/topics</code>، دسته‌بندی</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B13.3</td><td>پست‌ها</td><td><code>/topics/:id/posts</code>، پاسخ/نقل‌قول</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B13.4</td><td>مدیریت + تست</td><td>قفل/پین/انتقال با مجوز؛ تست</td><td class="n">۴ ساعت</td></tr>
+        </tbody>
+      </table></div>
+      <div class="dep">وابستگی: B5.</div>
+    </div>
+  </section>
+<section class="phase" id="p4">
+    <div class="phase-h"><span class="phase-n">۴</span><h2>ارتباط و همکاری</h2></div>
+    <p class="phase-goal">ابزارهای کارِ روزمره: پیام‌رسان، مدیریت دانش، مدیریت پروژه (کانبان).</p>
+
+    <div class="band b">◆ تیم Backend</div>
+
+    <div class="task b">
+      <div class="task-h"><span class="task-id">B14</span><b>منبعِ پیام‌رسان</b><span class="spacer"></span><span class="pill p-p3">P3</span><span class="pill p-todo">نساخته</span><span class="est">۶ روز</span></div>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th>جزئیات فنی</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">B14.1</td><td>مدل‌ها</td><td>گفتگو/پیام/عضو/وضعیتِ خوانده، نگاشتِ <code>ow_mailbox_*</code></td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">B14.2</td><td>گفتگوها</td><td><code>GET /conversations</code>، ساخت، شمارشِ نخوانده</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">B14.3</td><td>پیام‌ها</td><td><code>/messages</code> ارسال/فهرست، صفحه‌بندیِ تاریخچه</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B14.4</td><td>بی‌درنگ</td><td>Channels/WebSocket یا long-poll؛ پیوست</td><td class="n">۱۰ ساعت</td></tr>
+          <tr><td class="n">B14.5</td><td>تست</td><td>ارسال/خواندن/دسترسیِ عضو</td><td class="n">۴ ساعت</td></tr>
+        </tbody>
+      </table></div>
+      <div class="dep">وابستگی: B5. (WebSocket نیازمندِ ASGI؛ مرتبط با B3.)</div>
+    </div>
+
+    <div class="task b">
+      <div class="task-h"><span class="task-id">B15</span><b>منبعِ دوستان و اعلان‌ها</b><span class="spacer"></span><span class="pill p-p2">P2</span><span class="pill p-todo">نساخته</span><span class="est">۴ روز</span></div>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th>جزئیات فنی</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">B15.1</td><td>دوستان</td><td><code>/friends</code>: درخواست/تأیید/حذف، نگاشتِ <code>ow_friends_*</code></td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B15.2</td><td>اعلان‌ها</td><td><code>GET /notifications</code>، علامتِ خوانده، شمارش</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B15.3</td><td>تولیدِ اعلان</td><td>hookهای رویداد (لایک/نظر/دعوت) → اعلان</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">B15.4</td><td>تست</td><td>چرخه‌ی دوستی/اعلان</td><td class="n">۴ ساعت</td></tr>
+        </tbody>
+      </table></div>
+      <div class="dep">وابستگی: B5.</div>
+    </div>
+
+    <div class="task b">
+      <div class="task-h"><span class="task-id">B16</span><b>منبعِ دانش و پروژه</b><span class="spacer"></span><span class="pill p-p3">P3</span><span class="pill p-todo">نساخته</span><span class="est">۶ روز</span></div>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th>جزئیات فنی</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">B16.1</td><td>دانش</td><td><code>/knowledge/documents</code> CRUD + دسته + آپلود</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B16.2</td><td>پروژه</td><td><code>/projects</code> CRUD + اعضا + وضعیت</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B16.3</td><td>وظیفه/کانبان</td><td>ستون/کارت/ترتیب، endpointِ جابه‌جایی و تخصیص</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B16.4</td><td>تست</td><td>CRUD + persistِ ترتیب</td><td class="n">۴ ساعت</td></tr>
+        </tbody>
+      </table></div>
+      <div class="dep">وابستگی: B5. (اگر پروژه در اکسوال منبع ندارد، مدلِ جدید در <code>motoshub_new</code>.)</div>
+    </div>
+  </section>
+<section class="phase" id="p5">
+    <div class="phase-h"><span class="phase-n">۵</span><h2>ماژول‌های سازمانی</h2></div>
+    <p class="phase-goal">بخش‌های تخصصیِ سازمان: قراردادها، صندوقِ نوآوری، پژوهش، آموزش، نظرسنجی/مسابقات/ارزیابی.</p>
+
+    <div class="band b">◆ تیم Backend</div>
+
+    <div class="task b">
+      <div class="task-h"><span class="task-id">B17</span><b>منبعِ ماژول‌های سازمانی</b><span class="spacer"></span><span class="pill p-p3">P3</span><span class="pill p-todo">نساخته</span><span class="est">۸ روز</span></div>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th>جزئیات فنی</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">B17.1</td><td>قراردادها/تیکت</td><td><code>/tickets</code> و منبعِ قرارداد، گردش‌کارِ وضعیت</td><td class="n">۱۲ ساعت</td></tr>
+          <tr><td class="n">B17.2</td><td>صندوق</td><td><code>/cfps</code>، <code>/grants</code>: فراخوان/درخواست/داوری</td><td class="n">۱۲ ساعت</td></tr>
+          <tr><td class="n">B17.3</td><td>پژوهش/فناوری</td><td><code>/technologies</code>، <code>/journal-*</code></td><td class="n">۱۲ ساعت</td></tr>
+          <tr><td class="n">B17.4</td><td>آموزش</td><td>دوره/ثبت‌نام/پیشرفت</td><td class="n">۱۲ ساعت</td></tr>
+          <tr><td class="n">B17.5</td><td>تست</td><td>CRUD + گردش‌کار</td><td class="n">۴ ساعت</td></tr>
+        </tbody>
+      </table></div>
+      <div class="dep">وابستگی: B5.</div>
+    </div>
+
+    <div class="task b">
+      <div class="task-h"><span class="task-id">B18</span><b>منبعِ نظرسنجی، مسابقات و ارزیابی</b><span class="spacer"></span><span class="pill p-p3">P3</span><span class="pill p-todo">نساخته</span><span class="est">۵ روز</span></div>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th>جزئیات فنی</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">B18.1</td><td>نظرسنجی</td><td><code>/polls</code>: ساخت/رأی/نتیجه</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B18.2</td><td>مسابقات</td><td><code>/competitions</code>: ثبت/داوری</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B18.3</td><td>ارزیابی</td><td><code>/evaluations</code></td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">B18.4</td><td>تست</td><td>رأی/نتیجه/دسترسی</td><td class="n">۴ ساعت</td></tr>
+        </tbody>
+      </table></div>
+      <div class="dep">وابستگی: B5.</div>
+    </div>
+  </section>
+<section class="phase" id="p6">
+    <div class="phase-h"><span class="phase-n">۶</span><h2>راهبری، جستجو، پولیش و تحویل</h2></div>
+    <p class="phase-goal">بخش‌های مدیریتی و پایانی که محصول را «کامل» و آماده‌ی تحویل می‌کنند.</p>
+
+    <div class="band b">◆ تیم Backend</div>
+
+    <div class="task b">
+      <div class="task-h"><span class="task-id">B19</span><b>منبعِ جستجو + یکپارچه‌سازی و تحویل</b><span class="spacer"></span><span class="pill p-p3">P3</span><span class="pill p-todo">نساخته</span><span class="est">۴ روز</span></div>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th>جزئیات فنی</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">B19.1</td><td>جستجوی سراسری</td><td><code>GET /search</code> چنددسته (کاربر/بلاگ/فروم/...)، صفحه‌بندی</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B19.2</td><td>برابریِ قرارداد</td><td>تستِ diffِ پاسخِ Django با PHP روی endpointهای کلیدی</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">B19.3</td><td>سوییچِ Gateway</td><td>مستندِ گذارِ مسیر‌به‌مسیر از PHP به Django بدونِ downtime</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">B19.4</td><td>OpenAPI + تحویل</td><td>هم‌ترازیِ <code>drf-spectacular</code> با قراردادِ v1، انتشارِ داکِ نهایی</td><td class="n">۶ ساعت</td></tr>
+        </tbody>
+      </table></div>
+      <div class="dep">وابستگی: همه‌ی منابعِ Backend.</div>
+    </div>
+  </section>
+</div>
+</body>
+</html>

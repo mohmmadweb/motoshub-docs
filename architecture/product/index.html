@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Motoshub — برنامه‌ی تحویل: تسک‌های تیم Front و Backend</title>
+<style>
+  :root{
+    --bg:#eef1f4;--panel:#ffffff;--line:#d6dce3;--line2:#e6eaef;
+    --ink:#131a24;--ink2:#3a4655;--muted:#68727f;
+    --front:#1f6f9e;--front-bg:#e8f2f9;
+    --back:#7a41ad;--back-bg:#f2ebf9;
+    --p1:#b23a52;--p2:#b47a1e;--p3:#3f7d63;
+    --done:#2c7a56;--part:#a9791f;--todo:#a8394f;
+    --est:#0f4c75;
+    --mono:"SF Mono",ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:"Vazirmatn","Segoe UI",Tahoma,system-ui,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#0c1116;--panel:#141b23;--line:#28323d;--line2:#1d252e;
+      --ink:#e9eef4;--ink2:#c2ccd6;--muted:#8b96a3;
+      --front:#5aa6d8;--front-bg:#14222e;--back:#b389df;--back-bg:#211a2e;
+      --p1:#e07387;--p2:#d9ab5a;--p3:#63c495;
+      --done:#5cc48d;--part:#d9ab5a;--todo:#e07387;--est:#6fb2e0;}
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+    line-height:1.85;padding:26px 16px}
+  .wrap{max-width:1060px;margin:0 auto}
+  .kicker{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+  h1{font-size:clamp(24px,4.4vw,33px);font-weight:800;letter-spacing:-.01em;margin:0 0 10px}
+  .lede{color:var(--ink2);font-size:15.5px;margin:0 0 8px;max-width:70ch}
+  .meta-line{font-family:var(--mono);font-size:12px;color:var(--muted);margin:0 0 22px}
+  .legend{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:16px 0;font-size:13px}
+  .legend b{font-size:13.5px}
+  .row{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:8px;align-items:center}
+  .pill{font-family:var(--mono);font-size:10.5px;padding:2px 8px;border-radius:20px;white-space:nowrap;font-weight:600}
+  .p-done{background:rgba(44,122,86,.16);color:var(--done)} .p-part{background:rgba(169,121,31,.17);color:var(--part)} .p-todo{background:rgba(168,57,79,.15);color:var(--todo)}
+  .p-p1{background:rgba(178,58,82,.14);color:var(--p1)} .p-p2{background:rgba(180,122,30,.15);color:var(--p2)} .p-p3{background:rgba(63,125,99,.15);color:var(--p3)}
+  .est{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--est);background:rgba(15,76,117,.10);padding:2px 8px;border-radius:6px;white-space:nowrap}
+  @media (prefers-color-scheme:dark){.est{background:rgba(111,178,224,.12)}}
+  .toc{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin:16px 0;font-size:13px;columns:2;column-gap:26px}
+  .toc a{display:block;color:var(--front);text-decoration:none;padding:2px 0;break-inside:avoid}
+  .toc a:hover{text-decoration:underline}
+  @media (max-width:640px){.toc{columns:1}}
+  .tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:11px;margin:12px 0}
+  table{border-collapse:collapse;width:100%;font-size:12.7px;min-width:560px}
+  th,td{padding:8px 11px;text-align:right;border-bottom:1px solid var(--line2);vertical-align:top}
+  th{background:rgba(120,130,140,.07);font-weight:700}
+  tr:last-child td{border-bottom:none}
+  td.n,th.n{white-space:nowrap;font-family:var(--mono);font-size:11.5px;text-align:center;width:1%}
+  tfoot td{font-weight:800;background:rgba(120,130,140,.05)}
+  .phase{margin:40px 0 8px}
+  .phase-h{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--line);padding-bottom:9px}
+  .phase-n{font-family:var(--mono);font-size:26px;font-weight:800;color:var(--muted);line-height:1}
+  .phase-h h2{font-size:21px;margin:0;font-weight:800}
+  .phase-goal{color:var(--muted);font-size:13.5px;margin:8px 0 0}
+  .band{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:11px;font-weight:700;padding:3px 11px;border-radius:20px;margin:18px 0 4px}
+  .band.f{background:var(--front-bg);color:var(--front)}
+  .band.b{background:var(--back-bg);color:var(--back)}
+  .task{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:15px 18px;margin:12px 0}
+  .task.f{border-inline-start:3px solid var(--front)}
+  .task.b{border-inline-start:3px solid var(--back)}
+  .task-h{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .task-id{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--muted)}
+  .task-h b{font-size:15.5px}
+  .task-h .spacer{flex:1}
+  .story{background:rgba(120,130,140,.06);border-radius:9px;padding:9px 13px;margin:11px 0;font-size:13.3px}
+  .story .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:2px}
+  .desc{font-size:13.6px;color:var(--ink2);margin:10px 0}
+  .desc code,td code,.ac code,.story code,.ears code{font-family:var(--mono);font-size:11.3px;background:rgba(120,130,140,.14);padding:1px 6px;border-radius:5px;color:var(--ink)}
+  .ears{border-inline-start:3px solid var(--muted);padding:2px 12px;margin:9px 0;font-size:13px;color:var(--ink2);font-style:italic}
+  .ac{margin:10px 0 4px;font-size:12.9px}
+  .ac .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
+  .ac ul{margin:0;padding-inline-start:18px}
+  .ac li{margin:3px 0}
+  .dep{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:9px}
+  .subhd{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:12px 0 4px}
+  .note{background:var(--panel);border:1px solid var(--line);border-inline-start:3px solid var(--p2);border-radius:10px;padding:12px 16px;margin:16px 0;font-size:13.4px}
+  .foot{margin-top:46px;padding-top:16px;border-top:1px solid var(--line);font-family:var(--mono);font-size:11.5px;color:var(--muted);text-align:center;line-height:2}
+  a{color:var(--front)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<style>
+.diagram{background:var(--card,#fff);border:1px solid #d8dee8;border-radius:12px;padding:18px;margin:14px 0;overflow-x:auto}
+.drow{display:flex;gap:10px;align-items:stretch;justify-content:center;flex-wrap:wrap;margin:6px 0}
+.dbox{border:1.5px solid #1f4f99;border-radius:10px;padding:10px 14px;text-align:center;min-width:150px;background:#eef4fc}
+.dbox b{display:block;font-size:13.5px;color:#112442}
+.dbox span{font-size:11px;color:#5d6979}
+.dbox.ghost{border-style:dashed;background:#fbfcfe;border-color:#97a0ad}
+.dbox.green{border-color:#0b7a4b;background:#f0faf5}
+.dbox.amber{border-color:#b45309;background:#fffaf0}
+.darrow{display:flex;align-items:center;justify-content:center;color:#5d6979;font-size:18px;min-width:26px}
+.dcol{display:flex;flex-direction:column;gap:8px;justify-content:center}
+.legend{font-size:11.5px;color:#5d6979;margin-top:8px}
+.cycle{display:flex;gap:8px;flex-wrap:wrap;counter-reset:step}
+.cstep{flex:1;min-width:150px;border:1px solid #d8dee8;border-radius:10px;padding:10px 12px;background:#fff;position:relative}
+.cstep::before{counter-increment:step;content:counter(step);position:absolute;top:-11px;right:10px;width:22px;height:22px;border-radius:50%;background:#1f4f99;color:#fff;font-size:12px;font-weight:700;display:grid;place-items:center}
+.cstep b{display:block;font-size:13px;margin-bottom:3px;color:#112442}
+.cstep span{font-size:11.5px;color:#5d6979;line-height:1.8}
+</style>
+<body>
+<div class="wrap">
+  <p class="kicker">Motoshub · Product Architecture</p>
+  <h1>معماری کلی محصول و چرخه‌های ارائه و فروش</h1>
+  <p class="lede">موتوشاب = پلتفرم یکپارچه‌ی «ارتباطات + فرآیندهای سازمانی» که به‌صورت چندمستأجری به سازمان‌ها فروخته می‌شود؛ به‌طوری‌که مشتری برای ارتباط و فرآیند داخلی به هیچ ابزار دیگری نیاز نداشته باشد. مرجع تجربه: <a href="https://demo.shub.ir">demo.shub.ir</a></p>
+
+  <section class="phase">
+    <div class="phase-h"><span class="phase-n">۱</span><h2>لایه‌های محصول (چه می‌فروشیم)</h2></div>
+    <div class="diagram">
+      <div class="drow">
+        <div class="dbox green"><b>لایه ارتباطات</b><span>پیام‌رسان، کانال، گروه، فید، اعلان، دوستان</span></div>
+        <div class="dbox green"><b>لایه محتوا</b><span>اخبار، بلاگ، دانش، رسانه، انجمن، نظرسنجی</span></div>
+        <div class="dbox green"><b>لایه فرآیند</b><span>پروژه/صندوق، قرارداد/امضا، تیکت، آموزش، جایزه، ارزیابی</span></div>
+      </div>
+      <div class="drow"><div class="darrow">▲ همه روی ▲</div></div>
+      <div class="drow">
+        <div class="dbox"><b>هسته‌ی مشترک</b><span>هویت و نقش‌های سفارشی (RBAC) · چندمستأجری و تفکیک هلدینگ/شرکت · جستجوی سراسری · پارامترهای گردش‌کار · برندسازی per-tenant · دارک‌مود</span></div>
+      </div>
+    </div>
+    <div class="note"><b>مدل فروش ماژولی.</b> هسته همیشه هست؛ ماژول‌ها به‌صورت بازارچه فعال/غیرفعال و قیمت‌گذاری می‌شوند (همان «بازارچه‌ی ماژول‌ها» در پنل راهبری دمو). هر مشتری = یک tenant با برند، دامنه، نقش‌ها و پارامترهای خودش.</div>
+  </section>
+
+  <section class="phase">
+    <div class="phase-h"><span class="phase-n">۲</span><h2>چرخه‌ی فروش و استقرار مشتری (Customer Lifecycle)</h2></div>
+    <div class="cycle">
+      <div class="cstep"><b>جذب سرنخ</b><span>نمای عمومی + معرفی؛ چت‌بات عمومی در فاز بعد</span></div>
+      <div class="cstep"><b>دموی فروش</b><span>سناریوی ۱۵ دقیقه‌ای روی demo.shub.ir با برندِ زنده‌ی مشتری</span></div>
+      <div class="cstep"><b>POC / پایلوت</b><span>tenant آزمایشی با داده‌ی نمونه‌ی صنعت مشتری، ۲-۴ هفته</span></div>
+      <div class="cstep"><b>قرارداد</b><span>انتخاب ماژول‌ها + SLA + مدل استقرار (ابری/on-prem)</span></div>
+      <div class="cstep"><b>استقرار</b><span>provisioning یک tenant جدید، اتصال SSO/LDAP، واردسازی کاربران</span></div>
+      <div class="cstep"><b>آموزش و تحویل</b><span>کارگاه راهبران + مستندات + چک‌لیست پذیرش مشتری</span></div>
+      <div class="cstep"><b>پشتیبانی و توسعه</b><span>تیکت، مانیتورینگ، ریلیز ماهانه؛ فروش ماژول‌های بعدی (expansion)</span></div>
+    </div>
+    <div class="note"><b>سناریوی پیشنهادی دمو:</b> ورود ← «امروزِ شما» ← گفتگو (ریپلای/ری‌اکشن/ویس) ← صندوق نوآور (گردش‌کار واقعی) ← تفکیک شرکتی در اخبار («مشاهده به‌عنوان») ← برندسازی زنده (تغییر رنگ جلوی چشم مشتری) ← نمای عمومی. هر ایستگاه یک «وای» دارد.</div>
+  </section>
+
+  <section class="phase">
+    <div class="phase-h"><span class="phase-n">۳</span><h2>محیط‌ها و نسخه‌ها</h2></div>
+    <div class="tblwrap"><table>
+      <thead><tr><th>محیط</th><th>آدرس</th><th>نقش</th></tr></thead>
+      <tbody>
+        <tr><td>دموی فروش (spec)</td><td>demo.shub.ir</td><td>مرجع تجربه و پذیرش؛ همیشه کامل‌ترین نسخه‌ی UX</td></tr>
+        <tr><td>Staging فرانت</td><td>motonextfront.shub.ir</td><td>خروجی هر merge تیم Front</td></tr>
+        <tr><td>API فعلی (PHP)</td><td>motonext.shub.ir/api/v1</td><td>پاسخ‌گوی production تا پایان مهاجرت</td></tr>
+        <tr><td>API جدید (Django)</td><td>motonextapi.shub.ir</td><td>بازسازی تدریجی پشت Gateway</td></tr>
+        <tr><td>اسناد</td><td>docs.shub.ir</td><td>تسک‌ها، معماری، فرآیند تحویل</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note"><b>ریسک تجاری که باید مدیریت شود:</b> دموی فروش روی GitHub Pages است؛ برای جلسات حضوری حیاتی، یک آینه‌ی داخلی روی سرور خودی نگه دارید. تحویل on-prem (نیاز رایج سازمان‌های ایرانی) باید از فاز قرارداد اول در معماری استقرار دیده شود.</div>
+  </section>
+</div>
+</body></html>

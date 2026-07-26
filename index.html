@@ -1,8 +1,109 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Motoshub — اسناد فنی</title>
-<meta http-equiv="refresh" content="0; url=./reports/">
-<link rel="canonical" href="./reports/">
-<style>body{font-family:Tahoma,system-ui,sans-serif;background:#0e1319;color:#e7edf4;display:grid;place-items:center;min-height:100vh;margin:0}a{color:#4bb3ac}</style>
-</head><body><p>در حال انتقال به <a href="./reports/">اسناد فنی موتوشاب</a>…</p></body></html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Motoshub — برنامه‌ی تحویل: تسک‌های تیم Front و Backend</title>
+<style>
+  :root{
+    --bg:#eef1f4;--panel:#ffffff;--line:#d6dce3;--line2:#e6eaef;
+    --ink:#131a24;--ink2:#3a4655;--muted:#68727f;
+    --front:#1f6f9e;--front-bg:#e8f2f9;
+    --back:#7a41ad;--back-bg:#f2ebf9;
+    --p1:#b23a52;--p2:#b47a1e;--p3:#3f7d63;
+    --done:#2c7a56;--part:#a9791f;--todo:#a8394f;
+    --est:#0f4c75;
+    --mono:"SF Mono",ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:"Vazirmatn","Segoe UI",Tahoma,system-ui,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#0c1116;--panel:#141b23;--line:#28323d;--line2:#1d252e;
+      --ink:#e9eef4;--ink2:#c2ccd6;--muted:#8b96a3;
+      --front:#5aa6d8;--front-bg:#14222e;--back:#b389df;--back-bg:#211a2e;
+      --p1:#e07387;--p2:#d9ab5a;--p3:#63c495;
+      --done:#5cc48d;--part:#d9ab5a;--todo:#e07387;--est:#6fb2e0;}
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+    line-height:1.85;padding:26px 16px}
+  .wrap{max-width:1060px;margin:0 auto}
+  .kicker{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+  h1{font-size:clamp(24px,4.4vw,33px);font-weight:800;letter-spacing:-.01em;margin:0 0 10px}
+  .lede{color:var(--ink2);font-size:15.5px;margin:0 0 8px;max-width:70ch}
+  .meta-line{font-family:var(--mono);font-size:12px;color:var(--muted);margin:0 0 22px}
+  .legend{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:16px 0;font-size:13px}
+  .legend b{font-size:13.5px}
+  .row{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:8px;align-items:center}
+  .pill{font-family:var(--mono);font-size:10.5px;padding:2px 8px;border-radius:20px;white-space:nowrap;font-weight:600}
+  .p-done{background:rgba(44,122,86,.16);color:var(--done)} .p-part{background:rgba(169,121,31,.17);color:var(--part)} .p-todo{background:rgba(168,57,79,.15);color:var(--todo)}
+  .p-p1{background:rgba(178,58,82,.14);color:var(--p1)} .p-p2{background:rgba(180,122,30,.15);color:var(--p2)} .p-p3{background:rgba(63,125,99,.15);color:var(--p3)}
+  .est{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--est);background:rgba(15,76,117,.10);padding:2px 8px;border-radius:6px;white-space:nowrap}
+  @media (prefers-color-scheme:dark){.est{background:rgba(111,178,224,.12)}}
+  .toc{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin:16px 0;font-size:13px;columns:2;column-gap:26px}
+  .toc a{display:block;color:var(--front);text-decoration:none;padding:2px 0;break-inside:avoid}
+  .toc a:hover{text-decoration:underline}
+  @media (max-width:640px){.toc{columns:1}}
+  .tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:11px;margin:12px 0}
+  table{border-collapse:collapse;width:100%;font-size:12.7px;min-width:560px}
+  th,td{padding:8px 11px;text-align:right;border-bottom:1px solid var(--line2);vertical-align:top}
+  th{background:rgba(120,130,140,.07);font-weight:700}
+  tr:last-child td{border-bottom:none}
+  td.n,th.n{white-space:nowrap;font-family:var(--mono);font-size:11.5px;text-align:center;width:1%}
+  tfoot td{font-weight:800;background:rgba(120,130,140,.05)}
+  .phase{margin:40px 0 8px}
+  .phase-h{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--line);padding-bottom:9px}
+  .phase-n{font-family:var(--mono);font-size:26px;font-weight:800;color:var(--muted);line-height:1}
+  .phase-h h2{font-size:21px;margin:0;font-weight:800}
+  .phase-goal{color:var(--muted);font-size:13.5px;margin:8px 0 0}
+  .band{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:11px;font-weight:700;padding:3px 11px;border-radius:20px;margin:18px 0 4px}
+  .band.f{background:var(--front-bg);color:var(--front)}
+  .band.b{background:var(--back-bg);color:var(--back)}
+  .task{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:15px 18px;margin:12px 0}
+  .task.f{border-inline-start:3px solid var(--front)}
+  .task.b{border-inline-start:3px solid var(--back)}
+  .task-h{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .task-id{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--muted)}
+  .task-h b{font-size:15.5px}
+  .task-h .spacer{flex:1}
+  .story{background:rgba(120,130,140,.06);border-radius:9px;padding:9px 13px;margin:11px 0;font-size:13.3px}
+  .story .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:2px}
+  .desc{font-size:13.6px;color:var(--ink2);margin:10px 0}
+  .desc code,td code,.ac code,.story code,.ears code{font-family:var(--mono);font-size:11.3px;background:rgba(120,130,140,.14);padding:1px 6px;border-radius:5px;color:var(--ink)}
+  .ears{border-inline-start:3px solid var(--muted);padding:2px 12px;margin:9px 0;font-size:13px;color:var(--ink2);font-style:italic}
+  .ac{margin:10px 0 4px;font-size:12.9px}
+  .ac .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
+  .ac ul{margin:0;padding-inline-start:18px}
+  .ac li{margin:3px 0}
+  .dep{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:9px}
+  .subhd{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:12px 0 4px}
+  .note{background:var(--panel);border:1px solid var(--line);border-inline-start:3px solid var(--p2);border-radius:10px;padding:12px 16px;margin:16px 0;font-size:13.4px}
+  .foot{margin-top:46px;padding-top:16px;border-top:1px solid var(--line);font-family:var(--mono);font-size:11.5px;color:var(--muted);text-align:center;line-height:2}
+  a{color:var(--front)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<style>
+.hub{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:18px}
+.hcard{display:block;border:1.5px solid #d8dee8;border-radius:14px;padding:18px;background:#fff;text-decoration:none;transition:border-color .15s}
+.hcard:hover{border-color:#1f4f99}
+.hcard b{display:block;font-size:15.5px;color:#112442;margin-bottom:6px}
+.hcard span{font-size:12.5px;color:#5d6979;line-height:1.9}
+.hcard .tagline{display:inline-block;font-size:10.5px;font-weight:700;color:#1f4f99;background:#eef4fc;border-radius:99px;padding:2px 10px;margin-bottom:8px}
+</style>
+<body>
+<div class="wrap">
+  <p class="kicker">Motoshub · Docs</p>
+  <h1>اسناد ساخت و تحویل موتوشاب</h1>
+  <p class="lede">هر آنچه تیم‌های Front و Backend و مدیر محصول برای ساختن محصول واقعی تا سطح <a href="https://demo.shub.ir">demo.shub.ir</a> نیاز دارند — تسک‌ها، معماری و فرآیند تحویل.</p>
+  <div class="hub">
+    <a class="hcard" href="./tasks/frontend/"><span class="tagline">تیم Front</span><b>تسک‌های Frontend</b><span>۲۰ تسک با subtask، تخمین، User Story، معیار پذیرش و راهنمای پیاده‌سازی (Next.js / قرارداد api/v1)</span></a>
+    <a class="hcard" href="./tasks/backend/"><span class="tagline">تیم Backend</span><b>تسک‌های Backend</b><span>۱۹ تسک با جزئیات کامل + راهنمای پیاده‌سازی (Django/DRF، auth مشترک، تست اجباری)</span></a>
+    <a class="hcard" href="./architecture/product/"><span class="tagline">Product</span><b>معماری محصول و چرخه‌ی فروش</b><span>لایه‌های محصول، مدل فروش ماژولی/چندمستأجری، چرخه‌ی کامل مشتری از سرنخ تا پشتیبانی، محیط‌ها</span></a>
+    <a class="hcard" href="./architecture/software/"><span class="tagline">Software</span><b>معماری نرم‌افزار</b><span>نقشه‌ی شش کامپوننت و ارتباط‌ها، قراردادهای الزام‌آور، وضعیت واقعی Gateway/Django و شکاف‌ها</span></a>
+    <a class="hcard" href="./process/"><span class="tagline">Delivery</span><b>فرآیند تحویل و کیفیت</b><span>خط لوله‌ی ۹ گیتی از develop تا پذیرش Product Owner، محیط‌ها، نقش‌ها، قواعد ریلیز و تست</span></a>
+  </div>
+  <p style="font-size:11px;color:#8a94a3;margin-top:26px">docs.shub.ir · طراحی و توسعه توسط <a href="https://moto.shub.ir/">موتوشاب</a></p>
+</div>
+</body></html>
