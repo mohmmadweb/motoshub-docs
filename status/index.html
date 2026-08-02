@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Motoshub — وضعیت زنده: راستی‌آزمایی محیط‌ها و قرارداد API</title>
+<style>
+  :root{
+    --bg:#eef1f4;--panel:#ffffff;--line:#d6dce3;--line2:#e6eaef;
+    --ink:#131a24;--ink2:#3a4655;--muted:#68727f;
+    --front:#1f6f9e;--front-bg:#e8f2f9;
+    --back:#7a41ad;--back-bg:#f2ebf9;
+    --p1:#b23a52;--p2:#b47a1e;--p3:#3f7d63;
+    --done:#2c7a56;--part:#a9791f;--todo:#a8394f;
+    --est:#0f4c75;
+    --mono:"SF Mono",ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:"Vazirmatn","Segoe UI",Tahoma,system-ui,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#0c1116;--panel:#141b23;--line:#28323d;--line2:#1d252e;
+      --ink:#e9eef4;--ink2:#c2ccd6;--muted:#8b96a3;
+      --front:#5aa6d8;--front-bg:#14222e;--back:#b389df;--back-bg:#211a2e;
+      --p1:#e07387;--p2:#d9ab5a;--p3:#63c495;
+      --done:#5cc48d;--part:#d9ab5a;--todo:#e07387;--est:#6fb2e0;}
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+    line-height:1.85;padding:26px 16px}
+  .wrap{max-width:1060px;margin:0 auto}
+  .kicker{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+  h1{font-size:clamp(24px,4.4vw,33px);font-weight:800;letter-spacing:-.01em;margin:0 0 10px}
+  .lede{color:var(--ink2);font-size:15.5px;margin:0 0 8px;max-width:70ch}
+  .meta-line{font-family:var(--mono);font-size:12px;color:var(--muted);margin:0 0 22px}
+  .legend{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:16px 0;font-size:13px}
+  .legend b{font-size:13.5px}
+  .row{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:8px;align-items:center}
+  .pill{font-family:var(--mono);font-size:10.5px;padding:2px 8px;border-radius:20px;white-space:nowrap;font-weight:600}
+  .p-done{background:rgba(44,122,86,.16);color:var(--done)} .p-part{background:rgba(169,121,31,.17);color:var(--part)} .p-todo{background:rgba(168,57,79,.15);color:var(--todo)}
+  .p-p1{background:rgba(178,58,82,.14);color:var(--p1)} .p-p2{background:rgba(180,122,30,.15);color:var(--p2)} .p-p3{background:rgba(63,125,99,.15);color:var(--p3)}
+  .est{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--est);background:rgba(15,76,117,.10);padding:2px 8px;border-radius:6px;white-space:nowrap}
+  @media (prefers-color-scheme:dark){.est{background:rgba(111,178,224,.12)}}
+  .toc{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin:16px 0;font-size:13px;columns:2;column-gap:26px}
+  .toc a{display:block;color:var(--front);text-decoration:none;padding:2px 0;break-inside:avoid}
+  .toc a:hover{text-decoration:underline}
+  @media (max-width:640px){.toc{columns:1}}
+  .tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:11px;margin:12px 0}
+  table{border-collapse:collapse;width:100%;font-size:12.7px;min-width:560px}
+  th,td{padding:8px 11px;text-align:right;border-bottom:1px solid var(--line2);vertical-align:top}
+  th{background:rgba(120,130,140,.07);font-weight:700}
+  tr:last-child td{border-bottom:none}
+  td.n,th.n{white-space:nowrap;font-family:var(--mono);font-size:11.5px;text-align:center;width:1%}
+  tfoot td{font-weight:800;background:rgba(120,130,140,.05)}
+  .phase{margin:40px 0 8px}
+  .phase-h{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--line);padding-bottom:9px}
+  .phase-n{font-family:var(--mono);font-size:26px;font-weight:800;color:var(--muted);line-height:1}
+  .phase-h h2{font-size:21px;margin:0;font-weight:800}
+  .phase-goal{color:var(--muted);font-size:13.5px;margin:8px 0 0}
+  .band{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:11px;font-weight:700;padding:3px 11px;border-radius:20px;margin:18px 0 4px}
+  .band.f{background:var(--front-bg);color:var(--front)}
+  .band.b{background:var(--back-bg);color:var(--back)}
+  .task{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:15px 18px;margin:12px 0}
+  .task.f{border-inline-start:3px solid var(--front)}
+  .task.b{border-inline-start:3px solid var(--back)}
+  .task-h{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .task-id{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--muted)}
+  .task-h b{font-size:15.5px}
+  .task-h .spacer{flex:1}
+  .story{background:rgba(120,130,140,.06);border-radius:9px;padding:9px 13px;margin:11px 0;font-size:13.3px}
+  .story .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:2px}
+  .desc{font-size:13.6px;color:var(--ink2);margin:10px 0}
+  .desc code,td code,.ac code,.story code,.ears code{font-family:var(--mono);font-size:11.3px;background:rgba(120,130,140,.14);padding:1px 6px;border-radius:5px;color:var(--ink)}
+  .ears{border-inline-start:3px solid var(--muted);padding:2px 12px;margin:9px 0;font-size:13px;color:var(--ink2);font-style:italic}
+  .ac{margin:10px 0 4px;font-size:12.9px}
+  .ac .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
+  .ac ul{margin:0;padding-inline-start:18px}
+  .ac li{margin:3px 0}
+  .dep{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:9px}
+  .subhd{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:12px 0 4px}
+  .note{background:var(--panel);border:1px solid var(--line);border-inline-start:3px solid var(--p2);border-radius:10px;padding:12px 16px;margin:16px 0;font-size:13.4px}
+  .foot{margin-top:46px;padding-top:16px;border-top:1px solid var(--line);font-family:var(--mono);font-size:11.5px;color:var(--muted);text-align:center;line-height:2}
+  a{color:var(--front)}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+  <p class="kicker">Motoshub · Verified Status</p>
+  <h1>وضعیت زنده — راستی‌آزماییِ محیط‌ها و قرارداد API</h1>
+  <p class="lede">این صفحه «ادعا» نیست؛ نتیجه‌ی اندازه‌گیریِ مستقیم است. هر عدد و هر وضعیت در این صفحه با درخواستِ واقعی به سرویسِ زنده یا با شمارشِ مسیرها از روی کدِ مخزن به‌دست آمده. هدف: تیم Front و Backend بدانند <b>امروز</b> واقعاً چه چیزی در دسترس است، تا تسکی که داده‌اش وجود ندارد زودتر از موعد شروع نشود.</p>
+  <p class="meta-line">راستی‌آزمایی: ۱۴۰۵/۰۵/۱۱ (۲۰۲۶-۰۸-۰۲) · روش: HTTP probe + شمارش <code>Route*</code> attributeها · مرجع تسک‌ها: <a href="../tasks/frontend/">Front</a> · <a href="../tasks/backend/">Backend</a></p>
+
+  <div class="note" style="border-inline-start-color:var(--p1)">
+    <b>این صفحه هیچ تسکی را تغییر نمی‌دهد.</b> شماره‌ی تسک‌ها، تخمین‌ها و وضعیت‌های اعلام‌شده در صفحه‌های Front و Backend دست‌نخورده باقی مانده‌اند. این صفحه فقط «واقعیتِ محیط» را کنار آن‌ها می‌گذارد تا ترتیبِ شروعِ کارها درست انتخاب شود.
+  </div>
+
+  <section class="phase" id="envs">
+    <div class="phase-h"><span class="phase-n">۱</span><h2>محیط‌ها — چه چیزی واقعاً بالاست</h2></div>
+    <p class="phase-goal">همه‌ی آدرس‌های ذکرشده در اسناد، مستقیماً تست شدند.</p>
+    <div class="tblwrap"><table>
+      <thead><tr><th>آدرس</th><th>نقش طبق سند</th><th class="n">نتیجه</th><th>توضیح</th></tr></thead>
+      <tbody>
+        <tr><td><code>demo.shub.ir</code></td><td>مرجع تجربه و پذیرش</td><td class="n"><span class="pill p-done">۲۰۰</span></td><td>بالا — GitHub Pages، آخرین نسخه‌ی پروتوتایپ.</td></tr>
+        <tr><td><code>docs.shub.ir</code></td><td>اسناد تحویل</td><td class="n"><span class="pill p-done">۲۰۰</span></td><td>بالا — همین سایت.</td></tr>
+        <tr><td><code>motonext.shub.ir</code></td><td>API فعلی (PHP) + رابط Oxwall</td><td class="n"><span class="pill p-done">۲۰۰</span></td><td>بالا. مسیرهای <code>api/v1</code> فعال‌اند (بخش ۲ را ببینید).</td></tr>
+        <tr><td><code>motonextfront.shub.ir</code></td><td>Staging فرانت</td><td class="n"><span class="pill p-todo">DNS ندارد</span></td><td><b>رکورد DNS وجود ندارد.</b> گیتِ ۷ پایپ‌لاین («دیپلوی staging خودکار») امروز هدفی برای Front ندارد — یا رکورد ساخته شود یا آدرسِ واقعیِ staging در اسناد جایگزین شود.</td></tr>
+        <tr><td><code>motonextapi.shub.ir</code></td><td>API جدید (Django)</td><td class="n"><span class="pill p-todo">DNS ندارد</span></td><td><b>رکورد DNS وجود ندارد.</b> تا ساخته‌نشدنش، سوییچِ هیچ مسیری به Django قابلِ تست نیست (B3).</td></tr>
+        <tr><td><code>cheedafar.ir</code></td><td>دامنه‌ی قدیمیِ پروتوتایپ</td><td class="n"><span class="pill p-todo">DNS ندارد</span></td><td>بازنشسته — هر ارجاعِ باقی‌مانده باید به <code>demo.shub.ir</code> تغییر کند.</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="phase" id="surface">
+    <div class="phase-h"><span class="phase-n">۲</span><h2>سطح واقعیِ <code>api/v1</code> روی production</h2></div>
+    <p class="phase-goal">هر ۵۵ منبعِ موجود در کد، روی <code>motonext.shub.ir</code> صدا زده شد. پاسخِ ۴۰۱ یعنی «مسیر هست و محافظت‌شده است» (یعنی مستقر است)؛ ۴۰۴ یعنی «چنین مسیری روی production وجود ندارد».</p>
+
+    <div class="note" style="border-inline-start-color:var(--p1)">
+      <b>تصحیحِ یک فرضِ کلیدیِ برنامه.</b> در نسخه‌ی قبلیِ این اسناد آمده بود «PHP <code>api/v1</code> همین حالا هر ۲۹۳ عملیات را پاسخ می‌دهد». اندازه‌گیری نشان می‌دهد آن ۲۹۳ عملیات <b>در مخزن</b> وجود دارد (برنچ <code>API</code>) اما <b>روی production مستقر نیست</b>: امروز فقط <b>۱۱ منبع از ۵۵</b> پاسخ می‌دهند. این فرض مستقیماً روی ترتیبِ شروعِ تسک‌های Front اثر دارد.
+    </div>
+
+    <h3 style="margin:18px 0 8px;font-size:15px">مستقر و پاسخ‌گو (۱۱ منبع)</h3>
+    <div class="tblwrap"><table>
+      <thead><tr><th>منبع</th><th>مسیرِ تست‌شده</th><th class="n">پاسخ</th><th>تسک‌های وابسته</th></tr></thead>
+      <tbody>
+        <tr><td>auth</td><td><code>/api/v1/auth/me</code></td><td class="n">۴۰۱</td><td>F3 · B4</td></tr>
+        <tr><td>users</td><td><code>/api/v1/users</code></td><td class="n">۴۰۱</td><td>F9 · B6</td></tr>
+        <tr><td>blogs</td><td><code>/api/v1/blogs</code></td><td class="n">۴۰۱</td><td>F8 · B8</td></tr>
+        <tr><td>news</td><td><code>/api/v1/news</code></td><td class="n">۴۰۱</td><td>F11 · B9</td></tr>
+        <tr><td>groups</td><td><code>/api/v1/groups</code></td><td class="n">۴۰۱</td><td>F10 · B10</td></tr>
+        <tr><td>events</td><td><code>/api/v1/events</code></td><td class="n">۴۰۱</td><td>F12 · B11</td></tr>
+        <tr><td>photos</td><td><code>/api/v1/photos</code></td><td class="n">۴۰۱</td><td>F13 · B12</td></tr>
+        <tr><td>albums</td><td><code>/api/v1/albums</code></td><td class="n">۴۰۱</td><td>F13 · B12</td></tr>
+        <tr><td>videos</td><td><code>/api/v1/videos</code></td><td class="n">۴۰۱</td><td>F13 · B12</td></tr>
+        <tr><td>forum</td><td><code>/api/v1/forum/topics</code></td><td class="n">۴۰۱</td><td>F14 · B13</td></tr>
+        <tr><td>files</td><td><code>/api/v1/files/config</code></td><td class="n">۲۰۰</td><td>F7.3 (آپلود)</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3 style="margin:18px 0 8px;font-size:15px">در کد هست، روی production نیست (۴۴ منبع — همه ۴۰۴)</h3>
+    <div class="tblwrap"><table>
+      <thead><tr><th>حوزه</th><th>منابع</th><th>تسکِ متوقف‌شده</th></tr></thead>
+      <tbody>
+        <tr><td>فید سازمانی</td><td><code>feed</code></td><td><b>F7</b> (۶ روز، فاز ۲) · B7</td></tr>
+        <tr><td>پیام‌رسان</td><td><code>conversations</code>، <code>messages</code></td><td><b>F15</b> (۶ روز) · B14</td></tr>
+        <tr><td>اعلان و دوستان</td><td><code>notifications</code>، <code>friends</code></td><td><b>F20.1</b> · B15</td></tr>
+        <tr><td>جستجوی سراسری</td><td><code>search</code></td><td><b>F20.2</b> · B19</td></tr>
+        <tr><td>نظر/منشن/حریم‌خصوصی</td><td><code>comments</code>، <code>mentions</code>، <code>privacy</code>، <code>flags</code>، <code>contact</code></td><td>F7.5 · F9.5</td></tr>
+        <tr><td>نظرسنجی و مسابقه</td><td><code>polls</code>، <code>quizzes</code>، <code>quiz-questions</code>، <code>competitions</code>، <code>competition-submissions</code>، <code>challenges</code>، <code>challenge-*</code>، <code>solitary-challenges</code>، <code>universal-challenges</code></td><td>B18 · <b>FE بدون تسک</b> (بخش ۵)</td></tr>
+        <tr><td>تیکت</td><td><code>tickets</code>، <code>ticket-categories</code>، <code>ticket-orders</code></td><td><b>بدون تسک در هر دو تیم</b> (بخش ۵)</td></tr>
+        <tr><td>صندوق و پژوهش</td><td><code>cfps</code>، <code>grants</code>، <code>technologies</code>، <code>technology-orders</code>، <code>tech-units</code>، <code>tech-unit-sections</code>، <code>submissions</code>، <code>judgements</code></td><td>F18 · B17</td></tr>
+        <tr><td>ارزیابی</td><td><code>evaluations</code>، <code>evaluation-criteria</code>، <code>evaluation-results</code></td><td>B18</td></tr>
+        <tr><td>سازمان و نشریه</td><td><code>companies</code>، <code>employees</code>، <code>journal-*</code>، <code>landing-pages</code>، <code>landing-sections</code></td><td>خارج از دامنه‌ی فعلیِ پروتوتایپ</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="note">
+      <b>معنیِ عملیاتی برای Front.</b> تسک‌هایی که <b>امروز</b> می‌توانند به دادهٔ واقعی وصل شوند: F3 (بخشی)، F8، F9، F10، F11، F12، F13، F14. تسک‌هایی که تا استقرارِ ماژولِ متناظر باید با mock کار کنند و بعد سوییچ شوند: <b>F7، F15، F20.1، F20.2</b>. این ترتیب با «تقسیم کارِ workstream» موجود سازگار است و نیازی به جابه‌جاییِ مالکیت ندارد — فقط Front ۲ باید F7 را با لایه‌ی mockِ قابل‌تعویض بسازد.
+    </div>
+  </section>
+
+  <section class="phase" id="repo">
+    <div class="phase-h"><span class="phase-n">۳</span><h2>مخزن در برابر production — ۲۹۳ عملیات کجاست</h2></div>
+    <p class="phase-goal">شمارشِ مستقیمِ <code>RouteGet/RoutePost/RoutePatch/RouteDelete</code> روی کنترلرهای <code>Http/Controllers/API/V1</code> در هر برنچ.</p>
+    <div class="tblwrap"><table>
+      <thead><tr><th>برنچ در <code>motoshub-web</code></th><th class="n">کنترلر</th><th class="n">عملیات</th><th class="n">منبع</th><th>وضعیت</th></tr></thead>
+      <tbody>
+        <tr><td><code>API</code> (کارِ مهاجرتِ کامل)</td><td class="n">۶۲</td><td class="n">۲۹۳</td><td class="n">۵۵</td><td><b>ادغام‌نشده و مستقرنشده.</b> منبعِ عددِ ۲۹۳ در اسناد همین برنچ است.</td></tr>
+        <tr><td><code>moto-next</code></td><td class="n">۵</td><td class="n">۲۴</td><td class="n">۵</td><td>مبنای استقرارِ production.</td></tr>
+        <tr><td><code>main</code></td><td class="n">۰</td><td class="n">۰</td><td class="n">۰</td><td>بدون لایه‌ی <code>api/v1</code>.</td></tr>
+        <tr><td>سرویسِ زنده <code>motonext.shub.ir</code></td><td class="n">—</td><td class="n">—</td><td class="n">۱۱</td><td>بین دو برنچِ بالا — یعنی از زمانِ ثبتِ این اعداد، استقرارِ تازه‌تری انجام شده است.</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note">
+      <b>تصمیمی که PO باید بگیرد.</b> ۲۹۳ عملیاتِ برنچ <code>API</code> کارِ انجام‌شده‌ای است که پشتِ یک MR مانده. تا وقتی ادغام و مستقر نشود، تیم Backend همان قابلیت‌ها را در Django از صفر می‌سازد و تیم Front منتظرِ هر دو می‌ماند. <b>ادغامِ این برنچ کوتاه‌ترین مسیر به «فرانت روی دادهٔ واقعی» است.</b>
+      <div style="margin-top:8px">ارقامِ برنچ‌ها از آخرین کپیِ محلیِ مخزن (۱۴۰۵/۰۴/۳۰) است؛ اتصالِ <code>git</code> به gl.iiscenter.ir از سرورِ تحلیل برقرار نشد، بنابراین ممکن است برنچ‌ها جلوتر رفته باشند. ارقامِ بخش‌های ۱ و ۲ همگی امروز و زنده اندازه‌گیری شده‌اند.</div>
+    </div>
+  </section>
+
+  <section class="phase" id="contract">
+    <div class="phase-h"><span class="phase-n">۴</span><h2>انحراف از «قراردادهای الزام‌آور»</h2></div>
+    <p class="phase-goal">سه قراردادِ الزام‌آورِ اسناد با پاسخِ واقعیِ سرویس مقایسه شد.</p>
+    <div class="tblwrap"><table>
+      <thead><tr><th>قرارداد</th><th>آنچه سند می‌گوید</th><th>آنچه سرویس برمی‌گرداند</th><th>اثر</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>بدنه‌ی یکسانِ خطا</td>
+          <td>خطاها با <code>401/403/404/422</code> و بدنه‌ی یکسان</td>
+          <td>۴۰۱ → <code>{"error":"Authorization header token is missing."}</code><br>۴۰۴ → <code>{"message":"no Route matched…","request_id":"…"}</code></td>
+          <td><b>دو شکلِ متفاوت.</b> هیچ‌کدام هم شکلِ استانداردِ اعلام‌شده نیست. تا یکسان‌سازی، هندلرِ خطای Front باید هر دو را بپذیرد. → B1، و یک نکته در F5.</td>
+        </tr>
+        <tr>
+          <td>مرجعِ فیلدها = Swagger</td>
+          <td>لینکِ Swagger در راهنمای هر دو تیم</td>
+          <td><code>/api/v1/docs/index</code> و <code>/api/v1/docs/json</code> → <b>۴۰۴</b></td>
+          <td>تیم امروز مرجعِ رسمیِ فیلدها ندارد. بازگرداندنِ مسیرِ Swagger روی production یک کارِ کوچک ولی مسدودکننده است.</td>
+        </tr>
+        <tr>
+          <td>auth واحد و کاملِ نشست</td>
+          <td>F3: <code>POST /auth/refresh</code>، logout با ابطالِ سمتِ سرور، F3.6 «endpointِ تغییر رمز هست»</td>
+          <td>در کلِ <code>api/v1</code> فقط <code>auth/login</code>، <code>auth/me</code>، <code>auth/permissions</code> وجود دارد</td>
+          <td><b>refresh، logout، register و change-password در PHP وجود ندارند.</b> F3 (فاز ۱، P1، پیش‌نیازِ همه) به B4 گره خورده است و بدونِ آن قابلِ اتمام نیست.</td>
+        </tr>
+        <tr>
+          <td>نامِ مسیرِ فید</td>
+          <td>F7/B7: <code>GET /newsfeed</code></td>
+          <td>مسیرِ واقعی در قرارداد: <code>GET/POST /api/v1/feed</code> (+ <code>/feed/{id}/like</code>، <code>/feed/{id}/forward</code>، <code>/feed/{id}/privacy</code>)</td>
+          <td>در صفحه‌های تسک اصلاح شد؛ <code>/newsfeed</code> فقط نامِ پلاگینِ PHP است، نه مسیرِ API.</td>
+        </tr>
+      </tbody>
+    </table></div>
+    <div class="note">
+      <b>ریسکِ امنیتیِ قبلی — بسته شد.</b> توکن‌های <code>oauth2</code> که در URLِ ریموتِ چند مخزن ذخیره شده بودند دیگر معتبر نیستند (چرخانده شده‌اند). نکته‌ی باقی‌مانده: ریموتِ محلیِ توسعه‌دهنده‌ها هنوز همان توکنِ مرده را دارد و <code>git fetch</code> با آن شکست می‌خورد — هر کس یک‌بار باید <code>git remote set-url</code> بزند.
+    </div>
+  </section>
+
+  <section class="phase" id="gaps">
+    <div class="phase-h"><span class="phase-n">۵</span><h2>دامنه‌ی پوشش‌داده‌نشده — صفحه‌هایی از پروتوتایپ که هیچ تسکی ندارند</h2></div>
+    <p class="phase-goal">مرجعِ پذیرش، <code>demo.shub.ir</code> است. همه‌ی صفحه‌های پروتوتایپ با فهرستِ F1–F20 و B1–B19 تطبیق داده شد؛ موارد زیر در هیچ تسکی نیامده‌اند.</p>
+    <div class="tblwrap"><table>
+      <thead><tr><th>صفحه در پروتوتایپ</th><th>مسیر</th><th class="n">حجم</th><th>وضعیت در برنامه</th><th class="n">تخمینِ افزوده</th></tr></thead>
+      <tbody>
+        <tr><td>نمای عمومی (لندینگ + ویترینِ عمومی + جزئیاتِ آیتمِ عمومی)</td><td><code>/</code>، <code>/public/*</code></td><td class="n">~۱۴۷۰ خط</td><td><b>هیچ تسکی ندارد.</b> تنها سطحِ بدونِ ورودِ محصول و ایستگاهِ پایانیِ سناریوی فروش.</td><td class="n">F21 — ۵ روز</td></tr>
+        <tr><td>دوستان و دنبال‌کردن</td><td><code>/dashboard/friends</code></td><td class="n">۱۸۷ خط</td><td>Backend دارد (B15) — Front فقط یک «تبِ دوستان» داخلِ F9.2 دارد، نه صفحه‌ی مستقل.</td><td class="n">F22 — ۲ روز</td></tr>
+        <tr><td>نظرسنجی و آزمون · مسابقات و چالش‌ها</td><td><code>/dashboard/polls</code>، <code>/dashboard/competitions</code></td><td class="n">۴۲۲ خط</td><td>Backend دارد (B18) — در سرفصلِ فاز ۵ نام برده شده ولی <b>هیچ subtaskِ Frontی ندارد</b>.</td><td class="n">F23 — ۴ روز</td></tr>
+        <tr><td>تیکت پشتیبانی</td><td><code>/dashboard/tickets</code></td><td class="n">۲۳۴ خط</td><td><b>در هیچ‌کدام از دو تیم تسک ندارد</b>، با این‌که ۱۲ عملیاتِ آماده در PHP دارد.</td><td class="n">F24 + B20 — ۲ + ۲ روز</td></tr>
+        <tr><td>جایزه نوآوری و فناوری</td><td><code>/dashboard/award</code></td><td class="n">۹۳ خط</td><td>پس از نگارشِ تسک‌ها به صفحه‌ی مستقل تبدیل شد؛ در برنامه نیامده.</td><td class="n">داخل F18.5</td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="4">جمعِ دامنه‌ی کشف‌شده — <b>خارج از تخمین‌های فعلی</b></td><td class="n">~۱۵ روز</td></tr></tfoot>
+    </table></div>
+    <div class="note">
+      <b>چرا این‌ها به تسک‌های موجود اضافه نشدند.</b> تیم روی F1–F20 و B1–B19 در حالِ اجراست و تخمین‌ها مبنای اسپرینت‌اند. این دامنه به‌صورت شماره‌های تازه (F21–F24، B20) و با جمعِ جدا آورده شده تا هیچ تخمینی جابه‌جا نشود؛ تصمیم درباره‌ی زمان‌بندی‌شان با PO است — یا فاز ۶، یا پس از تحویلِ پروتوتایپِ کامل.
+    </div>
+  </section>
+
+  <section class="phase" id="actions">
+    <div class="phase-h"><span class="phase-n">۶</span><h2>کوتاه‌ترین مسیرِ رفعِ انسداد</h2></div>
+    <p class="phase-goal">به ترتیبِ اثر بر جریانِ کارِ تیم.</p>
+    <div class="tblwrap"><table>
+      <thead><tr><th class="n">#</th><th>اقدام</th><th>مالک</th><th>باز می‌کند</th></tr></thead>
+      <tbody>
+        <tr><td class="n">۱</td><td>ادغام و استقرارِ برنچ <code>API</code> (۲۹۳ عملیات) روی production</td><td>Backend لید + DevOps</td><td>F7، F15، F20.1، F20.2 و کلِ فاز ۵ را از mock درمی‌آورد</td></tr>
+        <tr><td class="n">۲</td><td>افزودنِ <code>auth/refresh</code>، <code>auth/logout</code>، <code>auth/change-password</code> (B4)</td><td>Backend ۱</td><td>F3 — پیش‌نیازِ همه‌ی صفحه‌های محافظت‌شده</td></tr>
+        <tr><td class="n">۳</td><td>بازگرداندنِ Swagger روی <code>/api/v1/docs/index</code></td><td>DevOps</td><td>مرجعِ فیلدها برای هر دو تیم؛ تستِ قرارداد در CI</td></tr>
+        <tr><td class="n">۴</td><td>ساختِ رکوردِ DNS برای <code>motonextfront</code> و <code>motonextapi</code></td><td>DevOps</td><td>گیتِ ۷ و ۸ پایپ‌لاین (staging و پذیرشِ PO)</td></tr>
+        <tr><td class="n">۵</td><td>یکسان‌سازیِ بدنه‌ی خطا در PHP (B1) و انتشارِ نمونه‌ی رسمی</td><td>Backend لید</td><td>هندلرِ خطای Front (F5) و تستِ قرارداد</td></tr>
+        <tr><td class="n">۶</td><td>تصمیمِ PO درباره‌ی دامنه‌ی بخش ۵ (F21–F24، B20)</td><td>PO</td><td>تعریفِ روشنِ «پروتوتایپِ کامل»</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <div class="foot">
+    docs.shub.ir · راستی‌آزمایی ۱۴۰۵/۰۵/۱۱ · <a href="../">بازگشت به فهرست اسناد</a>
+  </div>
+</div>
+</body></html>

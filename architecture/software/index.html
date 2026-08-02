@@ -82,8 +82,6 @@
   a{color:var(--front)}
 </style>
 </head>
-<body>
-<div class="wrap">
 <style>
 .diagram{background:var(--card,#fff);border:1px solid #d8dee8;border-radius:12px;padding:18px;margin:14px 0;overflow-x:auto}
 .drow{display:flex;gap:10px;align-items:stretch;justify-content:center;flex-wrap:wrap;margin:6px 0}
@@ -106,7 +104,7 @@
 <div class="wrap">
   <p class="kicker">Motoshub · Software Architecture</p>
   <h1>معماری نرم‌افزار — کامپوننت‌ها و ارتباط بین آن‌ها</h1>
-  <p class="lede">شش ریپو، یک قرارداد. فرانت فقط با قراردادِ <code>/api/v1</code> حرف می‌زند؛ Gateway تعیین می‌کند پاسخ از PHP بیاید یا Django (مهاجرت strangler-fig، بدون big-bang).</p>
+  <p class="lede"><a href="../../status/">وضعیت زنده و راستی‌آزمایی‌شده‌ی همین نقشه (۱۴۰۵/۰۵/۱۱)</a> · شش ریپو، یک قرارداد. فرانت فقط با قراردادِ <code>/api/v1</code> حرف می‌زند؛ Gateway تعیین می‌کند پاسخ از PHP بیاید یا Django (مهاجرت strangler-fig، بدون big-bang).</p>
 
   <section class="phase">
     <div class="phase-h"><span class="phase-n">◈</span><h2>نقشه‌ی کامپوننت‌ها</h2></div>
@@ -156,7 +154,12 @@
     <div class="note"><b>Gateway هنوز وارد مدار نیست.</b> فرانت مستقیم به PHP وصل است؛ Kong فقط ۴ مسیر دارد (auth/blogs/news→PHP و projects→Django)، مسیر پیش‌فرض/catch-all به PHP ندارد، پورتی روی هاست publish نمی‌کند، TLS واقعی و پلاگین‌های CORS/rate-limit/observability ندارد و کانفیگ در ایمیج پخته می‌شود (تغییر مسیر = rebuild). اولین قدم عملی: catch-all→PHP + انتشار پورت + TLS + اتصال فرانت به Gateway.</div>
     <div class="note"><b>Django در حد اسکلت است.</b> روی main فقط /health و /me (پل توکن legacy)؛ کار JWT/User روی برنچ issue-9 مانده؛ production.py خالی و Dockerfile کپی‌شده از پروژه‌ی دیگر است. تا پایداری این‌ها، هیچ مسیری نباید به Django سوییچ شود.</div>
     <div class="note"><b>Realtime هنوز طراحی اجرایی ندارد.</b> پیام‌رسان محصول به WebSocket/SSE + Redis نیاز دارد (تسک B14.4)؛ جای آن در این نقشه رزرو شده است.</div>
-    <div class="note danger-note"><b>امنیتی:</b> ریموت گیتِ چند ریپو حاوی توکن oauth2 در URL است — چرخاندن توکن‌ها فوری است.</div>
+    <div class="note"><b>سطحِ مستقرِ <code>api/v1</code> با آنچه در کد هست فاصله دارد.</b> برنچ <code>API</code> شاملِ ۲۹۳ عملیات روی ۵۵ منبع (۶۲ کنترلر) است، اما روی <code>motonext.shub.ir</code> فقط <b>۱۱ منبع</b> پاسخ می‌دهند: <code>auth · users · blogs · news · groups · events · photos · albums · videos · forum · files</code>. ماژول‌هایی مثل <code>feed</code>، <code>conversations</code>، <code>notifications</code>، <code>search</code>، <code>friends</code>، <code>polls</code> و <code>tickets</code> در کد آماده‌اند ولی ۴۰۴ می‌دهند. کوتاه‌ترین مسیرِ رفعِ انسداد = ادغام و استقرارِ همین برنچ. (اندازه‌گیریِ ۱۴۰۵/۰۵/۱۱ — <a href="../../status/#surface">جدولِ کامل</a>)</div>
+    <div class="note"><b>«بدنه‌ی یکسانِ خطا» هنوز برقرار نیست.</b> سرویسِ زنده دو شکلِ متفاوت برمی‌گرداند: ۴۰۱ → <code>{"error":"…"}</code> و ۴۰۴ → <code>{"message":"…","request_id":"…"}</code>. تا یکسان‌سازی (B1)، هندلرِ خطای فرانت باید هر دو را بپذیرد.</div>
+    <div class="note"><b>مرجعِ رسمیِ فیلدها در دسترس نیست.</b> <code>/api/v1/docs/index</code> و <code>/api/v1/docs/json</code> روی production پاسخِ ۴۰۴ می‌دهند؛ تا بازگرداندنِ Swagger، تستِ قرارداد در CI (گیتِ ۵ پایپ‌لاین) مرجعی برای اتکا ندارد.</div>
+    <div class="note"><b>دو محیطِ اعلام‌شده در DNS وجود ندارند.</b> <code>motonextfront.shub.ir</code> (staging فرانت) و <code>motonextapi.shub.ir</code> (Django) resolve نمی‌شوند؛ بنابراین گیتِ ۷ و ۸ پایپ‌لاین امروز مقصدی ندارند.</div>
+    <div class="note"><b>احرازِ هویت ناقص است.</b> کلِ <code>api/v1</code> فقط <code>auth/login</code>، <code>auth/me</code> و <code>auth/permissions</code> دارد؛ <code>refresh</code>، <code>logout</code>، <code>register</code> و <code>change-password</code> وجود ندارند. چون F3 به هر چهار وابسته است، B4 روی مسیرِ بحرانیِ کلِ برنامه قرار می‌گیرد.</div>
+    <div class="note"><b>امنیتی — بسته شد.</b> توکن‌های <code>oauth2</code>ی که در URLِ ریموتِ چند مخزن ذخیره بودند چرخانده شده‌اند و دیگر معتبر نیستند. باقی‌مانده: ریموتِ محلیِ توسعه‌دهنده‌ها هنوز توکنِ مرده دارد و <code>git fetch</code> با آن شکست می‌خورد — یک‌بار <code>git remote set-url</code> لازم است.</div>
   </section>
 </div>
 </body></html>
