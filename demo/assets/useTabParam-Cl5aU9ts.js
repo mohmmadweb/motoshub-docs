@@ -1,1 +1,0 @@
-import{Rt as e}from"./index-CGWs0SCy.js";function t(t,n){let[r,i]=e(),a=r.get(`tab`);return[a&&n.includes(a)?a:t,e=>{let n=new URLSearchParams(r);e===t?n.delete(`tab`):n.set(`tab`,e),i(n,{replace:!0})}]}export{t};
