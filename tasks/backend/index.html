@@ -86,7 +86,7 @@
   <p class="kicker">Motoshub · Delivery Plan · Backend</p>
   <h1>تسک‌های تیم Backend — با جزئیات پیاده‌سازی</h1>
   <p class="lede">همه‌ی تسک‌های بک‌اند با subtask، تخمین، User Story و معیار پذیرش. مرجع رفتار: <a href="https://demo.shub.ir">demo.shub.ir</a> · خط لوله‌ی الزامی تحویل: <a href="../../process/">فرآیند تحویل و کیفیت</a> · <a href="../frontend/">تسک‌های Front</a></p>
-  <div class="toc"><a href="#guide">راهنمای پیاده‌سازی</a><a href="#summary">زمان‌بندی</a><a href="#arch">تصمیم‌های الزام‌آور</a><a href="#p0">فاز ۰</a><a href="#p1">فاز ۱</a><a href="#p2">فاز ۲</a><a href="#p3">فاز ۳</a><a href="#p4">فاز ۴</a><a href="#p5">فاز ۵</a><a href="#p6">فاز ۶</a><a href="#p7">دامنه‌ی کشف‌شده</a><a href="#p8">هم‌ترازی با دموی نهایی</a><a href="#p9">پیام‌رسان کامل</a><a href="../../spec/scope/">قرارداد دامنه‌بندی</a><a href="../../spec/chat/">مشخصات پیام‌رسان</a><a href="../../status/">وضعیت زنده</a></div>
+  <div class="toc"><a href="#guide">راهنمای پیاده‌سازی</a><a href="#summary">زمان‌بندی</a><a href="#arch">تصمیم‌های الزام‌آور</a><a href="#p0">فاز ۰</a><a href="#p1">فاز ۱</a><a href="#p2">فاز ۲</a><a href="#p3">فاز ۳</a><a href="#p4">فاز ۴</a><a href="#p5">فاز ۵</a><a href="#p6">فاز ۶</a><a href="#p7">دامنه‌ی کشف‌شده</a><a href="#p8">هم‌ترازی با دموی نهایی</a><a href="#p9">پیام‌رسان کامل</a><a href="#totals">جمع‌بندی تخمین‌ها</a><a href="../../spec/scope/">قرارداد دامنه‌بندی</a><a href="../../spec/chat/">مشخصات پیام‌رسان</a><a href="../../status/">وضعیت زنده</a></div>
 
   <section class="phase" id="guide">
     <div class="phase-h"><span class="phase-n">¶</span><h2>راهنمای پیاده‌سازی تیم Backend</h2></div>
@@ -692,8 +692,19 @@
     </div>
 
     <div class="task b">
-      <div class="task-h"><span class="task-id">B29</span><b>زیرساخت تماس/جلسه‌ی زنده</b><span class="spacer"></span><span class="pill p-p3">P3</span><span class="pill p-todo">اختیاری — منتظر تصمیم PO</span><span class="est">—</span></div>
-      <p class="desc">استقرار و ادغام SDK انتخابی (Jitsi/LiveKit) پشت SSO و دامنه‌بندی؛ توکن اتاق، ضبط، سیاست نگه‌داری. تخمین پس از انتخاب SDK.</p>
+      <div class="task-h"><span class="task-id">B29</span><b>زیرساخت تماس/جلسه‌ی زنده</b><span class="spacer"></span><span class="pill p-p3">P3</span><span class="pill p-todo">اختیاری — منتظر تصمیم PO</span><span class="est">≈۷ روز*</span></div>
+      <p class="desc">استقرار و ادغام SDK انتخابی (Jitsi/LiveKit) پشت SSO و دامنه‌بندی؛ توکن اتاق، ضبط، سیاست نگه‌داری.</p>
+      <div class="subhd">تخمین مشروط (*به‌فرض SDK آماده)</div>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">B29.1</td><td>استقرار self-host + TLS + TURN/STUN پشت شبکه‌ی سازمان</td><td class="n">۱۲ ساعت</td></tr>
+          <tr><td class="n">B29.2</td><td>اتصال هویت: توکن اتاق امضاشده از نشست ما (JWT) — بدون لاگین دوم</td><td class="n">۱۰ ساعت</td></tr>
+          <tr><td class="n">B29.3</td><td>گارد دامنه: اتاقِ کانال فقط برای اعضای همان کانال/دامنه</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">B29.4</td><td>ضبط جلسه + ذخیره در استوریج + سیاست نگه‌داری/دسترسی</td><td class="n">۱۲ ساعت</td></tr>
+          <tr><td class="n">B29.5</td><td>رویدادهای چت (شروع/پایان/مدت) + تست بار ۲۰ شرکت‌کننده</td><td class="n">۱۰ ساعت</td></tr>
+        </tbody>
+      </table></div>
       <div class="dep">وابستگی: تصمیم PO. مصرف‌کننده: F33. خارج از جمع الحاقیه.</div>
     </div>
 
@@ -701,6 +712,40 @@
       <b>جمعِ الحاقیه‌ی پیام‌رسان (Backend): ~۲۳ روز (B25–B28)</b> — جدا از همه‌ی جمع‌های قبلی. مسیر بحرانی: B25 ← B26؛ B27/B28 موازی پس از B25.
     </div>
   </section>
+
+<section class="phase" id="totals">
+    <div class="phase-h"><span class="phase-n">Σ+</span><h2>جمع‌بندی تخمین‌ها — همه‌ی بلوک‌ها (الحاقیه ۱۴۰۵/۰۵/۱۴)</h2></div>
+    <p class="phase-goal">جمعِ روزنفرِ تک‌تک تسک‌ها، به تفکیک بلوک. اعداد <b>روز-نفر</b> (person-day) اند و مستقل از تعداد تیم؛ تبدیل به تقویم در انتهای جدول.</p>
+    <div class="tblwrap"><table>
+      <thead><tr><th>بلوک</th><th>تسک‌ها</th><th class="n">Front (روزنفر)</th><th class="n">Backend (روزنفر)</th><th>وضعیت</th></tr></thead>
+      <tbody>
+        <tr><td>هسته‌ی قرارداد (فاز ۰–۶)</td><td class="n">F1–F20 · B1–B19</td><td class="n">۹۰</td><td class="n">۸۶</td><td>در حال اجرا</td></tr>
+        <tr><td>دامنه‌ی کشف‌شده</td><td class="n">F21–F24 · B20</td><td class="n">۱۳</td><td class="n">۲</td><td>منتظر تصمیم PO</td></tr>
+        <tr><td>هم‌ترازی دامنه‌بندی</td><td class="n">F25–F28 · B21–B24</td><td class="n">۱۲</td><td class="n">۱۷</td><td>الحاقیه — الزام‌آور</td></tr>
+        <tr><td>پیام‌رسان کامل (تلگرام)</td><td class="n">F29–F32 · B25–B28</td><td class="n">۲۸</td><td class="n">۲۳</td><td>الحاقیه — خواسته‌ی محصول</td></tr>
+      </tbody>
+      <tfoot>
+        <tr><td colspan="2"><b>مجموع الزامی (بدون تماس)</b></td><td class="n"><b>۱۴۳</b></td><td class="n"><b>۱۲۸</b></td><td><b>۲۷۱ روزنفر</b></td></tr>
+        <tr><td colspan="2">تماس صوتی/تصویری (اختیاری — F33/B29)</td><td class="n">+۶</td><td class="n">+۷</td><td>پس از تصمیم PO</td></tr>
+        <tr><td colspan="2"><b>مجموع با تماس</b></td><td class="n"><b>۱۴۹</b></td><td class="n"><b>۱۳۵</b></td><td><b>۲۸۴ روزنفر</b></td></tr>
+      </tfoot>
+    </table></div>
+    <div class="note">
+      <b>تبدیل به تقویم (ترکیب فعلی: ۴F + ۳B + QA + DevOps، اجرای موازی دو رشته).</b>
+      با بهره‌وریِ واقع‌بینانه‌ی ~۸۰٪ (جلسه/ریویو/رگرسیون):
+      <div class="tblwrap" style="margin-top:8px"><table>
+        <thead><tr><th>سناریو</th><th class="n">Front</th><th class="n">Backend</th><th class="n">پروژه (موازی)</th></tr></thead>
+        <tbody>
+          <tr><td>فقط هسته (فاز ۰–۶) — خط پایه‌ی قبلی</td><td class="n">~۹ هفته</td><td class="n">~۹ هفته</td><td class="n">~۹–۱۱ هفته</td></tr>
+          <tr><td><b>الزامی کامل</b> (هسته + دامنه‌بندی + پیام‌رسان)</td><td class="n">~۹ هفته</td><td class="n">~۱۱ هفته</td><td class="n"><b>~۱۱–۱۳ هفته</b></td></tr>
+          <tr><td>+ دامنه‌ی کشف‌شده (F21–F24/B20)</td><td class="n">+~۱ هفته</td><td class="n">—</td><td class="n">~۱۲–۱۴ هفته</td></tr>
+          <tr><td>+ تماس (F33/B29)</td><td class="n">+~۰.۵ هفته</td><td class="n">+~۰.۵ هفته</td><td class="n">~۱۳–۱۵ هفته</td></tr>
+        </tbody>
+      </table></div>
+      <b>گلوگاه = Backend</b> (۱۲۸ روزنفر ÷ ۳ نفر). تسک‌های الزام‌آورِ مسیر بحرانی: B21→B22 (دامنه) و B25→B26 (بلادرنگ چت). اعداد تخمینی‌اند و در Planning هر Sprint دوباره کالیبره می‌شوند.
+    </div>
+  </section>
+
 
 
 
