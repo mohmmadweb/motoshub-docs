@@ -88,7 +88,7 @@
   <p class="kicker">Motoshub · Delivery Plan · Front</p>
   <h1>تسک‌های تیم Front — با جزئیات پیاده‌سازی</h1>
   <p class="lede">همه‌ی تسک‌های فرانت با subtask، تخمین، User Story و معیار پذیرش. مرجع رفتار: <a href="https://demo.shub.ir">demo.shub.ir</a> · خط لوله‌ی الزامی تحویل: <a href="../../process/">فرآیند تحویل و کیفیت</a> · <a href="../backend/">تسک‌های Backend</a></p>
-  <div class="toc"><a href="#guide">راهنمای پیاده‌سازی</a><a href="#summary">زمان‌بندی</a><a href="#arch">تصمیم‌های الزام‌آور</a><a href="#p0">فاز ۰</a><a href="#p1">فاز ۱</a><a href="#p2">فاز ۲</a><a href="#p3">فاز ۳</a><a href="#p4">فاز ۴</a><a href="#p5">فاز ۵</a><a href="#p6">فاز ۶</a><a href="#p7">دامنه‌ی کشف‌شده</a><a href="#p8">هم‌ترازی با دموی نهایی</a><a href="#p9">پیام‌رسان کامل</a><a href="#totals">جمع‌بندی تخمین‌ها</a><a href="../../spec/scope/">قرارداد دامنه‌بندی</a><a href="../../spec/chat/">مشخصات پیام‌رسان</a><a href="../../status/">وضعیت زنده</a></div>
+  <div class="toc"><a href="#guide">راهنمای پیاده‌سازی</a><a href="#summary">زمان‌بندی</a><a href="#arch">تصمیم‌های الزام‌آور</a><a href="#p0">فاز ۰</a><a href="#p1">فاز ۱</a><a href="#p2">فاز ۲</a><a href="#p3">فاز ۳</a><a href="#p4">فاز ۴</a><a href="#p5">فاز ۵</a><a href="#p6">فاز ۶</a><a href="#p7">دامنه‌ی کشف‌شده</a><a href="#p8">هم‌ترازی با دموی نهایی</a><a href="#p9">پیام‌رسان کامل</a><a href="#totals">جمع‌بندی تخمین‌ها</a><a href="#scope-ref">قرارداد دامنه‌بندی</a><a href="#chat-ref">مشخصات پیام‌رسان</a><a href="../../status/">وضعیت زنده</a></div>
 
   <section class="phase" id="guide">
     <div class="phase-h"><span class="phase-n">¶</span><h2>راهنمای پیاده‌سازی تیم Front</h2></div>
@@ -171,7 +171,7 @@
       <b>۳) قراردادِ پاسخ ثابت است.</b> فهرست‌ها همیشه پاکتِ <code>{data, links, meta}</code> با <code>meta.current_page/per_page/total</code>؛ خطاها با کدهای <code>401/403/404/422</code> و بدنه‌ی یکسان. مرجعِ فیلدها: Swagger روی <code>motonext.shub.ir/api/v1/docs/index</code> — که در راستی‌آزماییِ ۱۴۰۵/۰۵/۱۱ پاسخِ ۴۰۴ داد و باید بازگردانده شود (<a href="../../status/#contract">جزئیات</a>). تا آن زمان مرجعِ فیلدها = کنترلرها و <code>Resource</code>های <code>ow_plugins/*/src/Http</code> در برنچ <code>API</code>..
     </div>
       <div class="note" style="border-inline-start-color:var(--p1)">
-      <b>۴) دامنه‌بندی الزام‌آور است (الحاقیه ۱۴۰۵/۰۵/۱۴).</b> هر موجودیت محتوایی سه فیلد <code>scope/holdingId/companyId</code> دارد؛ دامنه‌ی دید از عضویتِ کاربر محاسبه می‌شود نه از انتخاب او؛ و فیلتر/اعتبارسنجی باید <b>سمت سرور</b> باشد. مشخصات کامل و سناریوهای پذیرش: <a href="../../spec/scope/">قرارداد دامنه‌بندی و دسترسی</a>.
+      <b>۴) دامنه‌بندی الزام‌آور است (الحاقیه ۱۴۰۵/۰۵/۱۴).</b> هر موجودیت محتوایی سه فیلد <code>scope/holdingId/companyId</code> دارد؛ دامنه‌ی دید از عضویتِ کاربر محاسبه می‌شود نه از انتخاب او؛ و فیلتر/اعتبارسنجی باید <b>سمت سرور</b> باشد. مشخصات کامل و سناریوهای پذیرش: <a href="#scope-ref">قرارداد دامنه‌بندی و دسترسی</a>.
     </div>
   </section>
 <section class="phase" id="p0">
@@ -260,7 +260,7 @@
         <li>عبور از خط لولهٔ تحویل: تست سه‌لایه + CI سبز + پذیرش PO روی staging (لایت/دارک، دسکتاپ و ۳۷۵px) — <a href="../../process/">فرآیند</a>؛ بدون TODO/console.log و مستندسازی به‌روز.</li>
       </ul></div>
       <div class="dep">وابستگی: F1؛ داده: B4 (تا آماده‌شدن به PHP <code>/auth/*</code> وصل شود).</div>
-      <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): در نسخه‌ی نهایی، پاسخ <code>auth/me</code> عضویت و تخصیص نقش را هم می‌آورد و نشستِ دامنه از همان ساخته می‌شود ← <a href="#p8">F25</a> و <a href="../../spec/scope/">قرارداد دامنه‌بندی</a>.</div>
+      <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): در نسخه‌ی نهایی، پاسخ <code>auth/me</code> عضویت و تخصیص نقش را هم می‌آورد و نشستِ دامنه از همان ساخته می‌شود ← <a href="#p8">F25</a> و <a href="#scope-ref">قرارداد دامنه‌بندی</a>.</div>
     </div>
 
     <div class="task f">
@@ -548,7 +548,7 @@
       </ul></div>
       <div class="dep">وابستگی: F5. داده: B14.</div>
       <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): کانال‌ها در نسخه‌ی نهایی موجودیتِ دامنه‌دارند و فهرست با نشست فیلتر می‌شود (DM بدون تغییر) ← <a href="#p8">F25.3</a>.</div>
-      <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): خواسته‌ی نهایی، هم‌ترازی کامل با تلگرام است — ادامه‌ی این تسک در چهار تسک <a href="#p9">F29–F32</a> و مرجع کاملش <a href="../../spec/chat/">مشخصات پیام‌رسان</a> است.</div>
+      <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): خواسته‌ی نهایی، هم‌ترازی کامل با تلگرام است — ادامه‌ی این تسک در چهار تسک <a href="#p9">F29–F32</a> و مرجع کاملش <a href="#chat-ref">مشخصات پیام‌رسان</a> است.</div>
     </div>
 
     <div class="task f">
@@ -774,7 +774,7 @@
       از نگارش قبلی این سند، مرجعِ پذیرش (<a href="https://demo.shub.ir">demo.shub.ir</a>) جلو رفته است: دامنه‌بندی
       «سیستم ← هلدینگ ← شرکت»، ناوبری نقش‌محور، ناظم گروه، فیلدهای محتوایی جدید و پایه‌ی دسترس‌پذیری WCAG.
       <b>هیچ تسک قبلی تغییر نکرده</b> — همه‌ی این دلتاها تسک‌های تازه‌اند تا کارهای در جریان مختل نشود؛ مرجع فنی
-      کامل: <a href="../../spec/scope/">قرارداد الزام‌آور دامنه‌بندی</a>.
+      کامل: <a href="#scope-ref">قرارداد الزام‌آور دامنه‌بندی</a>.
     </p>
 
     <div class="band f">◆ تیم Front</div>
@@ -875,7 +875,7 @@
     <p class="phase-goal">
       خواسته‌ی نهایی محصول: پیام‌رسان باید تمام قابلیت‌های تلگرام را (به‌جز موارد حذف عمدی) به‌علاوه‌ی قابلیت‌های
       سازمانی داشته باشد. فهرست کامل قابلیت‌ها، جزئیات هر کدام و وضعیتشان در دمو:
-      <a href="../../spec/chat/">مشخصات کامل پیام‌رسان</a>. <b>F15 دست‌نخورده است</b> — این چهار تسک ادامه‌ی آن‌اند
+      <a href="#chat-ref">مشخصات کامل پیام‌رسان</a>. <b>F15 دست‌نخورده است</b> — این چهار تسک ادامه‌ی آن‌اند
       و پس از تحویل F15 شروع می‌شوند.
     </p>
 
@@ -1027,6 +1027,240 @@
       <b>گلوگاه = Backend</b> (۱۲۸ روزنفر ÷ ۳ نفر). تسک‌های الزام‌آورِ مسیر بحرانی: B21→B22 (دامنه) و B25→B26 (بلادرنگ چت). اعداد تخمینی‌اند و در Planning هر Sprint دوباره کالیبره می‌شوند.
     </div>
   </section>
+
+<section class="phase" id="scope-ref">
+    <div class="phase-h"><span class="phase-n">§</span><h2>مرجع الزام‌آور — قرارداد دامنه‌بندی و دسترسی (سیستم ← هلدینگ ← شرکت)</h2></div>
+    <p class="phase-goal">مشخصات دقیقِ مدل چندسطحی، همان‌طور که در نسخه‌ی نهایی <a href="https://demo.shub.ir">demo.shub.ir</a> پیاده و راستی‌آزمایی شده. مبنای الزام‌آورِ تسک‌های <a href="#p8">F25–F28 / B21–B24</a>. مرجع کد: <code>src/data/tenancy.ts</code> و <code>src/context/TenancyContext.tsx</code> در مخزن پروتوتایپ.</p>
+<div class="note" style="border-inline-start-color:var(--p1)">
+    <b>مهم‌ترین قاعده: فیلتر باید سمت سرور باشد.</b> در پروتوتایپ فیلتر در فرانت انجام می‌شود چون داده mock است؛ در محصول واقعی اگر فیلتر فقط در فرانت باشد یعنی داده‌ی شرکت‌های دیگر واقعاً به مرورگر کاربر رسیده و فقط نمایش داده نشده — این نشتی داده است. سرور موظف است بر اساس نشستِ برآمده از توکن، هم «خواندن» را فیلتر و هم «نوشتن» را اعتبارسنجی کند.
+  </div>
+
+  <section class="phase">
+    <div class="phase-h"><span class="phase-n">۱</span><h2>موجودیت‌ها</h2></div>
+    <div class="tblwrap"><table>
+      <thead><tr><th>موجودیت</th><th>فیلدها</th><th>توضیح</th></tr></thead>
+      <tbody>
+        <tr><td><code>SystemIdentity</code></td><td><code>name, shortName, domain, color, ssoProvider, ssoEndpoint, ssoDomainHint, autoProvision, allowLocalLogin</code></td><td>هر نصب = یک مشتری. <code>ssoProvider ∈ {بدون SSO, LDAP/AD, SAML 2.0, OIDC, OTP موبایل}</code></td></tr>
+        <tr><td><code>Holding</code></td><td><code>id, name, color, lead?, active</code></td><td>n هلدینگ زیر هر نصب</td></tr>
+        <tr><td><code>Company</code></td><td><code>id, name, holdingId, field?, users, active</code></td><td>n شرکت زیر هر هلدینگ</td></tr>
+        <tr><td><code>UserProfile</code> (افزوده)</td><td><code>companyIds?: string[]</code></td><td><b>عضویت</b> — کاربر خودش انتخاب نمی‌کند؛ مدیر شرکت او را اضافه می‌کند</td></tr>
+        <tr><td><code>RoleGrant</code></td><td><code>roleId, level ∈ {سیستم, هلدینگ, شرکت, گروه}, holdingId?, companyId?, groupId?</code></td><td>تخصیص نقش = (کاربر، نقش، دامنه). <code>groupId</code> فقط برای سطح «گروه» (ناظم گروه)</td></tr>
+        <tr><td><code>Scoped</code> (میکس‌این همه‌ی محتواها)</td><td><code>scope? ∈ {سراسری, هلدینگ, شرکت}, holdingId?, companyId?</code></td><td>روی <b>همه‌ی</b> موجودیت‌های محتوایی/کاری. نبودِ <code>scope</code> = «سراسری» (سازگاری با داده‌ی قدیمی)</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note">
+      <b>پوشش <code>Scoped</code> — الزامی روی این موجودیت‌ها:</b> خبر، بلاگ، رویداد، رسانه، انجمن (موضوع)، گروه، سند دانش، <b>کانال گفتگو</b>، پروژه، قالب فرآیند*، قرارداد، پروپوزال/طرح صندوق (هر دو نوع)، فراخوان پژوهشی، دوره‌ی آموزشی، تیکت، نظرسنجی، آزمون، مسابقه، چالش. (* قالب فرآیند و «جایزه نوآوری» سراسری‌اند — جایزه ذاتاً رویداد سطح بنیاد است.) پیام مستقیم (DM) دامنه‌بندی <b>نمی‌شود</b> — عضویت‌محور است.
+    </div>
+  </section>
+
+  <section class="phase">
+    <div class="phase-h"><span class="phase-n">۲</span><h2>نشست (Session) — دامنه از «کاربر» محاسبه می‌شود، نه از انتخاب او</h2></div>
+    <p class="phase-goal">در لحظه‌ی ورود، سرور از روی عضویت‌ها و تخصیصِ نقش، نشست را می‌سازد. کاربر هیچ سوالی درباره‌ی هلدینگ/شرکتش نمی‌بیند.</p>
+    <div class="tblwrap"><table>
+      <thead><tr><th>سطح نشست</th><th>چه می‌بیند</th><th>سوییچر هدر</th><th>دامنه‌های مجاز انتشار</th></tr></thead>
+      <tbody>
+        <tr><td><b>سیستم</b> (بدون عضویت + نقش سیستمی)</td><td>همه‌چیز</td><td>«مشاهده به‌عنوان» — همه‌ی دامنه‌ها</td><td>سراسری، هلدینگ، شرکت</td></tr>
+        <tr><td><b>هلدینگ</b> (نقش سطح هلدینگ)</td><td>سراسری + کل هلدینگ خودش</td><td>کل هلدینگ + شرکت‌های همان هلدینگ</td><td>هلدینگ، شرکت</td></tr>
+        <tr><td><b>شرکت</b> — عضو ۱ شرکت</td><td>سراسری + همان شرکت</td><td><b>ندارد</b> — فقط برچسب خواندنی</td><td>فقط شرکت (بدون گزینه: «منتشر می‌شود برای: X»)</td></tr>
+        <tr><td><b>شرکت</b> — عضو چند شرکت</td><td>سراسری + شرکت‌های عضو</td><td>فقط همان شرکت‌های عضو</td><td>فقط شرکت (بین عضویت‌ها)</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note">
+      <b>قانون دیده‌شدن (مرجع: <code>isVisibleForSession</code>)</b> — آیتم دیده می‌شود اگر:
+      <code>scope=سراسری</code> (همیشه) · <code>scope=هلدینگ</code> و هلدینگ آیتم ∈ هلدینگ‌های کاربر · <code>scope=شرکت</code> و شرکت آیتم ∈ شرکت‌های عضو.
+      وقتی کاربر روی یک دامنه‌ی مشخص ایستاده (سوییچر)، همان تنگ‌تر اعمال می‌شود. نشستِ سطح سیستم بدون دامنه‌ی فعال، همه‌چیز را می‌بیند.
+    </div>
+  </section>
+
+  <section class="phase">
+    <div class="phase-h"><span class="phase-n">۳</span><h2>زنجیره‌ی واگذاری اختیار</h2></div>
+    <div class="tblwrap"><table>
+      <thead><tr><th>نقش</th><th>می‌تواند</th><th>نمی‌تواند</th></tr></thead>
+      <tbody>
+        <tr><td>مدیر سیستم</td><td>ساخت/حذف هلدینگ؛ انتصاب مدیر هلدینگ؛ همه‌چیز</td><td>—</td></tr>
+        <tr><td>مدیر هلدینگ</td><td>ساخت/مدیریت شرکت‌های هلدینگ خودش؛ انتصاب مدیر شرکت</td><td>حذف هلدینگ؛ هر کاری بیرون از هلدینگ خودش</td></tr>
+        <tr><td>مدیر شرکت</td><td>افزودن/حذف کاربرانِ شرکت خودش؛ تخصیص نقش در دامنه‌ی خودش</td><td>هر کاری بیرون از شرکت خودش</td></tr>
+        <tr><td>ناظم گروه (<code>level=گروه</code> + <code>groupId</code>)</td><td>ویرایش/حذف گروهِ خودش؛ اخراج عضو همان گروه</td><td>مدیریت هر گروه دیگر؛ پنل راهبری</td></tr>
+        <tr><td>عضو عادی</td><td>مصرف و تولید محتوا در دامنه‌ی عضویتش</td><td>پنل راهبری (منو پنهان <b>و</b> مسیر گارد‌شده)؛ انتشار خارج از شرکتش</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note"><b>دسترسی مؤثر</b> از نقشِ تخصیص‌یافته محاسبه می‌شود (کاربر بدون تخصیص = «عضو عادی» r4). دسترسی راهبری = سطح سیستم/هلدینگ، یا نقشی که یکی از مجوزهای <code>users.create / users.edit / roles.edit / settings.system</code> را دارد. گاردِ سمت سرور برای مسیرهای admin الزامی است — پنهان‌کردن منو کافی نیست.</div>
+  </section>
+
+  <section class="phase">
+    <div class="phase-h"><span class="phase-n">۴</span><h2>الزامات API (برای هر دو بک‌اند)</h2></div>
+    <div class="tblwrap"><table>
+      <thead><tr><th class="n">#</th><th>الزام</th><th>جزئیات</th></tr></thead>
+      <tbody>
+        <tr><td class="n">۱</td><td>نشست در توکن/پاسخ <code>auth/me</code></td><td><code>memberCompanyIds[]</code>، <code>grant {roleId, level, holdingId?, companyId?, groupId?}</code> و مجوزهای مؤثر باید از <code>auth/me</code> برگردد؛ فرانت هیچ‌چیز را خودش استنتاج نمی‌کند.</td></tr>
+        <tr><td class="n">۲</td><td>فیلتر خواندن</td><td>همه‌ی endpointهای فهرست/جزئیات، قانون دیده‌شدن بخش ۲ را روی داده اعمال می‌کنند. آیتم خارج از دامنه = <code>404</code> (نه <code>403</code>، تا وجودش لو نرود).</td></tr>
+        <tr><td class="n">۳</td><td>اعتبارسنجی نوشتن</td><td><code>scope/holdingId/companyId</code>ی ارسالی باید داخل «دامنه‌های مجاز انتشار» نشست باشد؛ در غیر این صورت <code>422</code>. مقدار پیش‌فرض = دامنه‌ی فعال نشست.</td></tr>
+        <tr><td class="n">۴</td><td>زنجیره‌ی واگذاری</td><td>APIهای مدیریت هلدینگ/شرکت/عضویت/تخصیص نقش، قواعد بخش ۳ را سمت سرور اجرا می‌کنند.</td></tr>
+        <tr><td class="n">۵</td><td>سازگاری داده‌ی قدیمی</td><td>رکوردهای بدون <code>scope</code> = «سراسری». مهاجرت اولیه می‌تواند همه را سراسری بگذارد و به‌تدریج دامنه‌دار شود.</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="phase">
+    <div class="phase-h"><span class="phase-n">۵</span><h2>فیلدهای محتوایی جدید (قرارداد داده)</h2></div>
+    <p class="phase-goal">این فیلدها در نسخه‌ی نهایی دمو وجود دارند و باید در مدل و قرارداد هر دو بک‌اند بیایند (تسک B24).</p>
+    <div class="tblwrap"><table>
+      <thead><tr><th>موجودیت</th><th>فیلد</th><th>نوع/مقادیر</th><th>مصرف در UI</th></tr></thead>
+      <tbody>
+        <tr><td>رویداد</td><td><code>category</code></td><td><code>جلسه | کارگاه | وبینار | همایش | آموزش</code></td><td>چیپ فیلتر + نشان روی ردیف (عمومی و داشبورد)</td></tr>
+        <tr><td>رویداد</td><td><code>capacity</code></td><td><code>number</code></td><td>«X از Y ظرفیت» + وضعیت «در حال ثبت‌نام»</td></tr>
+        <tr><td>خبر</td><td><code>topic</code></td><td><code>اقتصادی | اجتماعی | فرهنگی | عمرانی | سازمانی</code></td><td>چیپ فیلتر + تگ روی هیرو/کارت/ردیف</td></tr>
+        <tr><td>رسانه</td><td><code>duration</code></td><td><code>"mm:ss"</code> — فقط ویدیو</td><td>نشان روی بندانگشتی</td></tr>
+        <tr><td>کاربر</td><td><code>companyIds</code></td><td><code>string[]</code></td><td>مبنای کل نشست — بخش ۲</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="phase">
+    <div class="phase-h"><span class="phase-n">۶</span><h2>سناریوهای مرجع پذیرش (داده‌ی seed دمو)</h2></div>
+    <p class="phase-goal">این پنج سناریو معیار پذیرش پیاده‌سازی بک‌اند است — با «ورود به‌عنوان» در demo.shub.ir قابل مشاهده‌اند.</p>
+    <div class="tblwrap"><table>
+      <thead><tr><th>کاربر</th><th>عضویت / نقش</th><th>رفتار مورد انتظار</th></tr></thead>
+      <tbody>
+        <tr><td>u1 — پایگاه اطلاع‌رسانی</td><td>بدون عضویت + r1 (سیستم)</td><td>همه‌چیز؛ سوییچر ۱۷ گزینه؛ هر سه دامنه‌ی انتشار؛ پنل راهبری کامل</td></tr>
+        <tr><td>u3 — عضو ۱ شرکت (بهنوش)</td><td><code>[c-behnoush]</code></td><td>سوییچر ندارد؛ فقط سراسری+بهنوش؛ فرم انتشار بدون گزینه («منتشر می‌شود برای: بهنوش»)؛ بدون پنل راهبری</td></tr>
+        <tr><td>u4 — عضو ۲ شرکت + r2 هلدینگ فردوس</td><td><code>[c-dashtnaz, c-ferdows-agri]</code></td><td>سوییچر: کل هلدینگ + ۲ شرکت؛ انتشار هلدینگ/شرکت؛ راهبریِ محدود به هلدینگ خودش</td></tr>
+        <tr><td>u7 — ناظم گروه g1</td><td><code>[c-ferdows-agri]</code> + r3/گروه/g1</td><td>دکمه‌های مدیریتی فقط در گروه g1؛ در g2 هیچ اکشن مدیریتی ندارد</td></tr>
+        <tr><td>u12 — عضو ۳ شرکت</td><td><code>[c-pak, c-behnoush, c-zamzam]</code></td><td>سوییچر دقیقاً همین ۳ شرکت؛ محتوای فهرست‌ها با سوییچ واقعاً عوض می‌شود</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+  </section>
+
+<section class="phase" id="chat-ref">
+    <div class="phase-h"><span class="phase-n">✆</span><h2>مرجع الزام‌آور — مشخصات کامل پیام‌رسان (هم‌ترازی با تلگرام)</h2></div>
+    <p class="phase-goal">پیام‌رسانِ موتوشاب باید تمام قابلیت‌های تلگرام (به‌جز موارد حذف عمدی) به‌علاوه‌ی قابلیت‌های سازمانی را داشته باشد. مبنای الزام‌آورِ تسک‌های <a href="#p9">F29–F33 / B25–B29</a>. برای هر قابلیت: جزئیات، وضعیت فعلی در دمو، و تسک متناظر.</p>
+<div class="note" style="border-inline-start-color:var(--p1)">
+    <b>سه قاعده‌ی برش (Scope Cut):</b>
+    (۱) هر قابلیت تلگرام که به «هویت شخصی/شبکه‌ی عمومی» گره خورده (شماره‌تلفن عمومی، People Nearby، استوری، Premium) در بستر سازمانی <b>حذف عمدی</b> است و در جدول با «—حذف» مشخص شده.
+    (۲) استیکر/GIF به‌صورت «مجموعه‌ی سازمانیِ مدیریت‌شده» می‌آید نه فروشگاه باز.
+    (۳) تماس صوتی/تصویری طبق تصمیم معماری موجود (برون‌سپاری/ادغام، نه ساخت از صفر) تسک اختیاریِ جداست (F33/B29).
+  </div>
+
+  <section class="phase">
+    <div class="phase-h"><span class="phase-n">۱</span><h2>پیام‌رسانی پایه</h2></div>
+    <div class="tblwrap"><table>
+      <thead><tr><th>قابلیت</th><th>جزئیات الزام‌آور</th><th class="n">در دمو</th><th class="n">تسک</th></tr></thead>
+      <tbody>
+        <tr><td>ارسال متن</td><td>ارسال با Enter، خط جدید با Shift+Enter، پیش‌نویس هر گفتگو جدا ذخیره و بین دستگاه‌ها sync شود</td><td class="n">✅ (بدون draft-sync)</td><td class="n">F29 · B25</td></tr>
+        <tr><td>ویرایش پیام</td><td>پنجره‌ی ویرایش قابل‌تنظیم (پیش‌فرض ۴۸ ساعت)، برچسب «ویرایش‌شده»، تاریخچه‌ی ویرایش برای انطباق</td><td class="n">✅ (بدون پنجره/تاریخچه)</td><td class="n">F29 · B25</td></tr>
+        <tr><td>حذف پیام</td><td>«حذف برای من» / «حذف برای همه» (پنجره‌ی قابل‌تنظیم)؛ در کانال: فقط ناظم</td><td class="n">نیمه (حذف ساده)</td><td class="n">F29 · B25</td></tr>
+        <tr><td>پاسخ (Reply)</td><td>نقل‌قول پیام با پرش به اصل؛ <b>نقل‌قول بخشی از متن</b> (Quote انتخابی — تلگرام ۲۰۲۳)</td><td class="n">✅ reply · ❌ quote انتخابی</td><td class="n">F29</td></tr>
+        <tr><td>رشته‌ی پاسخ (Thread)</td><td>پنل رشته کنار گفتگو، شمارنده‌ی «N پاسخ در رشته»، دنبال‌کردن رشته</td><td class="n">✅</td><td class="n">—</td></tr>
+        <tr><td>فوروارد</td><td>تکی و چندتایی، با/بدون نامِ فرستنده، به چند مقصد هم‌زمان؛ احترام به مرز دامنه (فوروارد به کانالِ خارج از دامنه ممنوع)</td><td class="n">✅ تکی</td><td class="n">F29 · B25</td></tr>
+        <tr><td>انتخاب چندتایی</td><td>انتخاب چند پیام → فوروارد/حذف/کپی گروهی</td><td class="n">❌</td><td class="n">F29</td></tr>
+        <tr><td>پیام زمان‌بندی‌شده</td><td>ارسال در زمان معین + «ارسال بی‌صدا» (بدون نوتیف گیرنده)</td><td class="n">❌</td><td class="n">F29 · B25</td></tr>
+        <tr><td>واکنش (Reaction)</td><td>چند واکنش روی هر پیام، شمارنده + فهرست واکنش‌دهنده‌ها؛ مجموعه‌ی مجاز توسط راهبر</td><td class="n">✅ پایه</td><td class="n">F29 · B25</td></tr>
+        <tr><td>پین پیام</td><td><b>چند پین هم‌زمان</b> با نوار پیمایش بین پین‌ها (مثل تلگرام)، پین با/بدون اعلان</td><td class="n">✅ تک‌پین</td><td class="n">F29</td></tr>
+        <tr><td>ذخیره‌شده‌ها</td><td>Saved Messages شخصی + ذخیره از هر گفتگو</td><td class="n">✅</td><td class="n">—</td></tr>
+        <tr><td>رسید خواندن</td><td>تیک ✓ (رسیده) / ✓✓ (خوانده)؛ در گروه‌های کوچک «چه کسانی خواندند»</td><td class="n">✅ تیک‌ها · ❌ seen-by</td><td class="n">F32 · B26</td></tr>
+        <tr><td>در حال تایپ…</td><td>نشانگر تایپ per-چت؛ در گروه با نام افراد</td><td class="n">✅ در DM</td><td class="n">B26</td></tr>
+        <tr><td>جداکننده‌ی خوانده‌نشده</td><td>خط «پیام‌های خوانده‌نشده» هنگام بازکردن چت + اسکرول به همان‌جا</td><td class="n">❌</td><td class="n">F32</td></tr>
+        <tr><td>تایمر حذف خودکار</td><td>Auto-delete per-چت (۱ روز/۱ هفته/۱ ماه/سفارشی) — برای گفتگوهای حساس سازمانی</td><td class="n">❌</td><td class="n">F31 · B28</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="phase">
+    <div class="phase-h"><span class="phase-n">۲</span><h2>قالب‌بندی و محتوای غنی</h2></div>
+    <div class="tblwrap"><table>
+      <thead><tr><th>قابلیت</th><th>جزئیات الزام‌آور</th><th class="n">در دمو</th><th class="n">تسک</th></tr></thead>
+      <tbody>
+        <tr><td>قالب‌بندی متن</td><td><b>پررنگ</b>، <i>مورب</i>، زیرخط، خط‌خورده، <code>مونو/کد</code>، بلوک کد، نقل‌قول، <b>اسپویلر</b> (متن پنهان تا لمس)، لینک با متن دلخواه — با میانبر کیبورد و منوی انتخاب متن</td><td class="n">❌</td><td class="n">F29</td></tr>
+        <tr><td>پیش‌نمایش لینک</td><td>کارت پیش‌نمایش (عنوان/تصویر/توضیح) + امکان حذف پیش‌نمایش قبل از ارسال؛ لینک‌های داخلی سامانه کارت اختصاصی (خبر/سند/رویداد)</td><td class="n">❌</td><td class="n">F29 · B27</td></tr>
+        <tr><td>منشن</td><td><code>@نام</code> با پیشنهاد خودکار، هایلایت و شمارنده‌ی منشن روی چت؛ <code>@all/@here</code> فقط ناظم</td><td class="n">✅ پایه</td><td class="n">F29</td></tr>
+        <tr><td>هشتگ</td><td>کلیک‌پذیر → جستجوی همان برچسب در گفتگو</td><td class="n">❌</td><td class="n">F32</td></tr>
+        <tr><td>ایموجی</td><td>پیکر ایموجی با جستجو و پرکاربردها؛ ایموجی تکی بزرگ‌نمایی شود</td><td class="n">✅ پایه</td><td class="n">F29</td></tr>
+        <tr><td>استیکر سازمانی</td><td>مجموعه‌های استیکرِ تأییدشده توسط راهبر (برند سازمان)؛ بدون فروشگاه باز</td><td class="n">❌ (اختیاری)</td><td class="n">F30 · B27</td></tr>
+        <tr><td>نظرسنجی درون‌چت</td><td>Poll تلگرامی: چندگزینه‌ای، ناشناس/آشکار، چندانتخابی، حالت آزمون (Quiz) — جدا از ماژول نظرسنجی سازمانی</td><td class="n">❌</td><td class="n">F31 · B28</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="phase">
+    <div class="phase-h"><span class="phase-n">۳</span><h2>رسانه، فایل و صوت</h2></div>
+    <div class="tblwrap"><table>
+      <thead><tr><th>قابلیت</th><th>جزئیات الزام‌آور</th><th class="n">در دمو</th><th class="n">تسک</th></tr></thead>
+      <tbody>
+        <tr><td>عکس و ویدیو</td><td>ارسال با کپشن، چندتایی به‌صورت <b>آلبوم گروه‌شده</b>، فشرده/اصل، ویرایشگر ساده (برش/چرخش/قلم)</td><td class="n">نیمه (تک‌عکس)</td><td class="n">F30 · B27</td></tr>
+        <tr><td>نمایشگر رسانه</td><td>تمام‌صفحه با ورق‌زدن بین رسانه‌های همان چت، زوم، ذخیره، نمایش فرستنده/زمان</td><td class="n">❌</td><td class="n">F30</td></tr>
+        <tr><td>پیام صوتی</td><td>ضبط با نگه‌داشتن + قفل ضبط، <b>شکل موج</b>، پخش با سرعت ۱×/۱.۵×/۲×، ادامه‌ی پخش هنگام جابه‌جایی بین چت‌ها</td><td class="n">✅ ضبط پایه</td><td class="n">F30 · B27</td></tr>
+        <tr><td>پیام ویدیویی (دایره‌ای)</td><td>ضبط ویدیوی کوتاه دایره‌ای (video message تلگرام)</td><td class="n">❌ (اختیاری)</td><td class="n">F30</td></tr>
+        <tr><td>فایل/سند</td><td>هر نوع فایل تا سقف تنظیم‌شده‌ی راهبر، نوار پیشرفت آپلود/دانلود قابل‌لغو، ازسرگیری آپلود قطع‌شده</td><td class="n">نیمه (UI پیوست)</td><td class="n">F30 · B27</td></tr>
+        <tr><td>گالری اشتراکی چت</td><td>تب‌های «رسانه / فایل / لینک / صوت» در پروفایل هر چت — مثل Shared Media تلگرام</td><td class="n">✅ رسانه (پایه)</td><td class="n">F30 · B27</td></tr>
+        <tr><td>تنظیم دانلود خودکار</td><td>per-نوع و per-شبکه (داده/وای‌فای) — برای کاربر موبایل</td><td class="n">❌</td><td class="n">F32</td></tr>
+        <tr><td>اشتراک مخاطب/موقعیت</td><td>اشتراک کارت کاربر سازمانی؛ موقعیت زنده «—حذف» (کاربرد سازمانی ندارد، ریسک حریم خصوصی)</td><td class="n">❌ / —حذف</td><td class="n">F30</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="phase">
+    <div class="phase-h"><span class="phase-n">۴</span><h2>گروه‌ها، کانال‌ها و تاپیک‌ها</h2></div>
+    <div class="tblwrap"><table>
+      <thead><tr><th>قابلیت</th><th>جزئیات الزام‌آور</th><th class="n">در دمو</th><th class="n">تسک</th></tr></thead>
+      <tbody>
+        <tr><td>کانال (Broadcast)</td><td>فقط ناظم‌ها می‌نویسند؛ <b>امضای نویسنده</b>، شمارنده‌ی بازدید هر پست، <b>نظرات</b> ذیل پست از طریق گروه بحث متصل</td><td class="n">نیمه (کانال ساده)</td><td class="n">F31 · B28</td></tr>
+        <tr><td>گروه</td><td>اعضا، توضیحات، قوانین پین‌شده؛ ظرفیت بالا</td><td class="n">✅ پایه</td><td class="n">B28</td></tr>
+        <tr><td><b>تاپیک‌ها (Forum Groups)</b></td><td>گروه‌های تاپیک‌دار تلگرام: هر گروه چند تاپیک مجزا با فهرست، آیکن و اعلان جدا — برای گروه‌های بزرگ سازمانی حیاتی</td><td class="n">❌</td><td class="n">F31 · B28</td></tr>
+        <tr><td>مجوزهای ریزدانه‌ی ناظم</td><td>مثل تلگرام: تفکیک حق حذف پیام / بن / دعوت / پین / تغییر اطلاعات / افزودن ناظم — per-ناظم</td><td class="n">❌ (ناظم واحد)</td><td class="n">F31 · B28</td></tr>
+        <tr><td>محدودیت اعضا</td><td>محدودکردن عضو خاص (فقط‌خواندن، بدون رسانه) با مدت؛ بن با پاک‌سازی پیام‌ها</td><td class="n">❌</td><td class="n">F31 · B28</td></tr>
+        <tr><td>لینک دعوت</td><td>لینک + QR، با انقضا/سقف استفاده، <b>درخواست عضویت با تایید ناظم</b> (Join Request)</td><td class="n">❌</td><td class="n">F31 · B28</td></tr>
+        <tr><td>حالت آهسته (Slow Mode)</td><td>فاصله‌ی اجباری بین پیام‌های هر عضو (۱۰ث تا ۱س)</td><td class="n">❌</td><td class="n">F31 · B28</td></tr>
+        <tr><td>گزارش اقدامات ناظمان</td><td>Admin Log ۴۸ساعته‌ی تلگرام → در نسخه‌ی سازمانی: دائمی و متصل به Audit Log انطباق</td><td class="n">❌</td><td class="n">B28</td></tr>
+        <tr><td>دامنه‌بندی کانال</td><td>کانال‌ها <code>Scoped</code>‌اند (سراسری/هلدینگ/شرکت) — <a href="#scope-ref">قرارداد دامنه‌بندی</a></td><td class="n">✅</td><td class="n">B21</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="phase">
+    <div class="phase-h"><span class="phase-n">۵</span><h2>سازماندهی، جستجو و اعلان</h2></div>
+    <div class="tblwrap"><table>
+      <thead><tr><th>قابلیت</th><th>جزئیات الزام‌آور</th><th class="n">در دمو</th><th class="n">تسک</th></tr></thead>
+      <tbody>
+        <tr><td><b>پوشه‌های چت</b></td><td>Chat Folders تلگرام: پوشه‌های سفارشی با قواعد شمول/استثنا + شمارنده‌ی خوانده‌نشده per-پوشه؛ پوشه‌های پیش‌ساخته‌ی سازمانی (هلدینگ من/شرکت من)</td><td class="n">نیمه (۳ دسته‌ی ثابت)</td><td class="n">F31</td></tr>
+        <tr><td>آرشیو</td><td>آرشیو چت با سوایپ، خروج خودکار از آرشیو با پیام جدید (قابل‌تنظیم)</td><td class="n">✅ پایه</td><td class="n">F31</td></tr>
+        <tr><td>پین چت / علامت خوانده‌نشده</td><td>سنجاق گفتگو بالای فهرست؛ mark-as-unread دستی</td><td class="n">✅ علاقه‌مندی · ❌ unread دستی</td><td class="n">F31</td></tr>
+        <tr><td>جستجوی سراسری چت</td><td>روی همه‌ی گفتگوها + پرش به پیام در بستر خودش؛ فیلتر بر اساس نوع (رسانه/فایل/لینک/صوت) و فرستنده</td><td class="n">✅ فیلتر نام چت</td><td class="n">F32 · B26</td></tr>
+        <tr><td>جستجوی درون‌چت + پرش به تاریخ</td><td>جستجو داخل یک گفتگو، پیمایش بین نتایج، Jump to Date با تقویم شمسی</td><td class="n">❌</td><td class="n">F32 · B26</td></tr>
+        <tr><td>اعلان per-چت</td><td>بی‌صدا با مدت (۱س/۸س/۲روز/همیشه)، استثناها، پیش‌نمایش روشن/خاموش، «فقط منشن‌ها» برای کانال شلوغ</td><td class="n">✅ بی‌صدا ساده</td><td class="n">F32 · B26</td></tr>
+        <tr><td>شمارنده‌ها</td><td>Badge خوانده‌نشده per-چت/پوشه/کل؛ تفکیک منشن (@) از پیام عادی</td><td class="n">✅ پایه</td><td class="n">F32</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="phase">
+    <div class="phase-h"><span class="phase-n">۶</span><h2>همگام‌سازی، حریم خصوصی و سازمانی</h2></div>
+    <div class="tblwrap"><table>
+      <thead><tr><th>قابلیت</th><th>جزئیات الزام‌آور</th><th class="n">در دمو</th><th class="n">تسک</th></tr></thead>
+      <tbody>
+        <tr><td>چنددستگاهی</td><td>وضعیت خوانده/پیش‌نویس/ارسال بین تب‌ها و دستگاه‌ها sync؛ فهرست نشست‌ها و خروج از راه دور (به «امنیت و نشست‌ها»ی موجود وصل می‌شود)</td><td class="n">❌ sync</td><td class="n">B26</td></tr>
+        <tr><td>آفلاین</td><td>صف ارسال آفلاین با retry، کش تاریخچه، حالت optimistic با برگشت در خطا</td><td class="n">نیمه (optimistic)</td><td class="n">F32 · B26</td></tr>
+        <tr><td>حضور (Presence)</td><td>چهار وضعیت (آنلاین/غایب/مزاحم نشوید/نامرئی) + «آخرین بازدید» با سطوح حریم خصوصی تلگرامی (همه/اعضای سازمان/هیچ‌کس)</td><td class="n">✅ چهار وضعیت</td><td class="n">B26</td></tr>
+        <tr><td>مسدودسازی/گزارش</td><td>بلاک کاربر در DM؛ گزارش پیام/کاربر به راهبر با دسته‌ی تخلف</td><td class="n">❌</td><td class="n">F31 · B28</td></tr>
+        <tr><td>بات و وب‌هوک</td><td>حساب بات با ارسال از API، وب‌هوک ورودی/خروجی، دکمه‌های اینلاین زیر پیامِ بات (inline keyboard)</td><td class="n">✅ تعریف در راهبری</td><td class="n">B28</td></tr>
+        <tr><td>دستور اسلش</td><td><code>/command</code> با منوی پیشنهاد و پارامتر — اجرا از طریق همان بات‌ها</td><td class="n">✅</td><td class="n">—</td></tr>
+        <tr><td>حساب مهمان</td><td>دسترسی محدود به کانال‌های مشخص با انقضا (پیمانکاران)</td><td class="n">✅ تعریف در راهبری</td><td class="n">B28</td></tr>
+        <tr><td>خروجی انطباق</td><td>Compliance Export گفتگوها با فیلتر بازه/کاربر/کانال + تاریخچه‌ی ویرایش/حذف — فقط نقش انطباق</td><td class="n">✅ UI در راهبری</td><td class="n">B28</td></tr>
+        <tr><td>—حذف عمدی</td><td>استوری، People Nearby، شماره‌تلفن عمومی، Premium/هدیه، کیف پول — در بستر سازمانی بی‌معنا</td><td class="n">—</td><td class="n">—</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="phase">
+    <div class="phase-h"><span class="phase-n">۷</span><h2>تماس صوتی/تصویری و جلسات زنده (اختیاری — تصمیم PO)</h2></div>
+    <div class="note">
+      طبق تصمیم معماری موجود، ساخت موتور تماس از صفر ممنوع است؛ گزینه‌ها: ادغام SDK آماده (Jitsi/LiveKit self-host) پشت همان هویت.
+      دامنه‌ی هدف: تماس ۱:۱ صوتی/تصویری، <b>گفتگوی صوتی گروهی</b> (Voice Chat تلگرام) روی کانال/گروه با دست‌بلندکردن و ضبط جلسه، اشتراک صفحه.
+      تسک‌های F33/B29 فقط پس از تایید PO فعال می‌شوند و در جمع الحاقیه حساب نشده‌اند.
+    </div>
+  </section>
+  </section>
+
 
 
 
