@@ -86,7 +86,7 @@
   <p class="kicker">Motoshub · Delivery Plan · Backend</p>
   <h1>تسک‌های تیم Backend — با جزئیات پیاده‌سازی</h1>
   <p class="lede">همه‌ی تسک‌های بک‌اند با subtask، تخمین، User Story و معیار پذیرش. مرجع رفتار: <a href="https://demo.shub.ir">demo.shub.ir</a> · خط لوله‌ی الزامی تحویل: <a href="../../process/">فرآیند تحویل و کیفیت</a> · <a href="../frontend/">تسک‌های Front</a></p>
-  <div class="toc"><a href="#guide">راهنمای پیاده‌سازی</a><a href="#summary">زمان‌بندی</a><a href="#arch">تصمیم‌های الزام‌آور</a><a href="#p0">فاز ۰</a><a href="#p1">فاز ۱</a><a href="#p2">فاز ۲</a><a href="#p3">فاز ۳</a><a href="#p4">فاز ۴</a><a href="#p5">فاز ۵</a><a href="#p6">فاز ۶</a><a href="#p7">دامنه‌ی کشف‌شده</a><a href="#p8">هم‌ترازی با دموی نهایی</a><a href="../../spec/scope/">قرارداد دامنه‌بندی</a><a href="../../status/">وضعیت زنده</a></div>
+  <div class="toc"><a href="#guide">راهنمای پیاده‌سازی</a><a href="#summary">زمان‌بندی</a><a href="#arch">تصمیم‌های الزام‌آور</a><a href="#p0">فاز ۰</a><a href="#p1">فاز ۱</a><a href="#p2">فاز ۲</a><a href="#p3">فاز ۳</a><a href="#p4">فاز ۴</a><a href="#p5">فاز ۵</a><a href="#p6">فاز ۶</a><a href="#p7">دامنه‌ی کشف‌شده</a><a href="#p8">هم‌ترازی با دموی نهایی</a><a href="#p9">پیام‌رسان کامل</a><a href="../../spec/scope/">قرارداد دامنه‌بندی</a><a href="../../spec/chat/">مشخصات پیام‌رسان</a><a href="../../status/">وضعیت زنده</a></div>
 
   <section class="phase" id="guide">
     <div class="phase-h"><span class="phase-n">¶</span><h2>راهنمای پیاده‌سازی تیم Backend</h2></div>
@@ -429,6 +429,7 @@
       </table></div>
       <div class="dep">وابستگی: B5. (WebSocket نیازمندِ ASGI؛ مرتبط با B3.)</div>
       <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): کانال‌ها دامنه‌دارند — فیلتر فهرست کانال بر اساس نشست ← <a href="#p8">B21.2</a> و <a href="#p8">B22.1</a>.</div>
+      <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): ادامه‌ی این تسک برای هم‌ترازی کامل با تلگرام: <a href="#p9">B25–B28</a> — مرجع: <a href="../../spec/chat/">مشخصات پیام‌رسان</a>.</div>
     </div>
 
     <div class="task b">
@@ -613,6 +614,94 @@
       <b>جمعِ الحاقیه‌ی Backend: ~۱۷ روز (B21–B24)</b> — جدا از جمع فازهای ۰ تا ۶. ترتیب پیشنهادی: B21 ← B22 (مسیر بحرانی الحاقیه) ← B23/B24 موازی.
     </div>
   </section>
+
+<section class="phase" id="p9">
+    <div class="phase-h"><span class="phase-n">✆</span><h2>پیام‌رسان کامل — هم‌ترازی با تلگرام (الحاقیه ۱۴۰۵/۰۵/۱۴)</h2></div>
+    <p class="phase-goal">
+      پشتوانه‌ی سرویسِ چهار تسک Front (F29–F32). فهرست الزام‌آور قابلیت‌ها:
+      <a href="../../spec/chat/">مشخصات کامل پیام‌رسان</a>. <b>B14 دست‌نخورده است</b> — این تسک‌ها روی خروجی آن سوارند.
+      یادآوری معماری: real-time روی WebSocket (تصمیم B14.4) و کانال‌ها دامنه‌دار (B21/B22).
+    </p>
+
+    <div class="band b">◆ تیم Backend</div>
+
+    <div class="task b">
+      <div class="task-h"><span class="task-id">B25</span><b>مدل کامل پیام (چرخه‌ی حیات تلگرامی)</b><span class="spacer"></span><span class="pill p-p1">P1</span><span class="pill p-todo">نساخته</span><span class="est">۶ روز</span></div>
+      <div class="subhd">Subtaskها (مرجع: مشخصات، بخش ۱ و ۲)</div>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th>جزئیات فنی</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">B25.1</td><td>چرخه‌ی پیام</td><td>ویرایش با پنجره + تاریخچه‌ی نسخه‌ها؛ حذف برای من/همه (tombstone برای انطباق)؛ پنجره‌ها از تنظیمات راهبر</td><td class="n">۱۰ ساعت</td></tr>
+          <tr><td class="n">B25.2</td><td>پاسخ/نقل‌قول/فوروارد</td><td>reply با quote جزئی (offsetهای متن)؛ فورواردِ چندمقصدی با ثبت مبدأ؛ گاردِ مرز دامنه</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B25.3</td><td>زمان‌بندی و پیش‌نویس</td><td>صف پیام‌های زمان‌بندی‌شده (Celery/صف موجود) + CRUD؛ draft per-چت per-کاربر</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B25.4</td><td>واکنش و پین</td><td>واکنش‌های چندگانه با فهرست کاربران؛ پین چندتایی مرتب؛ مجموعه‌ی واکنش مجاز از راهبری</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">B25.5</td><td>موجودیت‌های متن</td><td>ذخیره‌ی entities قالب‌بندی (نه HTML خام)؛ اعتبارسنجی؛ رندر امن</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">B25.6</td><td>تست</td><td>پنجره‌ها، حذف دوطرفه، فوروارد بین‌دامنه‌ای (باید ۴۲۲ شود)</td><td class="n">۱۰ ساعت</td></tr>
+        </tbody>
+      </table></div>
+      <div class="dep">وابستگی: B14، B21. مصرف‌کننده: F29.</div>
+    </div>
+
+    <div class="task b">
+      <div class="task-h"><span class="task-id">B26</span><b>بلادرنگ، رسیدها، جستجو و sync</b><span class="spacer"></span><span class="pill p-p1">P1</span><span class="pill p-todo">نساخته</span><span class="est">۶ روز</span></div>
+      <div class="subhd">Subtaskها (مرجع: مشخصات، بخش ۵ و ۶)</div>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th>جزئیات فنی</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">B26.1</td><td>پروتکل WS</td><td>رویدادهای typed: پیام/ویرایش/حذف/واکنش/تایپ/حضور/رسید — نسخه‌دار و مستند</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B26.2</td><td>رسید تحویل/خواندن</td><td>cursor خواندن per-عضو per-چت؛ seen-by گروه کوچک؛ به‌روزرسانی جمعی بهینه</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B26.3</td><td>sync چنددستگاهی</td><td>وضعیت خوانده/پیش‌نویس بین نشست‌ها؛ بازیابی event از offset پس از قطعی (آفلاین)</td><td class="n">۱۰ ساعت</td></tr>
+          <tr><td class="n">B26.4</td><td>جستجوی پیام</td><td>ایندکس Elasticsearch موجود: سراسری + درون‌چت + فیلتر نوع/فرستنده/تاریخ — با احترام به دامنه</td><td class="n">۱۰ ساعت</td></tr>
+          <tr><td class="n">B26.5</td><td>اعلان per-چت</td><td>ترجیحات بی‌صدا/مدت/فقط‌منشن per-کاربر per-چت + شمارنده‌های تفکیکی</td><td class="n">۶ ساعت</td></tr>
+        </tbody>
+      </table></div>
+      <div class="dep">وابستگی: B14، B25. مصرف‌کننده: F29، F32.</div>
+    </div>
+
+    <div class="task b">
+      <div class="task-h"><span class="task-id">B27</span><b>رسانه، فایل و صوت</b><span class="spacer"></span><span class="pill p-p2">P2</span><span class="pill p-todo">نساخته</span><span class="est">۵ روز</span></div>
+      <div class="subhd">Subtaskها (مرجع: مشخصات، بخش ۳)</div>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th>جزئیات فنی</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">B27.1</td><td>آپلود مقاوم</td><td>آپلود قطعه‌قطعه با ازسرگیری؛ سقف حجم/نوع از تنظیمات؛ اسکن ضدویروس موجود</td><td class="n">۱۰ ساعت</td></tr>
+          <tr><td class="n">B27.2</td><td>پردازش رسانه</td><td>بندانگشتی، ابعاد، مدت و شکل موج صوت (استخراج سمت سرور)؛ آلبوم گروه‌شده</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B27.3</td><td>گالری چت</td><td>endpointهای رسانه/فایل/لینک/صوت per-چت با صفحه‌بندی</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">B27.4</td><td>پیش‌نمایش لینک</td><td>unfurl سمت سرور با کش و allowlist؛ کارت اختصاصی لینک‌های داخلی</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">B27.5</td><td>دسترسی فایل</td><td>URLهای امضاشده با انقضا — دانلود فقط برای اعضای همان چت/دامنه</td><td class="n">۶ ساعت</td></tr>
+        </tbody>
+      </table></div>
+      <div class="dep">وابستگی: B25. مصرف‌کننده: F30.</div>
+    </div>
+
+    <div class="task b">
+      <div class="task-h"><span class="task-id">B28</span><b>گروه/کانال پیشرفته، مدیریت و انطباق</b><span class="spacer"></span><span class="pill p-p2">P2</span><span class="pill p-todo">نساخته</span><span class="est">۶ روز</span></div>
+      <div class="subhd">Subtaskها (مرجع: مشخصات، بخش ۴ و ۶)</div>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th>جزئیات فنی</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">B28.1</td><td>تاپیک‌ها</td><td>موجودیت topic ذیل گروه؛ شمارنده/اعلان per-تاپیک</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B28.2</td><td>ناظمان ریزدانه</td><td>ماتریس مجوز per-ناظم؛ محدودسازی/بن با مدت؛ Slow Mode؛ اجرای سمت سرور</td><td class="n">۱۰ ساعت</td></tr>
+          <tr><td class="n">B28.3</td><td>دعوت و عضویت</td><td>لینک با انقضا/سقف/QR؛ صف Join Request با تایید؛ حساب مهمان با انقضا</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B28.4</td><td>کانال کامل</td><td>امضا، شمارش بازدید، اتصال گروه بحث برای نظرات پست</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">B28.5</td><td>Poll، auto-delete، بلاک/گزارش</td><td>نظرسنجی/آزمون درون‌چت؛ زمان‌بند حذف خودکار؛ بلاک DM و صف گزارش تخلف برای راهبر</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B28.6</td><td>انطباق</td><td>Admin Log دائمی متصل به Audit؛ Compliance Export با تاریخچه‌ی ویرایش/حذف — فقط نقش انطباق</td><td class="n">۸ ساعت</td></tr>
+        </tbody>
+      </table></div>
+      <div class="dep">وابستگی: B25، B22 (گارد دامنه). مصرف‌کننده: F31.</div>
+    </div>
+
+    <div class="task b">
+      <div class="task-h"><span class="task-id">B29</span><b>زیرساخت تماس/جلسه‌ی زنده</b><span class="spacer"></span><span class="pill p-p3">P3</span><span class="pill p-todo">اختیاری — منتظر تصمیم PO</span><span class="est">—</span></div>
+      <p class="desc">استقرار و ادغام SDK انتخابی (Jitsi/LiveKit) پشت SSO و دامنه‌بندی؛ توکن اتاق، ضبط، سیاست نگه‌داری. تخمین پس از انتخاب SDK.</p>
+      <div class="dep">وابستگی: تصمیم PO. مصرف‌کننده: F33. خارج از جمع الحاقیه.</div>
+    </div>
+
+    <div class="note">
+      <b>جمعِ الحاقیه‌ی پیام‌رسان (Backend): ~۲۳ روز (B25–B28)</b> — جدا از همه‌ی جمع‌های قبلی. مسیر بحرانی: B25 ← B26؛ B27/B28 موازی پس از B25.
+    </div>
+  </section>
+
 
 
 </div>

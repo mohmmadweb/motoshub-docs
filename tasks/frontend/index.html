@@ -86,7 +86,7 @@
   <p class="kicker">Motoshub · Delivery Plan · Front</p>
   <h1>تسک‌های تیم Front — با جزئیات پیاده‌سازی</h1>
   <p class="lede">همه‌ی تسک‌های فرانت با subtask، تخمین، User Story و معیار پذیرش. مرجع رفتار: <a href="https://demo.shub.ir">demo.shub.ir</a> · خط لوله‌ی الزامی تحویل: <a href="../../process/">فرآیند تحویل و کیفیت</a> · <a href="../backend/">تسک‌های Backend</a></p>
-  <div class="toc"><a href="#guide">راهنمای پیاده‌سازی</a><a href="#summary">زمان‌بندی</a><a href="#arch">تصمیم‌های الزام‌آور</a><a href="#p0">فاز ۰</a><a href="#p1">فاز ۱</a><a href="#p2">فاز ۲</a><a href="#p3">فاز ۳</a><a href="#p4">فاز ۴</a><a href="#p5">فاز ۵</a><a href="#p6">فاز ۶</a><a href="#p7">دامنه‌ی کشف‌شده</a><a href="#p8">هم‌ترازی با دموی نهایی</a><a href="../../spec/scope/">قرارداد دامنه‌بندی</a><a href="../../status/">وضعیت زنده</a></div>
+  <div class="toc"><a href="#guide">راهنمای پیاده‌سازی</a><a href="#summary">زمان‌بندی</a><a href="#arch">تصمیم‌های الزام‌آور</a><a href="#p0">فاز ۰</a><a href="#p1">فاز ۱</a><a href="#p2">فاز ۲</a><a href="#p3">فاز ۳</a><a href="#p4">فاز ۴</a><a href="#p5">فاز ۵</a><a href="#p6">فاز ۶</a><a href="#p7">دامنه‌ی کشف‌شده</a><a href="#p8">هم‌ترازی با دموی نهایی</a><a href="#p9">پیام‌رسان کامل</a><a href="../../spec/scope/">قرارداد دامنه‌بندی</a><a href="../../spec/chat/">مشخصات پیام‌رسان</a><a href="../../status/">وضعیت زنده</a></div>
 
   <section class="phase" id="guide">
     <div class="phase-h"><span class="phase-n">¶</span><h2>راهنمای پیاده‌سازی تیم Front</h2></div>
@@ -486,6 +486,7 @@
       </table></div>
       <div class="dep">وابستگی: F5. داده: B14.</div>
       <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): کانال‌ها در نسخه‌ی نهایی موجودیتِ دامنه‌دارند و فهرست با نشست فیلتر می‌شود (DM بدون تغییر) ← <a href="#p8">F25.3</a>.</div>
+      <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): خواسته‌ی نهایی، هم‌ترازی کامل با تلگرام است — ادامه‌ی این تسک در چهار تسک <a href="#p9">F29–F32</a> و مرجع کاملش <a href="../../spec/chat/">مشخصات پیام‌رسان</a> است.</div>
     </div>
 
     <div class="task f">
@@ -754,6 +755,101 @@
       یادآوری کیفیت: خطِ پایه‌ی دسترس‌پذیریِ دمو «صفر نقض WCAG A/AA در axe» است — توکن‌های رنگ اصلاح‌شده (<code>ink-400 #5d6b81</code>، <code>ink-500 #5b6678</code>، <code>navy-950 #0b1220</code>) مبنای F2 هستند و نباید به مقادیر کم‌کنتراست قبلی برگردند.
     </div>
   </section>
+
+<section class="phase" id="p9">
+    <div class="phase-h"><span class="phase-n">✆</span><h2>پیام‌رسان کامل — هم‌ترازی با تلگرام (الحاقیه ۱۴۰۵/۰۵/۱۴)</h2></div>
+    <p class="phase-goal">
+      خواسته‌ی نهایی محصول: پیام‌رسان باید تمام قابلیت‌های تلگرام را (به‌جز موارد حذف عمدی) به‌علاوه‌ی قابلیت‌های
+      سازمانی داشته باشد. فهرست کامل قابلیت‌ها، جزئیات هر کدام و وضعیتشان در دمو:
+      <a href="../../spec/chat/">مشخصات کامل پیام‌رسان</a>. <b>F15 دست‌نخورده است</b> — این چهار تسک ادامه‌ی آن‌اند
+      و پس از تحویل F15 شروع می‌شوند.
+    </p>
+
+    <div class="band f">◆ تیم Front</div>
+
+    <div class="task f">
+      <div class="task-h"><span class="task-id">F29</span><b>هسته‌ی پیام‌رسانی در سطح تلگرام</b><span class="spacer"></span><span class="pill p-p1">P1</span><span class="pill p-todo">نساخته</span><span class="est">۸ روز</span></div>
+      <div class="story"><span class="lbl">User Story</span>به‌عنوان عضو، همان روانی و کاملی که از تلگرام انتظار دارم را در گفتگوی سازمانی داشته باشم: ویرایش/حذف با قاعده، نقل‌قول بخشی از متن، فوروارد چندتایی، پیام زمان‌بندی‌شده و قالب‌بندی کامل.</div>
+      <div class="subhd">Subtaskها (مرجع جزئیات: مشخصات پیام‌رسان، بخش ۱ و ۲)</div>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th>جزئیات فنی</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">F29.1</td><td>چرخه‌ی پیام</td><td>حذف برای من/همه با پنجره؛ ویرایش با پنجره و برچسب؛ انتخاب چندتایی → فوروارد/حذف/کپی گروهی</td><td class="n">۱۰ ساعت</td></tr>
+          <tr><td class="n">F29.2</td><td>پاسخ و نقل‌قول</td><td>Quote بخشی از متن (انتخاب متن → نقل‌قول)، پرش به پیام اصل با هایلایت</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">F29.3</td><td>فوروارد پیشرفته</td><td>چند مقصد، با/بدون نام فرستنده؛ مقصدها محدود به دامنه‌ی مجاز</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">F29.4</td><td>زمان‌بندی و بی‌صدا</td><td>Schedule picker شمسی + صف پیام‌های زمان‌بندی‌شده‌ی قابل‌ویرایش؛ ارسال بی‌صدا</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">F29.5</td><td>قالب‌بندی کامل</td><td>bold/italic/underline/strike/mono/code-block/quote/<b>spoiler</b>/لینک با متن — منوی انتخاب متن + میانبرها</td><td class="n">۱۰ ساعت</td></tr>
+          <tr><td class="n">F29.6</td><td>پیش‌نمایش لینک + منشن/ایموجی</td><td>کارت پیش‌نمایش با حذف قبل از ارسال؛ کارت اختصاصی لینک‌های داخلی؛ @all/@here ناظم؛ پیکر ایموجی با جستجو</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">F29.7</td><td>پین چندتایی + واکنش کامل</td><td>نوار پیمایش بین پین‌ها؛ فهرست واکنش‌دهنده‌ها؛ مجموعه‌ی واکنش راهبری</td><td class="n">۶ ساعت</td></tr>
+        </tbody>
+      </table></div>
+      <div class="ac"><span class="lbl">معیار پذیرش</span><ul>
+        <li>Given پیام ارسال‌شده، When پنجره‌ی ویرایش بگذرد، Then گزینه‌ی ویرایش غیرفعال شود و «حذف برای همه» طبق قاعده رفتار کند.</li>
+        <li>Given انتخاب سه پیام، When فوروارد به دو مقصد شود، Then هر شش رونوشت با ترتیب درست و برچسب فرستنده ثبت شود.</li>
+      </ul></div>
+      <div class="dep">وابستگی: F15. داده: B25، B26.</div>
+    </div>
+
+    <div class="task f">
+      <div class="task-h"><span class="task-id">F30</span><b>رسانه، فایل و صوت در سطح تلگرام</b><span class="spacer"></span><span class="pill p-p1">P1</span><span class="pill p-todo">نساخته</span><span class="est">۷ روز</span></div>
+      <div class="subhd">Subtaskها (مرجع: مشخصات، بخش ۳)</div>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th>جزئیات فنی</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">F30.1</td><td>آلبوم و کپشن</td><td>چند عکس/ویدیو = یک آلبوم گروه‌شده؛ کپشن؛ انتخاب فشرده/اصل</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">F30.2</td><td>نمایشگر تمام‌صفحه</td><td>ورق‌زدن بین رسانه‌های چت، زوم، ذخیره، اطلاعات فرستنده</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">F30.3</td><td>پیام صوتی کامل</td><td>قفل ضبط، شکل موج، سرعت ۱×/۱.۵×/۲×، پخش پیوسته بین چت‌ها</td><td class="n">۱۰ ساعت</td></tr>
+          <tr><td class="n">F30.4</td><td>فایل با آپلود مقاوم</td><td>پیشرفت قابل‌لغو، ازسرگیری، سقف حجم از تنظیمات راهبر، خطای روشن</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">F30.5</td><td>گالری اشتراکی</td><td>تب‌های رسانه/فایل/لینک/صوت در پروفایل چت</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">F30.6</td><td>اختیاری‌ها</td><td>پیام ویدیویی دایره‌ای، استیکر سازمانی، اشتراک کارت کاربر — پشت پرچم قابلیت</td><td class="n">۸ ساعت</td></tr>
+        </tbody>
+      </table></div>
+      <div class="dep">وابستگی: F29. داده: B27.</div>
+    </div>
+
+    <div class="task f">
+      <div class="task-h"><span class="task-id">F31</span><b>گروه‌ها، کانال‌ها، تاپیک‌ها و سازماندهی</b><span class="spacer"></span><span class="pill p-p2">P2</span><span class="pill p-todo">نساخته</span><span class="est">۸ روز</span></div>
+      <div class="subhd">Subtaskها (مرجع: مشخصات، بخش ۴ و ۵)</div>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th>جزئیات فنی</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">F31.1</td><td>تاپیک‌ها (Forum Groups)</td><td>فهرست تاپیک‌های گروه، ساخت/بستن تاپیک، اعلان per-تاپیک</td><td class="n">۱۲ ساعت</td></tr>
+          <tr><td class="n">F31.2</td><td>کانال کامل</td><td>امضای نویسنده، بازدید پست، نظرات ذیل پست (گروه بحث متصل)</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">F31.3</td><td>مدیریت ناظمان</td><td>مجوزهای ریزدانه per-ناظم؛ محدودسازی/بن عضو با مدت؛ UI گزارش اقدامات</td><td class="n">۱۰ ساعت</td></tr>
+          <tr><td class="n">F31.4</td><td>دعوت و عضویت</td><td>لینک+QR با انقضا/سقف، درخواست عضویت با صف تایید ناظم، Slow Mode</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">F31.5</td><td>پوشه‌های چت</td><td>پوشه‌ی سفارشی با قواعد + پیش‌ساخته‌های سازمانی؛ آرشیو/سنجاق/خوانده‌نشده‌ی دستی</td><td class="n">۱۰ ساعت</td></tr>
+          <tr><td class="n">F31.6</td><td>Poll درون‌چت + auto-delete + بلاک/گزارش</td><td>نظرسنجی/آزمون تلگرامی؛ تایمر حذف خودکار per-چت؛ بلاک در DM و گزارش تخلف</td><td class="n">۱۰ ساعت</td></tr>
+        </tbody>
+      </table></div>
+      <div class="dep">وابستگی: F29. داده: B28.</div>
+    </div>
+
+    <div class="task f">
+      <div class="task-h"><span class="task-id">F32</span><b>جستجو، اعلان و همگام‌سازی</b><span class="spacer"></span><span class="pill p-p2">P2</span><span class="pill p-todo">نساخته</span><span class="est">۵ روز</span></div>
+      <div class="subhd">Subtaskها (مرجع: مشخصات، بخش ۵ و ۶)</div>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th>جزئیات فنی</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">F32.1</td><td>جستجوی کامل</td><td>سراسری + درون‌چت با پیمایش نتایج، فیلتر نوع/فرستنده، پرش به تاریخ شمسی، هشتگ کلیک‌پذیر</td><td class="n">۱۰ ساعت</td></tr>
+          <tr><td class="n">F32.2</td><td>اعلان پیشرفته</td><td>بی‌صدا با مدت، «فقط منشن»، پیش‌نمایش، Badge تفکیکی @ در چت/پوشه/کل</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">F32.3</td><td>خوانده‌نشده و رسیدها</td><td>جداکننده‌ی خوانده‌نشده + اسکرول به آن؛ seen-by گروه‌های کوچک</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">F32.4</td><td>آفلاین و sync</td><td>صف ارسال آفلاین با retry، بازگردانی خطای optimistic، sync وضعیت بین تب‌ها</td><td class="n">۸ ساعت</td></tr>
+        </tbody>
+      </table></div>
+      <div class="dep">وابستگی: F29. داده: B26.</div>
+    </div>
+
+    <div class="task f">
+      <div class="task-h"><span class="task-id">F33</span><b>تماس صوتی/تصویری و جلسات زنده</b><span class="spacer"></span><span class="pill p-p3">P3</span><span class="pill p-todo">اختیاری — منتظر تصمیم PO</span><span class="est">—</span></div>
+      <p class="desc">طبق تصمیم معماری، ادغام SDK آماده (Jitsi/LiveKit self-host) نه ساخت از صفر: تماس ۱:۱، گفتگوی صوتی گروهی روی کانال (دست‌بلندکردن، ضبط)، اشتراک صفحه. تخمین پس از انتخاب SDK.</p>
+      <div class="dep">وابستگی: تصمیم PO + B29. خارج از جمع الحاقیه.</div>
+    </div>
+
+    <div class="note">
+      <b>جمعِ الحاقیه‌ی پیام‌رسان (Front): ~۲۸ روز (F29–F32)</b> — جدا از همه‌ی جمع‌های قبلی. ترتیب: F29 ← F30/F32 موازی ← F31. F33 فقط با تایید PO.
+    </div>
+  </section>
+
 
 
 </div>

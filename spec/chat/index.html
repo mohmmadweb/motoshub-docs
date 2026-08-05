@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Motoshub — مشخصات کامل پیام‌رسان (هم‌ترازی با تلگرام)</title>
+<style>
+  :root{
+    --bg:#eef1f4;--panel:#ffffff;--line:#d6dce3;--line2:#e6eaef;
+    --ink:#131a24;--ink2:#3a4655;--muted:#68727f;
+    --front:#1f6f9e;--front-bg:#e8f2f9;
+    --back:#7a41ad;--back-bg:#f2ebf9;
+    --p1:#b23a52;--p2:#b47a1e;--p3:#3f7d63;
+    --done:#2c7a56;--part:#a9791f;--todo:#a8394f;
+    --est:#0f4c75;
+    --mono:"SF Mono",ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:"Vazirmatn","Segoe UI",Tahoma,system-ui,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#0c1116;--panel:#141b23;--line:#28323d;--line2:#1d252e;
+      --ink:#e9eef4;--ink2:#c2ccd6;--muted:#8b96a3;
+      --front:#5aa6d8;--front-bg:#14222e;--back:#b389df;--back-bg:#211a2e;
+      --p1:#e07387;--p2:#d9ab5a;--p3:#63c495;
+      --done:#5cc48d;--part:#d9ab5a;--todo:#e07387;--est:#6fb2e0;}
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+    line-height:1.85;padding:26px 16px}
+  .wrap{max-width:1060px;margin:0 auto}
+  .kicker{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+  h1{font-size:clamp(24px,4.4vw,33px);font-weight:800;letter-spacing:-.01em;margin:0 0 10px}
+  .lede{color:var(--ink2);font-size:15.5px;margin:0 0 8px;max-width:70ch}
+  .meta-line{font-family:var(--mono);font-size:12px;color:var(--muted);margin:0 0 22px}
+  .legend{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:16px 0;font-size:13px}
+  .legend b{font-size:13.5px}
+  .row{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:8px;align-items:center}
+  .pill{font-family:var(--mono);font-size:10.5px;padding:2px 8px;border-radius:20px;white-space:nowrap;font-weight:600}
+  .p-done{background:rgba(44,122,86,.16);color:var(--done)} .p-part{background:rgba(169,121,31,.17);color:var(--part)} .p-todo{background:rgba(168,57,79,.15);color:var(--todo)}
+  .p-p1{background:rgba(178,58,82,.14);color:var(--p1)} .p-p2{background:rgba(180,122,30,.15);color:var(--p2)} .p-p3{background:rgba(63,125,99,.15);color:var(--p3)}
+  .est{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--est);background:rgba(15,76,117,.10);padding:2px 8px;border-radius:6px;white-space:nowrap}
+  @media (prefers-color-scheme:dark){.est{background:rgba(111,178,224,.12)}}
+  .toc{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin:16px 0;font-size:13px;columns:2;column-gap:26px}
+  .toc a{display:block;color:var(--front);text-decoration:none;padding:2px 0;break-inside:avoid}
+  .toc a:hover{text-decoration:underline}
+  @media (max-width:640px){.toc{columns:1}}
+  .tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:11px;margin:12px 0}
+  table{border-collapse:collapse;width:100%;font-size:12.7px;min-width:560px}
+  th,td{padding:8px 11px;text-align:right;border-bottom:1px solid var(--line2);vertical-align:top}
+  th{background:rgba(120,130,140,.07);font-weight:700}
+  tr:last-child td{border-bottom:none}
+  td.n,th.n{white-space:nowrap;font-family:var(--mono);font-size:11.5px;text-align:center;width:1%}
+  tfoot td{font-weight:800;background:rgba(120,130,140,.05)}
+  .phase{margin:40px 0 8px}
+  .phase-h{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--line);padding-bottom:9px}
+  .phase-n{font-family:var(--mono);font-size:26px;font-weight:800;color:var(--muted);line-height:1}
+  .phase-h h2{font-size:21px;margin:0;font-weight:800}
+  .phase-goal{color:var(--muted);font-size:13.5px;margin:8px 0 0}
+  .band{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:11px;font-weight:700;padding:3px 11px;border-radius:20px;margin:18px 0 4px}
+  .band.f{background:var(--front-bg);color:var(--front)}
+  .band.b{background:var(--back-bg);color:var(--back)}
+  .task{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:15px 18px;margin:12px 0}
+  .task.f{border-inline-start:3px solid var(--front)}
+  .task.b{border-inline-start:3px solid var(--back)}
+  .task-h{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .task-id{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--muted)}
+  .task-h b{font-size:15.5px}
+  .task-h .spacer{flex:1}
+  .story{background:rgba(120,130,140,.06);border-radius:9px;padding:9px 13px;margin:11px 0;font-size:13.3px}
+  .story .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:2px}
+  .desc{font-size:13.6px;color:var(--ink2);margin:10px 0}
+  .desc code,td code,.ac code,.story code,.ears code{font-family:var(--mono);font-size:11.3px;background:rgba(120,130,140,.14);padding:1px 6px;border-radius:5px;color:var(--ink)}
+  .ears{border-inline-start:3px solid var(--muted);padding:2px 12px;margin:9px 0;font-size:13px;color:var(--ink2);font-style:italic}
+  .ac{margin:10px 0 4px;font-size:12.9px}
+  .ac .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
+  .ac ul{margin:0;padding-inline-start:18px}
+  .ac li{margin:3px 0}
+  .dep{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:9px}
+  .subhd{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:12px 0 4px}
+  .note{background:var(--panel);border:1px solid var(--line);border-inline-start:3px solid var(--p2);border-radius:10px;padding:12px 16px;margin:16px 0;font-size:13.4px}
+  .foot{margin-top:46px;padding-top:16px;border-top:1px solid var(--line);font-family:var(--mono);font-size:11.5px;color:var(--muted);text-align:center;line-height:2}
+  a{color:var(--front)}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+  <p class="kicker">Motoshub · Binding Spec</p>
+  <h1>مشخصات کامل پیام‌رسان — هم‌ترازی با تلگرام</h1>
+  <p class="lede">هدف نهایی: پیام‌رسانِ موتوشاب باید <b>تمام قابلیت‌های تلگرام</b> را — تا جایی که در بستر سازمانی معنا دارد — داشته باشد، به‌علاوه‌ی قابلیت‌های سازمانیِ خاص خودمان (کانال‌های دامنه‌دار، بات/وب‌هوک/دستور اسلش، حساب مهمان، خروجی انطباق). این سند فهرست الزام‌آورِ آن قابلیت‌ها، وضعیت هر کدام در <a href="https://demo.shub.ir">demo.shub.ir</a> و تسک متناظرش است.</p>
+  <p class="meta-line">نگارش ۱ · ۱۴۰۵/۰۵/۱۴ · تسک‌ها: <a href="../../tasks/frontend/#p9">F29–F33</a> · <a href="../../tasks/backend/#p9">B25–B29</a> · مرتبط: <a href="../scope/">قرارداد دامنه‌بندی</a> (کانال‌ها دامنه‌دارند)</p>
+
+  <div class="note" style="border-inline-start-color:var(--p1)">
+    <b>سه قاعده‌ی برش (Scope Cut):</b>
+    (۱) هر قابلیت تلگرام که به «هویت شخصی/شبکه‌ی عمومی» گره خورده (شماره‌تلفن عمومی، People Nearby، استوری، Premium) در بستر سازمانی <b>حذف عمدی</b> است و در جدول با «—حذف» مشخص شده.
+    (۲) استیکر/GIF به‌صورت «مجموعه‌ی سازمانیِ مدیریت‌شده» می‌آید نه فروشگاه باز.
+    (۳) تماس صوتی/تصویری طبق تصمیم معماری موجود (برون‌سپاری/ادغام، نه ساخت از صفر) تسک اختیاریِ جداست (F33/B29).
+  </div>
+
+  <section class="phase">
+    <div class="phase-h"><span class="phase-n">۱</span><h2>پیام‌رسانی پایه</h2></div>
+    <div class="tblwrap"><table>
+      <thead><tr><th>قابلیت</th><th>جزئیات الزام‌آور</th><th class="n">در دمو</th><th class="n">تسک</th></tr></thead>
+      <tbody>
+        <tr><td>ارسال متن</td><td>ارسال با Enter، خط جدید با Shift+Enter، پیش‌نویس هر گفتگو جدا ذخیره و بین دستگاه‌ها sync شود</td><td class="n">✅ (بدون draft-sync)</td><td class="n">F29 · B25</td></tr>
+        <tr><td>ویرایش پیام</td><td>پنجره‌ی ویرایش قابل‌تنظیم (پیش‌فرض ۴۸ ساعت)، برچسب «ویرایش‌شده»، تاریخچه‌ی ویرایش برای انطباق</td><td class="n">✅ (بدون پنجره/تاریخچه)</td><td class="n">F29 · B25</td></tr>
+        <tr><td>حذف پیام</td><td>«حذف برای من» / «حذف برای همه» (پنجره‌ی قابل‌تنظیم)؛ در کانال: فقط ناظم</td><td class="n">نیمه (حذف ساده)</td><td class="n">F29 · B25</td></tr>
+        <tr><td>پاسخ (Reply)</td><td>نقل‌قول پیام با پرش به اصل؛ <b>نقل‌قول بخشی از متن</b> (Quote انتخابی — تلگرام ۲۰۲۳)</td><td class="n">✅ reply · ❌ quote انتخابی</td><td class="n">F29</td></tr>
+        <tr><td>رشته‌ی پاسخ (Thread)</td><td>پنل رشته کنار گفتگو، شمارنده‌ی «N پاسخ در رشته»، دنبال‌کردن رشته</td><td class="n">✅</td><td class="n">—</td></tr>
+        <tr><td>فوروارد</td><td>تکی و چندتایی، با/بدون نامِ فرستنده، به چند مقصد هم‌زمان؛ احترام به مرز دامنه (فوروارد به کانالِ خارج از دامنه ممنوع)</td><td class="n">✅ تکی</td><td class="n">F29 · B25</td></tr>
+        <tr><td>انتخاب چندتایی</td><td>انتخاب چند پیام → فوروارد/حذف/کپی گروهی</td><td class="n">❌</td><td class="n">F29</td></tr>
+        <tr><td>پیام زمان‌بندی‌شده</td><td>ارسال در زمان معین + «ارسال بی‌صدا» (بدون نوتیف گیرنده)</td><td class="n">❌</td><td class="n">F29 · B25</td></tr>
+        <tr><td>واکنش (Reaction)</td><td>چند واکنش روی هر پیام، شمارنده + فهرست واکنش‌دهنده‌ها؛ مجموعه‌ی مجاز توسط راهبر</td><td class="n">✅ پایه</td><td class="n">F29 · B25</td></tr>
+        <tr><td>پین پیام</td><td><b>چند پین هم‌زمان</b> با نوار پیمایش بین پین‌ها (مثل تلگرام)، پین با/بدون اعلان</td><td class="n">✅ تک‌پین</td><td class="n">F29</td></tr>
+        <tr><td>ذخیره‌شده‌ها</td><td>Saved Messages شخصی + ذخیره از هر گفتگو</td><td class="n">✅</td><td class="n">—</td></tr>
+        <tr><td>رسید خواندن</td><td>تیک ✓ (رسیده) / ✓✓ (خوانده)؛ در گروه‌های کوچک «چه کسانی خواندند»</td><td class="n">✅ تیک‌ها · ❌ seen-by</td><td class="n">F32 · B26</td></tr>
+        <tr><td>در حال تایپ…</td><td>نشانگر تایپ per-چت؛ در گروه با نام افراد</td><td class="n">✅ در DM</td><td class="n">B26</td></tr>
+        <tr><td>جداکننده‌ی خوانده‌نشده</td><td>خط «پیام‌های خوانده‌نشده» هنگام بازکردن چت + اسکرول به همان‌جا</td><td class="n">❌</td><td class="n">F32</td></tr>
+        <tr><td>تایمر حذف خودکار</td><td>Auto-delete per-چت (۱ روز/۱ هفته/۱ ماه/سفارشی) — برای گفتگوهای حساس سازمانی</td><td class="n">❌</td><td class="n">F31 · B28</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="phase">
+    <div class="phase-h"><span class="phase-n">۲</span><h2>قالب‌بندی و محتوای غنی</h2></div>
+    <div class="tblwrap"><table>
+      <thead><tr><th>قابلیت</th><th>جزئیات الزام‌آور</th><th class="n">در دمو</th><th class="n">تسک</th></tr></thead>
+      <tbody>
+        <tr><td>قالب‌بندی متن</td><td><b>پررنگ</b>، <i>مورب</i>، زیرخط، خط‌خورده، <code>مونو/کد</code>، بلوک کد، نقل‌قول، <b>اسپویلر</b> (متن پنهان تا لمس)، لینک با متن دلخواه — با میانبر کیبورد و منوی انتخاب متن</td><td class="n">❌</td><td class="n">F29</td></tr>
+        <tr><td>پیش‌نمایش لینک</td><td>کارت پیش‌نمایش (عنوان/تصویر/توضیح) + امکان حذف پیش‌نمایش قبل از ارسال؛ لینک‌های داخلی سامانه کارت اختصاصی (خبر/سند/رویداد)</td><td class="n">❌</td><td class="n">F29 · B27</td></tr>
+        <tr><td>منشن</td><td><code>@نام</code> با پیشنهاد خودکار، هایلایت و شمارنده‌ی منشن روی چت؛ <code>@all/@here</code> فقط ناظم</td><td class="n">✅ پایه</td><td class="n">F29</td></tr>
+        <tr><td>هشتگ</td><td>کلیک‌پذیر → جستجوی همان برچسب در گفتگو</td><td class="n">❌</td><td class="n">F32</td></tr>
+        <tr><td>ایموجی</td><td>پیکر ایموجی با جستجو و پرکاربردها؛ ایموجی تکی بزرگ‌نمایی شود</td><td class="n">✅ پایه</td><td class="n">F29</td></tr>
+        <tr><td>استیکر سازمانی</td><td>مجموعه‌های استیکرِ تأییدشده توسط راهبر (برند سازمان)؛ بدون فروشگاه باز</td><td class="n">❌ (اختیاری)</td><td class="n">F30 · B27</td></tr>
+        <tr><td>نظرسنجی درون‌چت</td><td>Poll تلگرامی: چندگزینه‌ای، ناشناس/آشکار، چندانتخابی، حالت آزمون (Quiz) — جدا از ماژول نظرسنجی سازمانی</td><td class="n">❌</td><td class="n">F31 · B28</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="phase">
+    <div class="phase-h"><span class="phase-n">۳</span><h2>رسانه، فایل و صوت</h2></div>
+    <div class="tblwrap"><table>
+      <thead><tr><th>قابلیت</th><th>جزئیات الزام‌آور</th><th class="n">در دمو</th><th class="n">تسک</th></tr></thead>
+      <tbody>
+        <tr><td>عکس و ویدیو</td><td>ارسال با کپشن، چندتایی به‌صورت <b>آلبوم گروه‌شده</b>، فشرده/اصل، ویرایشگر ساده (برش/چرخش/قلم)</td><td class="n">نیمه (تک‌عکس)</td><td class="n">F30 · B27</td></tr>
+        <tr><td>نمایشگر رسانه</td><td>تمام‌صفحه با ورق‌زدن بین رسانه‌های همان چت، زوم، ذخیره، نمایش فرستنده/زمان</td><td class="n">❌</td><td class="n">F30</td></tr>
+        <tr><td>پیام صوتی</td><td>ضبط با نگه‌داشتن + قفل ضبط، <b>شکل موج</b>، پخش با سرعت ۱×/۱.۵×/۲×، ادامه‌ی پخش هنگام جابه‌جایی بین چت‌ها</td><td class="n">✅ ضبط پایه</td><td class="n">F30 · B27</td></tr>
+        <tr><td>پیام ویدیویی (دایره‌ای)</td><td>ضبط ویدیوی کوتاه دایره‌ای (video message تلگرام)</td><td class="n">❌ (اختیاری)</td><td class="n">F30</td></tr>
+        <tr><td>فایل/سند</td><td>هر نوع فایل تا سقف تنظیم‌شده‌ی راهبر، نوار پیشرفت آپلود/دانلود قابل‌لغو، ازسرگیری آپلود قطع‌شده</td><td class="n">نیمه (UI پیوست)</td><td class="n">F30 · B27</td></tr>
+        <tr><td>گالری اشتراکی چت</td><td>تب‌های «رسانه / فایل / لینک / صوت» در پروفایل هر چت — مثل Shared Media تلگرام</td><td class="n">✅ رسانه (پایه)</td><td class="n">F30 · B27</td></tr>
+        <tr><td>تنظیم دانلود خودکار</td><td>per-نوع و per-شبکه (داده/وای‌فای) — برای کاربر موبایل</td><td class="n">❌</td><td class="n">F32</td></tr>
+        <tr><td>اشتراک مخاطب/موقعیت</td><td>اشتراک کارت کاربر سازمانی؛ موقعیت زنده «—حذف» (کاربرد سازمانی ندارد، ریسک حریم خصوصی)</td><td class="n">❌ / —حذف</td><td class="n">F30</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="phase">
+    <div class="phase-h"><span class="phase-n">۴</span><h2>گروه‌ها، کانال‌ها و تاپیک‌ها</h2></div>
+    <div class="tblwrap"><table>
+      <thead><tr><th>قابلیت</th><th>جزئیات الزام‌آور</th><th class="n">در دمو</th><th class="n">تسک</th></tr></thead>
+      <tbody>
+        <tr><td>کانال (Broadcast)</td><td>فقط ناظم‌ها می‌نویسند؛ <b>امضای نویسنده</b>، شمارنده‌ی بازدید هر پست، <b>نظرات</b> ذیل پست از طریق گروه بحث متصل</td><td class="n">نیمه (کانال ساده)</td><td class="n">F31 · B28</td></tr>
+        <tr><td>گروه</td><td>اعضا، توضیحات، قوانین پین‌شده؛ ظرفیت بالا</td><td class="n">✅ پایه</td><td class="n">B28</td></tr>
+        <tr><td><b>تاپیک‌ها (Forum Groups)</b></td><td>گروه‌های تاپیک‌دار تلگرام: هر گروه چند تاپیک مجزا با فهرست، آیکن و اعلان جدا — برای گروه‌های بزرگ سازمانی حیاتی</td><td class="n">❌</td><td class="n">F31 · B28</td></tr>
+        <tr><td>مجوزهای ریزدانه‌ی ناظم</td><td>مثل تلگرام: تفکیک حق حذف پیام / بن / دعوت / پین / تغییر اطلاعات / افزودن ناظم — per-ناظم</td><td class="n">❌ (ناظم واحد)</td><td class="n">F31 · B28</td></tr>
+        <tr><td>محدودیت اعضا</td><td>محدودکردن عضو خاص (فقط‌خواندن، بدون رسانه) با مدت؛ بن با پاک‌سازی پیام‌ها</td><td class="n">❌</td><td class="n">F31 · B28</td></tr>
+        <tr><td>لینک دعوت</td><td>لینک + QR، با انقضا/سقف استفاده، <b>درخواست عضویت با تایید ناظم</b> (Join Request)</td><td class="n">❌</td><td class="n">F31 · B28</td></tr>
+        <tr><td>حالت آهسته (Slow Mode)</td><td>فاصله‌ی اجباری بین پیام‌های هر عضو (۱۰ث تا ۱س)</td><td class="n">❌</td><td class="n">F31 · B28</td></tr>
+        <tr><td>گزارش اقدامات ناظمان</td><td>Admin Log ۴۸ساعته‌ی تلگرام → در نسخه‌ی سازمانی: دائمی و متصل به Audit Log انطباق</td><td class="n">❌</td><td class="n">B28</td></tr>
+        <tr><td>دامنه‌بندی کانال</td><td>کانال‌ها <code>Scoped</code>‌اند (سراسری/هلدینگ/شرکت) — <a href="../scope/">قرارداد دامنه‌بندی</a></td><td class="n">✅</td><td class="n">B21</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="phase">
+    <div class="phase-h"><span class="phase-n">۵</span><h2>سازماندهی، جستجو و اعلان</h2></div>
+    <div class="tblwrap"><table>
+      <thead><tr><th>قابلیت</th><th>جزئیات الزام‌آور</th><th class="n">در دمو</th><th class="n">تسک</th></tr></thead>
+      <tbody>
+        <tr><td><b>پوشه‌های چت</b></td><td>Chat Folders تلگرام: پوشه‌های سفارشی با قواعد شمول/استثنا + شمارنده‌ی خوانده‌نشده per-پوشه؛ پوشه‌های پیش‌ساخته‌ی سازمانی (هلدینگ من/شرکت من)</td><td class="n">نیمه (۳ دسته‌ی ثابت)</td><td class="n">F31</td></tr>
+        <tr><td>آرشیو</td><td>آرشیو چت با سوایپ، خروج خودکار از آرشیو با پیام جدید (قابل‌تنظیم)</td><td class="n">✅ پایه</td><td class="n">F31</td></tr>
+        <tr><td>پین چت / علامت خوانده‌نشده</td><td>سنجاق گفتگو بالای فهرست؛ mark-as-unread دستی</td><td class="n">✅ علاقه‌مندی · ❌ unread دستی</td><td class="n">F31</td></tr>
+        <tr><td>جستجوی سراسری چت</td><td>روی همه‌ی گفتگوها + پرش به پیام در بستر خودش؛ فیلتر بر اساس نوع (رسانه/فایل/لینک/صوت) و فرستنده</td><td class="n">✅ فیلتر نام چت</td><td class="n">F32 · B26</td></tr>
+        <tr><td>جستجوی درون‌چت + پرش به تاریخ</td><td>جستجو داخل یک گفتگو، پیمایش بین نتایج، Jump to Date با تقویم شمسی</td><td class="n">❌</td><td class="n">F32 · B26</td></tr>
+        <tr><td>اعلان per-چت</td><td>بی‌صدا با مدت (۱س/۸س/۲روز/همیشه)، استثناها، پیش‌نمایش روشن/خاموش، «فقط منشن‌ها» برای کانال شلوغ</td><td class="n">✅ بی‌صدا ساده</td><td class="n">F32 · B26</td></tr>
+        <tr><td>شمارنده‌ها</td><td>Badge خوانده‌نشده per-چت/پوشه/کل؛ تفکیک منشن (@) از پیام عادی</td><td class="n">✅ پایه</td><td class="n">F32</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="phase">
+    <div class="phase-h"><span class="phase-n">۶</span><h2>همگام‌سازی، حریم خصوصی و سازمانی</h2></div>
+    <div class="tblwrap"><table>
+      <thead><tr><th>قابلیت</th><th>جزئیات الزام‌آور</th><th class="n">در دمو</th><th class="n">تسک</th></tr></thead>
+      <tbody>
+        <tr><td>چنددستگاهی</td><td>وضعیت خوانده/پیش‌نویس/ارسال بین تب‌ها و دستگاه‌ها sync؛ فهرست نشست‌ها و خروج از راه دور (به «امنیت و نشست‌ها»ی موجود وصل می‌شود)</td><td class="n">❌ sync</td><td class="n">B26</td></tr>
+        <tr><td>آفلاین</td><td>صف ارسال آفلاین با retry، کش تاریخچه، حالت optimistic با برگشت در خطا</td><td class="n">نیمه (optimistic)</td><td class="n">F32 · B26</td></tr>
+        <tr><td>حضور (Presence)</td><td>چهار وضعیت (آنلاین/غایب/مزاحم نشوید/نامرئی) + «آخرین بازدید» با سطوح حریم خصوصی تلگرامی (همه/اعضای سازمان/هیچ‌کس)</td><td class="n">✅ چهار وضعیت</td><td class="n">B26</td></tr>
+        <tr><td>مسدودسازی/گزارش</td><td>بلاک کاربر در DM؛ گزارش پیام/کاربر به راهبر با دسته‌ی تخلف</td><td class="n">❌</td><td class="n">F31 · B28</td></tr>
+        <tr><td>بات و وب‌هوک</td><td>حساب بات با ارسال از API، وب‌هوک ورودی/خروجی، دکمه‌های اینلاین زیر پیامِ بات (inline keyboard)</td><td class="n">✅ تعریف در راهبری</td><td class="n">B28</td></tr>
+        <tr><td>دستور اسلش</td><td><code>/command</code> با منوی پیشنهاد و پارامتر — اجرا از طریق همان بات‌ها</td><td class="n">✅</td><td class="n">—</td></tr>
+        <tr><td>حساب مهمان</td><td>دسترسی محدود به کانال‌های مشخص با انقضا (پیمانکاران)</td><td class="n">✅ تعریف در راهبری</td><td class="n">B28</td></tr>
+        <tr><td>خروجی انطباق</td><td>Compliance Export گفتگوها با فیلتر بازه/کاربر/کانال + تاریخچه‌ی ویرایش/حذف — فقط نقش انطباق</td><td class="n">✅ UI در راهبری</td><td class="n">B28</td></tr>
+        <tr><td>—حذف عمدی</td><td>استوری، People Nearby، شماره‌تلفن عمومی، Premium/هدیه، کیف پول — در بستر سازمانی بی‌معنا</td><td class="n">—</td><td class="n">—</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="phase">
+    <div class="phase-h"><span class="phase-n">۷</span><h2>تماس صوتی/تصویری و جلسات زنده (اختیاری — تصمیم PO)</h2></div>
+    <div class="note">
+      طبق تصمیم معماری موجود، ساخت موتور تماس از صفر ممنوع است؛ گزینه‌ها: ادغام SDK آماده (Jitsi/LiveKit self-host) پشت همان هویت.
+      دامنه‌ی هدف: تماس ۱:۱ صوتی/تصویری، <b>گفتگوی صوتی گروهی</b> (Voice Chat تلگرام) روی کانال/گروه با دست‌بلندکردن و ضبط جلسه، اشتراک صفحه.
+      تسک‌های F33/B29 فقط پس از تایید PO فعال می‌شوند و در جمع الحاقیه حساب نشده‌اند.
+    </div>
+  </section>
+
+  <div class="foot">
+    docs.shub.ir · نگارش ۱ — ۱۴۰۵/۰۵/۱۴ · <a href="../../">بازگشت به فهرست اسناد</a>
+  </div>
+</div>
+</body></html>
