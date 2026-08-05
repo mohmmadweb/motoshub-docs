@@ -86,7 +86,7 @@
   <p class="kicker">Motoshub · Delivery Plan · Front</p>
   <h1>تسک‌های تیم Front — با جزئیات پیاده‌سازی</h1>
   <p class="lede">همه‌ی تسک‌های فرانت با subtask، تخمین، User Story و معیار پذیرش. مرجع رفتار: <a href="https://demo.shub.ir">demo.shub.ir</a> · خط لوله‌ی الزامی تحویل: <a href="../../process/">فرآیند تحویل و کیفیت</a> · <a href="../backend/">تسک‌های Backend</a></p>
-  <div class="toc"><a href="#guide">راهنمای پیاده‌سازی</a><a href="#summary">زمان‌بندی</a><a href="#arch">تصمیم‌های الزام‌آور</a><a href="#p0">فاز ۰</a><a href="#p1">فاز ۱</a><a href="#p2">فاز ۲</a><a href="#p3">فاز ۳</a><a href="#p4">فاز ۴</a><a href="#p5">فاز ۵</a><a href="#p6">فاز ۶</a><a href="#p7">دامنه‌ی کشف‌شده</a><a href="../../status/">وضعیت زنده</a></div>
+  <div class="toc"><a href="#guide">راهنمای پیاده‌سازی</a><a href="#summary">زمان‌بندی</a><a href="#arch">تصمیم‌های الزام‌آور</a><a href="#p0">فاز ۰</a><a href="#p1">فاز ۱</a><a href="#p2">فاز ۲</a><a href="#p3">فاز ۳</a><a href="#p4">فاز ۴</a><a href="#p5">فاز ۵</a><a href="#p6">فاز ۶</a><a href="#p7">دامنه‌ی کشف‌شده</a><a href="#p8">هم‌ترازی با دموی نهایی</a><a href="../../spec/scope/">قرارداد دامنه‌بندی</a><a href="../../status/">وضعیت زنده</a></div>
 
   <section class="phase" id="guide">
     <div class="phase-h"><span class="phase-n">¶</span><h2>راهنمای پیاده‌سازی تیم Front</h2></div>
@@ -168,6 +168,9 @@
     <div class="note" style="border-inline-start-color:var(--p1)">
       <b>۳) قراردادِ پاسخ ثابت است.</b> فهرست‌ها همیشه پاکتِ <code>{data, links, meta}</code> با <code>meta.current_page/per_page/total</code>؛ خطاها با کدهای <code>401/403/404/422</code> و بدنه‌ی یکسان. مرجعِ فیلدها: Swagger روی <code>motonext.shub.ir/api/v1/docs/index</code> — که در راستی‌آزماییِ ۱۴۰۵/۰۵/۱۱ پاسخِ ۴۰۴ داد و باید بازگردانده شود (<a href="../../status/#contract">جزئیات</a>). تا آن زمان مرجعِ فیلدها = کنترلرها و <code>Resource</code>های <code>ow_plugins/*/src/Http</code> در برنچ <code>API</code>..
     </div>
+      <div class="note" style="border-inline-start-color:var(--p1)">
+      <b>۴) دامنه‌بندی الزام‌آور است (الحاقیه ۱۴۰۵/۰۵/۱۴).</b> هر موجودیت محتوایی سه فیلد <code>scope/holdingId/companyId</code> دارد؛ دامنه‌ی دید از عضویتِ کاربر محاسبه می‌شود نه از انتخاب او؛ و فیلتر/اعتبارسنجی باید <b>سمت سرور</b> باشد. مشخصات کامل و سناریوهای پذیرش: <a href="../../spec/scope/">قرارداد دامنه‌بندی و دسترسی</a>.
+    </div>
   </section>
 <section class="phase" id="p0">
     <div class="phase-h"><span class="phase-n">۰</span><h2>پایه و زیرساخت</h2></div>
@@ -243,6 +246,7 @@
         <li>Given مهمان، When <code>/workspace</code> باز شود، Then به <code>/login</code> با پارامترِ بازگشت هدایت شود.</li>
       </ul></div>
       <div class="dep">وابستگی: F1؛ داده: B4 (تا آماده‌شدن به PHP <code>/auth/*</code> وصل شود).</div>
+      <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): در نسخه‌ی نهایی، پاسخ <code>auth/me</code> عضویت و تخصیص نقش را هم می‌آورد و نشستِ دامنه از همان ساخته می‌شود ← <a href="#p8">F25</a> و <a href="../../spec/scope/">قرارداد دامنه‌بندی</a>.</div>
     </div>
 
     <div class="task f">
@@ -386,6 +390,7 @@
         </tbody>
       </table></div>
       <div class="dep">وابستگی: F5، F7 (الگوی دیوار). داده: B10.</div>
+      <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): نقش «ناظم گروه» در نسخه‌ی نهایی فقط در گروه خودش اکشن مدیریتی دارد ← <a href="#p8">F26.3</a>.</div>
     </div>
 
     <div class="task f">
@@ -403,6 +408,7 @@
         </tbody>
       </table></div>
       <div class="dep">وابستگی: F5. داده: B9.</div>
+      <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): خبر در نسخه‌ی نهایی فیلد <code>topic</code> (۵ مقدار) دارد ← <a href="#p8">F27.2</a>.</div>
     </div>
 
     <div class="task f">
@@ -420,6 +426,7 @@
         </tbody>
       </table></div>
       <div class="dep">وابستگی: F5. داده: B11 (آماده).</div>
+      <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): رویداد در نسخه‌ی نهایی <code>category</code> و <code>capacity</code> دارد ← <a href="#p8">F27.1</a>.</div>
     </div>
 
     <div class="task f">
@@ -437,6 +444,7 @@
         </tbody>
       </table></div>
       <div class="dep">وابستگی: F5. داده: B12 (آماده، با اصلاحاتِ IDOR).</div>
+      <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): ویدیو در نسخه‌ی نهایی نشانِ <code>duration</code> روی بندانگشتی دارد ← <a href="#p8">F27.3</a>.</div>
     </div>
 
     <div class="task f">
@@ -477,6 +485,7 @@
         </tbody>
       </table></div>
       <div class="dep">وابستگی: F5. داده: B14.</div>
+      <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): کانال‌ها در نسخه‌ی نهایی موجودیتِ دامنه‌دارند و فهرست با نشست فیلتر می‌شود (DM بدون تغییر) ← <a href="#p8">F25.3</a>.</div>
     </div>
 
     <div class="task f">
@@ -554,6 +563,7 @@
         </tbody>
       </table></div>
       <div class="dep">وابستگی: F5، F9. داده: endpointهای admin.</div>
+      <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): پنل راهبری در نسخه‌ی نهایی «سیستم و ورود یکپارچه»، CRUD هلدینگ/شرکت و تخصیص (کاربر، نقش، دامنه) دارد ← <a href="#p8">F28</a>.</div>
     </div>
 
     <div class="task f">
@@ -658,6 +668,93 @@
       <b>جمعِ دامنه‌ی افزوده: ~۱۳ روزِ Front (F21–F24) + ~۲ روزِ Backend (B20).</b> این عدد عمداً در جدولِ «خلاصه‌ی زمان‌بندی» بالا وارد نشده تا تخمین‌های در حالِ اجرا دست‌نخورده بمانند. جایزه‌ی نوآوری (<code>/dashboard/award</code>) نیز پس از نگارشِ تسک‌ها صفحه‌ی مستقل شد و به‌عنوان زیرکارِ F18.5 پوشش داده می‌شود.
     </div>
   </section>
+
+<section class="phase" id="p8">
+    <div class="phase-h"><span class="phase-n">≡</span><h2>هم‌ترازی با نسخه‌ی نهایی demo.shub.ir — الحاقیه ۱۴۰۵/۰۵/۱۴</h2></div>
+    <p class="phase-goal">
+      از نگارش قبلی این سند، مرجعِ پذیرش (<a href="https://demo.shub.ir">demo.shub.ir</a>) جلو رفته است: دامنه‌بندی
+      «سیستم ← هلدینگ ← شرکت»، ناوبری نقش‌محور، ناظم گروه، فیلدهای محتوایی جدید و پایه‌ی دسترس‌پذیری WCAG.
+      <b>هیچ تسک قبلی تغییر نکرده</b> — همه‌ی این دلتاها تسک‌های تازه‌اند تا کارهای در جریان مختل نشود؛ مرجع فنی
+      کامل: <a href="../../spec/scope/">قرارداد الزام‌آور دامنه‌بندی</a>.
+    </p>
+
+    <div class="band f">◆ تیم Front</div>
+
+    <div class="task f">
+      <div class="task-h"><span class="task-id">F25</span><b>نشست و دامنه‌بندی سمت کاربر</b><span class="spacer"></span><span class="pill p-p1">P1</span><span class="pill p-todo">نساخته</span><span class="est">۴ روز</span></div>
+      <div class="story"><span class="lbl">User Story</span>به‌عنوان عضو سازمان، بدون هیچ انتخابی فقط محتوای دامنه‌ی عضویتم را ببینم؛ و اگر عضو چند شرکتم، با سوییچر هدر فقط بین همان‌ها جابه‌جا شوم.</div>
+      <p class="desc">دامنه از <code>auth/me</code> می‌آید (عضویت + تخصیص نقش) و کاربر آن را انتخاب نمی‌کند. مرجع رفتار: سوییچر هدر، نشان دامنه روی ردیف‌ها، و انتخاب‌گر دامنه‌ی انتشارِ مجوزمحور در دمو.</p>
+      <div class="subhd">Subtaskها</div>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th>جزئیات فنی</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">F25.1</td><td>مدل نشست</td><td>خواندن <code>memberCompanyIds</code> و <code>grant</code> از <code>auth/me</code>؛ context مشترک (معادل <code>TenancyContext</code> دمو)</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">F25.2</td><td>سوییچر هدر</td><td>تک‌عضویتی: برچسب خواندنی؛ چندعضویتی: فقط شرکت‌های عضو؛ راهبر: «مشاهده به‌عنوان»؛ در موبایل آیکنی</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">F25.3</td><td>نشان و فیلتر فهرست‌ها</td><td><code>ScopeBadge</code> روی ردیف/کارت همه‌ی ماژول‌ها + پارامتر دامنه در queryها</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">F25.4</td><td>انتشار مجوزمحور</td><td><code>ScopePicker</code> فقط دامنه‌های مجاز نشست؛ عضو عادی: بدون گزینه («منتشر می‌شود برای: X»)</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">F25.5</td><td>مدیریت خطای دامنه</td><td>۴۰۴ آیتم خارج از دامنه، ۴۲۲ انتشار نامجاز — پیام روشن + بازگشت</td><td class="n">۴ ساعت</td></tr>
+        </tbody>
+      </table></div>
+      <div class="ac"><span class="lbl">معیار پذیرش (سناریوهای مرجع در قرارداد، بخش ۶)</span><ul>
+        <li>Given کاربر عضو یک شرکت، When وارد شود، Then سوییچر نبیند و فهرست‌ها فقط سراسری+شرکتش باشند.</li>
+        <li>Given عضو ۳ شرکت، When سوییچر را باز کند، Then دقیقاً همان ۳ شرکت را ببیند و محتوای فهرست با سوییچ عوض شود.</li>
+      </ul></div>
+      <div class="dep">وابستگی: F3، F5. داده: B21، B22.</div>
+    </div>
+
+    <div class="task f">
+      <div class="task-h"><span class="task-id">F26</span><b>ناوبری و اکشن‌های نقش‌محور + ناظم گروه</b><span class="spacer"></span><span class="pill p-p1">P1</span><span class="pill p-todo">نساخته</span><span class="est">۲ روز</span></div>
+      <div class="story"><span class="lbl">User Story</span>به‌عنوان عضو عادی، «پنل راهبری» را نه در منو ببینم و نه با آدرس مستقیم باز کنم؛ و به‌عنوان ناظم گروه فقط در گروه خودم اکشن مدیریتی داشته باشم.</div>
+      <div class="subhd">Subtaskها</div>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th>جزئیات فنی</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">F26.1</td><td>فیلتر ناوبری</td><td>آیتم‌های <code>adminOnly</code> در سایدبار/منوی پروفایل/منوی موبایل بر اساس مجوز مؤثر</td><td class="n">۴ ساعت</td></tr>
+          <tr><td class="n">F26.2</td><td>گارد مسیر</td><td>مسیر admin برای نقش بدون اختیار: صفحه‌ی «دسترسی ندارید» (نه ریدایرکت خاموش)</td><td class="n">۳ ساعت</td></tr>
+          <tr><td class="n">F26.3</td><td>ناظم گروه</td><td>ویرایش/حذف گروه، اخراج عضو و تغییر حریم فقط برای <code>canModerateGroup</code> — مثبت و منفی (g1/g2) تست شود</td><td class="n">۵ ساعت</td></tr>
+        </tbody>
+      </table></div>
+      <div class="dep">وابستگی: F25. داده: B21.</div>
+    </div>
+
+    <div class="task f">
+      <div class="task-h"><span class="task-id">F27</span><b>فیلدهای محتوایی جدید در فرم‌ها، فهرست‌ها و فیلترها</b><span class="spacer"></span><span class="pill p-p2">P2</span><span class="pill p-todo">نساخته</span><span class="est">۲ روز</span></div>
+      <p class="desc">مطابق «قرارداد دامنه‌بندی، بخش ۵»: دسته‌ی رویداد (۵ مقدار) + ظرفیت، موضوع خبر (۵ مقدار)، مدت ویدیو. در نمای عمومی چیپ فیلتر، در داشبورد فیلد فرم + ستون/نشان.</p>
+      <div class="subhd">Subtaskها</div>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th>جزئیات فنی</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">F27.1</td><td>رویداد</td><td>select دسته + ورودی ظرفیت در فرم؛ «X از Y ظرفیت»؛ چیپ «دسته:» در نمای عمومی</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">F27.2</td><td>خبر</td><td>select موضوع در فرم؛ تگ موضوع روی هیرو/کارت/ردیف؛ چیپ «موضوع:» در نمای عمومی</td><td class="n">۵ ساعت</td></tr>
+          <tr><td class="n">F27.3</td><td>رسانه</td><td>نشان مدت (mm:ss) روی بندانگشتی ویدیوها در هر دو نما</td><td class="n">۳ ساعت</td></tr>
+        </tbody>
+      </table></div>
+      <div class="dep">وابستگی: F11، F12، F13 (تحویل‌شده‌ی همان‌ها را گسترش می‌دهد — بازکاری نیست). داده: B24.</div>
+    </div>
+
+    <div class="task f">
+      <div class="task-h"><span class="task-id">F28</span><b>پنل راهبری نسخه‌ی نهایی: هویت سیستم، SSO و ساختار سازمانی</b><span class="spacer"></span><span class="pill p-p2">P2</span><span class="pill p-todo">نساخته</span><span class="est">۴ روز</span></div>
+      <div class="story"><span class="lbl">User Story</span>به‌عنوان مدیر، هویت و روش ورود این نصب را تنظیم کنم؛ هلدینگ/شرکت بسازم و نقش را با دامنه به کاربر بدهم — هر کدام فقط در حد اختیار خودم.</div>
+      <p class="desc">دلتای F19 نسبت به دموی نهایی — F19 دست‌نخورده می‌ماند. بخش «سازمان‌های مشتری» در دمو حذف و جایگزین شده است.</p>
+      <div class="subhd">Subtaskها</div>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th>جزئیات فنی</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">F28.1</td><td>سیستم و ورود یکپارچه</td><td>فرم هویت (نام/دامنه/برند) + پیکربندی SSO (LDAP/SAML/OIDC/OTP) + تست اتصال + سوییچ‌های provisioning</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">F28.2</td><td>هلدینگ‌ها و شرکت‌ها</td><td>CRUD دو سطح + فعال/غیرفعال — محدود به زیرمجموعه‌ی مدیرِ واردشده (زنجیره‌ی واگذاری)</td><td class="n">۱۰ ساعت</td></tr>
+          <tr><td class="n">F28.3</td><td>تخصیص (کاربر، نقش، دامنه)</td><td>دو انتخاب‌گر کنار هم: نقش + دامنه (سیستم/هلدینگ/شرکت/گروه)؛ فهرست کاربران محدود به دامنه‌ی مدیر</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">F28.4</td><td>عضویت کاربران</td><td>افزودن/حذف کاربر به شرکت توسط مدیر شرکت؛ نمایش عضویت‌ها در فهرست</td><td class="n">۶ ساعت</td></tr>
+        </tbody>
+      </table></div>
+      <div class="dep">وابستگی: F19، F25، F26. داده: B21، B23.</div>
+    </div>
+
+    <div class="note">
+      <b>جمعِ الحاقیه‌ی Front: ~۱۲ روز (F25–F28)</b> — جدا از جمع فازهای ۰ تا ۶ و جدا از F21–F24، تا تخمین‌های در حال اجرا دست‌نخورده بمانند.
+      یادآوری کیفیت: خطِ پایه‌ی دسترس‌پذیریِ دمو «صفر نقض WCAG A/AA در axe» است — توکن‌های رنگ اصلاح‌شده (<code>ink-400 #5d6b81</code>، <code>ink-500 #5b6678</code>، <code>navy-950 #0b1220</code>) مبنای F2 هستند و نباید به مقادیر کم‌کنتراست قبلی برگردند.
+    </div>
+  </section>
+
 
 </div>
 </body>

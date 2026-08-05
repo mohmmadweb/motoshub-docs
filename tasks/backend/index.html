@@ -86,7 +86,7 @@
   <p class="kicker">Motoshub · Delivery Plan · Backend</p>
   <h1>تسک‌های تیم Backend — با جزئیات پیاده‌سازی</h1>
   <p class="lede">همه‌ی تسک‌های بک‌اند با subtask، تخمین، User Story و معیار پذیرش. مرجع رفتار: <a href="https://demo.shub.ir">demo.shub.ir</a> · خط لوله‌ی الزامی تحویل: <a href="../../process/">فرآیند تحویل و کیفیت</a> · <a href="../frontend/">تسک‌های Front</a></p>
-  <div class="toc"><a href="#guide">راهنمای پیاده‌سازی</a><a href="#summary">زمان‌بندی</a><a href="#arch">تصمیم‌های الزام‌آور</a><a href="#p0">فاز ۰</a><a href="#p1">فاز ۱</a><a href="#p2">فاز ۲</a><a href="#p3">فاز ۳</a><a href="#p4">فاز ۴</a><a href="#p5">فاز ۵</a><a href="#p6">فاز ۶</a><a href="#p7">دامنه‌ی کشف‌شده</a><a href="../../status/">وضعیت زنده</a></div>
+  <div class="toc"><a href="#guide">راهنمای پیاده‌سازی</a><a href="#summary">زمان‌بندی</a><a href="#arch">تصمیم‌های الزام‌آور</a><a href="#p0">فاز ۰</a><a href="#p1">فاز ۱</a><a href="#p2">فاز ۲</a><a href="#p3">فاز ۳</a><a href="#p4">فاز ۴</a><a href="#p5">فاز ۵</a><a href="#p6">فاز ۶</a><a href="#p7">دامنه‌ی کشف‌شده</a><a href="#p8">هم‌ترازی با دموی نهایی</a><a href="../../spec/scope/">قرارداد دامنه‌بندی</a><a href="../../status/">وضعیت زنده</a></div>
 
   <section class="phase" id="guide">
     <div class="phase-h"><span class="phase-n">¶</span><h2>راهنمای پیاده‌سازی تیم Backend</h2></div>
@@ -163,6 +163,9 @@
     </div>
     <div class="note" style="border-inline-start-color:var(--p1)">
       <b>۳) قراردادِ پاسخ ثابت است.</b> فهرست‌ها همیشه پاکتِ <code>{data, links, meta}</code> با <code>meta.current_page/per_page/total</code>؛ خطاها با کدهای <code>401/403/404/422</code> و بدنه‌ی یکسان. مرجعِ فیلدها: Swagger روی <code>motonext.shub.ir/api/v1/docs/index</code> — که در راستی‌آزماییِ ۱۴۰۵/۰۵/۱۱ پاسخِ ۴۰۴ داد و باید بازگردانده شود (<a href="../../status/#contract">جزئیات</a>). تا آن زمان مرجعِ فیلدها = کنترلرها و <code>Resource</code>های <code>ow_plugins/*/src/Http</code> در برنچ <code>API</code>..
+    </div>
+      <div class="note" style="border-inline-start-color:var(--p1)">
+      <b>۴) دامنه‌بندی الزام‌آور است (الحاقیه ۱۴۰۵/۰۵/۱۴).</b> هر موجودیت محتوایی سه فیلد <code>scope/holdingId/companyId</code> دارد؛ دامنه‌ی دید از عضویتِ کاربر محاسبه می‌شود نه از انتخاب او؛ و فیلتر/اعتبارسنجی باید <b>سمت سرور</b> باشد. مشخصات کامل و سناریوهای پذیرش: <a href="../../spec/scope/">قرارداد دامنه‌بندی و دسترسی</a>.
     </div>
   </section>
 <section class="phase" id="p0">
@@ -247,6 +250,7 @@
         </tbody>
       </table></div>
       <div class="dep">وابستگی: B1، B2.</div>
+      <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): در نسخه‌ی نهایی، <code>auth/me</code> باید عضویت‌ها، تخصیص نقش و مجوزهای مؤثر را هم برگرداند ← <a href="#p8">B21.3</a>.</div>
     </div>
 
     <div class="task b">
@@ -339,6 +343,7 @@
         </tbody>
       </table></div>
       <div class="dep">وابستگی: B5.</div>
+      <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): فیلد <code>topic</code> خبر (۵ مقدار) + فیلتر <code>?topic=</code> ← <a href="#p8">B24</a>.</div>
     </div>
 
     <div class="task b">
@@ -354,6 +359,7 @@
         </tbody>
       </table></div>
       <div class="dep">وابستگی: B5، B7 (الگوی فید).</div>
+      <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): قواعد «ناظم گروه» سمت سرور (فقط گروه خودش) ← <a href="#p8">B22.4</a>.</div>
     </div>
 
     <div class="task b">
@@ -369,6 +375,7 @@
         </tbody>
       </table></div>
       <div class="dep">وابستگی: B5.</div>
+      <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): فیلدهای <code>category</code> و <code>capacity</code> رویداد ← <a href="#p8">B24</a>.</div>
     </div>
 
     <div class="task b">
@@ -385,6 +392,7 @@
         </tbody>
       </table></div>
       <div class="dep">وابستگی: B5، B1.5 (آپلود).</div>
+      <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): فیلد <code>duration</code> ویدیو ← <a href="#p8">B24</a>.</div>
     </div>
 
     <div class="task b">
@@ -420,6 +428,7 @@
         </tbody>
       </table></div>
       <div class="dep">وابستگی: B5. (WebSocket نیازمندِ ASGI؛ مرتبط با B3.)</div>
+      <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): کانال‌ها دامنه‌دارند — فیلتر فهرست کانال بر اساس نشست ← <a href="#p8">B21.2</a> و <a href="#p8">B22.1</a>.</div>
     </div>
 
     <div class="task b">
@@ -532,6 +541,79 @@
       <b>نکته‌ی مکمل برای B4.</b> در راستی‌آزماییِ ۱۴۰۵/۰۵/۱۱ مشخص شد <code>api/v1</code> فقط <code>auth/login</code>، <code>auth/me</code> و <code>auth/permissions</code> دارد — <code>refresh</code>، <code>logout</code>، <code>register</code> و <code>change-password</code> در PHP وجود ندارند. چون F3 (فاز ۱، P1) به هر چهارِ این‌ها وابسته است، B4 عملاً روی مسیرِ بحرانیِ کلِ برنامه قرار می‌گیرد. جزئیات: <a href="../../status/#contract">وضعیت زنده</a>.
     </div>
   </section>
+
+<section class="phase" id="p8">
+    <div class="phase-h"><span class="phase-n">≡</span><h2>هم‌ترازی با نسخه‌ی نهایی demo.shub.ir — الحاقیه ۱۴۰۵/۰۵/۱۴</h2></div>
+    <p class="phase-goal">
+      نسخه‌ی نهایی دمو، دامنه‌بندی «سیستم ← هلدینگ ← شرکت»، دسترسی نقش‌محور و چند فیلد محتوایی تازه دارد که
+      <b>در هیچ‌کدام از دو بک‌اند وجود ندارد</b> (راستی‌آزمایی: جستجوی holding/company/scope در هر دو Swagger صفر نتیجه).
+      این‌ها تسک‌های تازه‌اند؛ B1–B20 دست‌نخورده‌اند. مرجع فنی کامل و معیارهای پذیرش:
+      <a href="../../spec/scope/">قرارداد الزام‌آور دامنه‌بندی</a>.
+    </p>
+
+    <div class="band b">◆ تیم Backend</div>
+
+    <div class="task b">
+      <div class="task-h"><span class="task-id">B21</span><b>مدل داده‌ی دامنه‌بندی و عضویت</b><span class="spacer"></span><span class="pill p-p1">P1</span><span class="pill p-todo">نساخته</span><span class="est">۶ روز</span></div>
+      <p class="desc">موجودیت‌های <code>Holding</code>، <code>Company</code>، عضویت کاربر (<code>companyIds</code>)، تخصیص نقش <code>{roleId, level, holdingId?, companyId?, groupId?}</code> و افزودن سه فیلد <code>scope/holdingId/companyId</code> به <b>همه‌ی</b> موجودیت‌های محتوایی (فهرست کامل در قرارداد، بخش ۱). مهاجرت: رکوردهای موجود = «سراسری».</p>
+      <div class="subhd">Subtaskها</div>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th>جزئیات فنی</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">B21.1</td><td>جدول‌های ساختار</td><td>holdings، companies، user_company_memberships، role_grants + ایندکس‌ها</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B21.2</td><td>فیلدهای scope روی محتوا</td><td>مهاجرتِ افزودن سه ستون به همه‌ی جدول‌های محتوایی + پیش‌فرض سراسری</td><td class="n">۱۰ ساعت</td></tr>
+          <tr><td class="n">B21.3</td><td><code>auth/me</code> توسعه‌یافته</td><td>برگرداندن عضویت‌ها، تخصیص نقش و مجوزهای مؤثر (قرارداد، بخش ۴٫۱)</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">B21.4</td><td>seed پذیرش</td><td>بازتولید پنج سناریوی مرجع (u1/u3/u4/u7/u12) در داده‌ی تست</td><td class="n">۴ ساعت</td></tr>
+          <tr><td class="n">B21.5</td><td>تست</td><td>pytest/Pest برای مدل و <code>auth/me</code></td><td class="n">۸ ساعت</td></tr>
+        </tbody>
+      </table></div>
+      <div class="dep">وابستگی: B2، B5. مصرف‌کننده: F25.</div>
+    </div>
+
+    <div class="task b">
+      <div class="task-h"><span class="task-id">B22</span><b>اجرای دامنه سمت سرور (خواندن + نوشتن)</b><span class="spacer"></span><span class="pill p-p1">P1</span><span class="pill p-todo">نساخته</span><span class="est">۵ روز</span></div>
+      <p class="desc"><b>حیاتی‌ترین تسک امنیتی الحاقیه.</b> فیلتر فرانت کافی نیست — داده‌ای که به مرورگر برسد نشت کرده است. یک لایه/میدل‌ور مشترک، قانون دیده‌شدن را روی همه‌ی خواندن‌ها و «دامنه‌های مجاز انتشار» را روی همه‌ی نوشتن‌ها اعمال می‌کند.</p>
+      <div class="subhd">Subtaskها</div>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th>جزئیات فنی</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">B22.1</td><td>میدل‌ور/کوئری‌ست دامنه</td><td>اعمال خودکار قانون بخش ۲ قرارداد بر اساس نشستِ توکن — یک‌بار، برای همه‌ی ماژول‌ها</td><td class="n">۱۰ ساعت</td></tr>
+          <tr><td class="n">B22.2</td><td>خارج از دامنه = ۴۰۴</td><td>جزئیاتِ آیتم غیرمجاز ۴۰۴ برمی‌گرداند نه ۴۰۳ (عدم افشای وجود)</td><td class="n">۴ ساعت</td></tr>
+          <tr><td class="n">B22.3</td><td>اعتبارسنجی نوشتن</td><td>scope ارسالی ⊆ دامنه‌های مجاز نشست؛ تخلف = ۴۲۲؛ پیش‌فرض = دامنه‌ی نشست</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B22.4</td><td>گارد admin و ناظم گروه</td><td>مسیرهای مدیریتی: مجوز مؤثر؛ اکشن‌های گروه: <code>canModerateGroup</code> سمت سرور</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">B22.5</td><td>تست نفوذ دامنه</td><td>برای هر ماژول: کاربر شرکت A نتواند آیتم شرکت B را بخواند/بسازد/ویرایش کند (IDOR بین‌دامنه‌ای)</td><td class="n">۱۲ ساعت</td></tr>
+        </tbody>
+      </table></div>
+      <div class="dep">وابستگی: B21. مصرف‌کننده: F25، F26.</div>
+    </div>
+
+    <div class="task b">
+      <div class="task-h"><span class="task-id">B23</span><b>هویت نصب، SSO و APIهای زنجیره‌ی واگذاری</b><span class="spacer"></span><span class="pill p-p2">P2</span><span class="pill p-todo">نساخته</span><span class="est">۴ روز</span></div>
+      <p class="desc">پشتیبان بخش «سیستم و ورود یکپارچه» و «هلدینگ‌ها و شرکت‌ها» در پنل راهبری دمو (F28).</p>
+      <div class="subhd">Subtaskها</div>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="n">#</th><th>کار</th><th>جزئیات فنی</th><th class="n">تخمین</th></tr></thead>
+        <tbody>
+          <tr><td class="n">B23.1</td><td>هویت سیستم</td><td><code>GET/PATCH /system/identity</code> — نام/دامنه/برند + پیکربندی SSO (بدون افشای secret در GET)</td><td class="n">۶ ساعت</td></tr>
+          <tr><td class="n">B23.2</td><td>CRUD ساختار</td><td>هلدینگ/شرکت + فعال/غیرفعال — با قواعد واگذاری (مدیر هلدینگ فقط زیرمجموعه‌ی خودش)</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B23.3</td><td>عضویت و تخصیص</td><td>افزودن/حذف عضویت شرکت؛ ثبت/تغییر <code>RoleGrant</code> — هر دو محدود به دامنه‌ی مدیر</td><td class="n">۸ ساعت</td></tr>
+          <tr><td class="n">B23.4</td><td>تست اتصال SSO</td><td><code>POST /system/sso/test</code> — اعتبارسنجی endpoint بدون ذخیره</td><td class="n">۴ ساعت</td></tr>
+        </tbody>
+      </table></div>
+      <div class="dep">وابستگی: B21، B22. مصرف‌کننده: F28.</div>
+    </div>
+
+    <div class="task b">
+      <div class="task-h"><span class="task-id">B24</span><b>فیلدهای محتوایی جدید در مدل و قرارداد</b><span class="spacer"></span><span class="pill p-p2">P2</span><span class="pill p-todo">نساخته</span><span class="est">۲ روز</span></div>
+      <p class="desc">مطابق قرارداد، بخش ۵: <code>event.category</code> (۵ مقدار) + <code>event.capacity</code>، <code>news.topic</code> (۵ مقدار)، <code>media.duration</code>. مهاجرت nullable + افزودن به Serializer/Resource و Swagger + پارامتر فیلترِ فهرست (<code>?category=</code>، <code>?topic=</code>).</p>
+      <div class="dep">وابستگی: B9، B11، B12 (گسترش تحویل‌شده‌ی همان‌ها — بازکاری نیست). مصرف‌کننده: F27.</div>
+    </div>
+
+    <div class="note">
+      <b>جمعِ الحاقیه‌ی Backend: ~۱۷ روز (B21–B24)</b> — جدا از جمع فازهای ۰ تا ۶. ترتیب پیشنهادی: B21 ← B22 (مسیر بحرانی الحاقیه) ← B23/B24 موازی.
+    </div>
+  </section>
+
 
 </div>
 </body>

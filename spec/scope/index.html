@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Motoshub — قرارداد الزام‌آور دامنه‌بندی و دسترسی</title>
+<style>
+  :root{
+    --bg:#eef1f4;--panel:#ffffff;--line:#d6dce3;--line2:#e6eaef;
+    --ink:#131a24;--ink2:#3a4655;--muted:#68727f;
+    --front:#1f6f9e;--front-bg:#e8f2f9;
+    --back:#7a41ad;--back-bg:#f2ebf9;
+    --p1:#b23a52;--p2:#b47a1e;--p3:#3f7d63;
+    --done:#2c7a56;--part:#a9791f;--todo:#a8394f;
+    --est:#0f4c75;
+    --mono:"SF Mono",ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:"Vazirmatn","Segoe UI",Tahoma,system-ui,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#0c1116;--panel:#141b23;--line:#28323d;--line2:#1d252e;
+      --ink:#e9eef4;--ink2:#c2ccd6;--muted:#8b96a3;
+      --front:#5aa6d8;--front-bg:#14222e;--back:#b389df;--back-bg:#211a2e;
+      --p1:#e07387;--p2:#d9ab5a;--p3:#63c495;
+      --done:#5cc48d;--part:#d9ab5a;--todo:#e07387;--est:#6fb2e0;}
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+    line-height:1.85;padding:26px 16px}
+  .wrap{max-width:1060px;margin:0 auto}
+  .kicker{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+  h1{font-size:clamp(24px,4.4vw,33px);font-weight:800;letter-spacing:-.01em;margin:0 0 10px}
+  .lede{color:var(--ink2);font-size:15.5px;margin:0 0 8px;max-width:70ch}
+  .meta-line{font-family:var(--mono);font-size:12px;color:var(--muted);margin:0 0 22px}
+  .legend{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:16px 0;font-size:13px}
+  .legend b{font-size:13.5px}
+  .row{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:8px;align-items:center}
+  .pill{font-family:var(--mono);font-size:10.5px;padding:2px 8px;border-radius:20px;white-space:nowrap;font-weight:600}
+  .p-done{background:rgba(44,122,86,.16);color:var(--done)} .p-part{background:rgba(169,121,31,.17);color:var(--part)} .p-todo{background:rgba(168,57,79,.15);color:var(--todo)}
+  .p-p1{background:rgba(178,58,82,.14);color:var(--p1)} .p-p2{background:rgba(180,122,30,.15);color:var(--p2)} .p-p3{background:rgba(63,125,99,.15);color:var(--p3)}
+  .est{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--est);background:rgba(15,76,117,.10);padding:2px 8px;border-radius:6px;white-space:nowrap}
+  @media (prefers-color-scheme:dark){.est{background:rgba(111,178,224,.12)}}
+  .toc{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin:16px 0;font-size:13px;columns:2;column-gap:26px}
+  .toc a{display:block;color:var(--front);text-decoration:none;padding:2px 0;break-inside:avoid}
+  .toc a:hover{text-decoration:underline}
+  @media (max-width:640px){.toc{columns:1}}
+  .tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:11px;margin:12px 0}
+  table{border-collapse:collapse;width:100%;font-size:12.7px;min-width:560px}
+  th,td{padding:8px 11px;text-align:right;border-bottom:1px solid var(--line2);vertical-align:top}
+  th{background:rgba(120,130,140,.07);font-weight:700}
+  tr:last-child td{border-bottom:none}
+  td.n,th.n{white-space:nowrap;font-family:var(--mono);font-size:11.5px;text-align:center;width:1%}
+  tfoot td{font-weight:800;background:rgba(120,130,140,.05)}
+  .phase{margin:40px 0 8px}
+  .phase-h{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--line);padding-bottom:9px}
+  .phase-n{font-family:var(--mono);font-size:26px;font-weight:800;color:var(--muted);line-height:1}
+  .phase-h h2{font-size:21px;margin:0;font-weight:800}
+  .phase-goal{color:var(--muted);font-size:13.5px;margin:8px 0 0}
+  .band{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:11px;font-weight:700;padding:3px 11px;border-radius:20px;margin:18px 0 4px}
+  .band.f{background:var(--front-bg);color:var(--front)}
+  .band.b{background:var(--back-bg);color:var(--back)}
+  .task{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:15px 18px;margin:12px 0}
+  .task.f{border-inline-start:3px solid var(--front)}
+  .task.b{border-inline-start:3px solid var(--back)}
+  .task-h{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .task-id{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--muted)}
+  .task-h b{font-size:15.5px}
+  .task-h .spacer{flex:1}
+  .story{background:rgba(120,130,140,.06);border-radius:9px;padding:9px 13px;margin:11px 0;font-size:13.3px}
+  .story .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:2px}
+  .desc{font-size:13.6px;color:var(--ink2);margin:10px 0}
+  .desc code,td code,.ac code,.story code,.ears code{font-family:var(--mono);font-size:11.3px;background:rgba(120,130,140,.14);padding:1px 6px;border-radius:5px;color:var(--ink)}
+  .ears{border-inline-start:3px solid var(--muted);padding:2px 12px;margin:9px 0;font-size:13px;color:var(--ink2);font-style:italic}
+  .ac{margin:10px 0 4px;font-size:12.9px}
+  .ac .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
+  .ac ul{margin:0;padding-inline-start:18px}
+  .ac li{margin:3px 0}
+  .dep{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:9px}
+  .subhd{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:12px 0 4px}
+  .note{background:var(--panel);border:1px solid var(--line);border-inline-start:3px solid var(--p2);border-radius:10px;padding:12px 16px;margin:16px 0;font-size:13.4px}
+  .foot{margin-top:46px;padding-top:16px;border-top:1px solid var(--line);font-family:var(--mono);font-size:11.5px;color:var(--muted);text-align:center;line-height:2}
+  a{color:var(--front)}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+  <p class="kicker">Motoshub · Binding Spec</p>
+  <h1>قرارداد الزام‌آور دامنه‌بندی و دسترسی (سیستم ← هلدینگ ← شرکت)</h1>
+  <p class="lede">این سند مشخصات دقیقِ مدل چندسطحی سازمان است، همان‌طور که در نسخه‌ی نهایی <a href="https://demo.shub.ir">demo.shub.ir</a> پیاده و راستی‌آزمایی شده. هر دو تیم PHP و Django باید <b>عیناً همین مدل</b> را پیاده کنند؛ مرجع کد: <code>src/data/tenancy.ts</code> و <code>src/context/TenancyContext.tsx</code> در مخزن پروتوتایپ.</p>
+  <p class="meta-line">نگارش ۱ · ۱۴۰۵/۰۵/۱۴ · مرجع تسک‌ها: <a href="../../tasks/frontend/#p8">F25–F28</a> · <a href="../../tasks/backend/#p8">B21–B24</a></p>
+
+  <div class="note" style="border-inline-start-color:var(--p1)">
+    <b>مهم‌ترین قاعده: فیلتر باید سمت سرور باشد.</b> در پروتوتایپ فیلتر در فرانت انجام می‌شود چون داده mock است؛ در محصول واقعی اگر فیلتر فقط در فرانت باشد یعنی داده‌ی شرکت‌های دیگر واقعاً به مرورگر کاربر رسیده و فقط نمایش داده نشده — این نشتی داده است. سرور موظف است بر اساس نشستِ برآمده از توکن، هم «خواندن» را فیلتر و هم «نوشتن» را اعتبارسنجی کند.
+  </div>
+
+  <section class="phase">
+    <div class="phase-h"><span class="phase-n">۱</span><h2>موجودیت‌ها</h2></div>
+    <div class="tblwrap"><table>
+      <thead><tr><th>موجودیت</th><th>فیلدها</th><th>توضیح</th></tr></thead>
+      <tbody>
+        <tr><td><code>SystemIdentity</code></td><td><code>name, shortName, domain, color, ssoProvider, ssoEndpoint, ssoDomainHint, autoProvision, allowLocalLogin</code></td><td>هر نصب = یک مشتری. <code>ssoProvider ∈ {بدون SSO, LDAP/AD, SAML 2.0, OIDC, OTP موبایل}</code></td></tr>
+        <tr><td><code>Holding</code></td><td><code>id, name, color, lead?, active</code></td><td>n هلدینگ زیر هر نصب</td></tr>
+        <tr><td><code>Company</code></td><td><code>id, name, holdingId, field?, users, active</code></td><td>n شرکت زیر هر هلدینگ</td></tr>
+        <tr><td><code>UserProfile</code> (افزوده)</td><td><code>companyIds?: string[]</code></td><td><b>عضویت</b> — کاربر خودش انتخاب نمی‌کند؛ مدیر شرکت او را اضافه می‌کند</td></tr>
+        <tr><td><code>RoleGrant</code></td><td><code>roleId, level ∈ {سیستم, هلدینگ, شرکت, گروه}, holdingId?, companyId?, groupId?</code></td><td>تخصیص نقش = (کاربر، نقش، دامنه). <code>groupId</code> فقط برای سطح «گروه» (ناظم گروه)</td></tr>
+        <tr><td><code>Scoped</code> (میکس‌این همه‌ی محتواها)</td><td><code>scope? ∈ {سراسری, هلدینگ, شرکت}, holdingId?, companyId?</code></td><td>روی <b>همه‌ی</b> موجودیت‌های محتوایی/کاری. نبودِ <code>scope</code> = «سراسری» (سازگاری با داده‌ی قدیمی)</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note">
+      <b>پوشش <code>Scoped</code> — الزامی روی این موجودیت‌ها:</b> خبر، بلاگ، رویداد، رسانه، انجمن (موضوع)، گروه، سند دانش، <b>کانال گفتگو</b>، پروژه، قالب فرآیند*، قرارداد، پروپوزال/طرح صندوق (هر دو نوع)، فراخوان پژوهشی، دوره‌ی آموزشی، تیکت، نظرسنجی، آزمون، مسابقه، چالش. (* قالب فرآیند و «جایزه نوآوری» سراسری‌اند — جایزه ذاتاً رویداد سطح بنیاد است.) پیام مستقیم (DM) دامنه‌بندی <b>نمی‌شود</b> — عضویت‌محور است.
+    </div>
+  </section>
+
+  <section class="phase">
+    <div class="phase-h"><span class="phase-n">۲</span><h2>نشست (Session) — دامنه از «کاربر» محاسبه می‌شود، نه از انتخاب او</h2></div>
+    <p class="phase-goal">در لحظه‌ی ورود، سرور از روی عضویت‌ها و تخصیصِ نقش، نشست را می‌سازد. کاربر هیچ سوالی درباره‌ی هلدینگ/شرکتش نمی‌بیند.</p>
+    <div class="tblwrap"><table>
+      <thead><tr><th>سطح نشست</th><th>چه می‌بیند</th><th>سوییچر هدر</th><th>دامنه‌های مجاز انتشار</th></tr></thead>
+      <tbody>
+        <tr><td><b>سیستم</b> (بدون عضویت + نقش سیستمی)</td><td>همه‌چیز</td><td>«مشاهده به‌عنوان» — همه‌ی دامنه‌ها</td><td>سراسری، هلدینگ، شرکت</td></tr>
+        <tr><td><b>هلدینگ</b> (نقش سطح هلدینگ)</td><td>سراسری + کل هلدینگ خودش</td><td>کل هلدینگ + شرکت‌های همان هلدینگ</td><td>هلدینگ، شرکت</td></tr>
+        <tr><td><b>شرکت</b> — عضو ۱ شرکت</td><td>سراسری + همان شرکت</td><td><b>ندارد</b> — فقط برچسب خواندنی</td><td>فقط شرکت (بدون گزینه: «منتشر می‌شود برای: X»)</td></tr>
+        <tr><td><b>شرکت</b> — عضو چند شرکت</td><td>سراسری + شرکت‌های عضو</td><td>فقط همان شرکت‌های عضو</td><td>فقط شرکت (بین عضویت‌ها)</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note">
+      <b>قانون دیده‌شدن (مرجع: <code>isVisibleForSession</code>)</b> — آیتم دیده می‌شود اگر:
+      <code>scope=سراسری</code> (همیشه) · <code>scope=هلدینگ</code> و هلدینگ آیتم ∈ هلدینگ‌های کاربر · <code>scope=شرکت</code> و شرکت آیتم ∈ شرکت‌های عضو.
+      وقتی کاربر روی یک دامنه‌ی مشخص ایستاده (سوییچر)، همان تنگ‌تر اعمال می‌شود. نشستِ سطح سیستم بدون دامنه‌ی فعال، همه‌چیز را می‌بیند.
+    </div>
+  </section>
+
+  <section class="phase">
+    <div class="phase-h"><span class="phase-n">۳</span><h2>زنجیره‌ی واگذاری اختیار</h2></div>
+    <div class="tblwrap"><table>
+      <thead><tr><th>نقش</th><th>می‌تواند</th><th>نمی‌تواند</th></tr></thead>
+      <tbody>
+        <tr><td>مدیر سیستم</td><td>ساخت/حذف هلدینگ؛ انتصاب مدیر هلدینگ؛ همه‌چیز</td><td>—</td></tr>
+        <tr><td>مدیر هلدینگ</td><td>ساخت/مدیریت شرکت‌های هلدینگ خودش؛ انتصاب مدیر شرکت</td><td>حذف هلدینگ؛ هر کاری بیرون از هلدینگ خودش</td></tr>
+        <tr><td>مدیر شرکت</td><td>افزودن/حذف کاربرانِ شرکت خودش؛ تخصیص نقش در دامنه‌ی خودش</td><td>هر کاری بیرون از شرکت خودش</td></tr>
+        <tr><td>ناظم گروه (<code>level=گروه</code> + <code>groupId</code>)</td><td>ویرایش/حذف گروهِ خودش؛ اخراج عضو همان گروه</td><td>مدیریت هر گروه دیگر؛ پنل راهبری</td></tr>
+        <tr><td>عضو عادی</td><td>مصرف و تولید محتوا در دامنه‌ی عضویتش</td><td>پنل راهبری (منو پنهان <b>و</b> مسیر گارد‌شده)؛ انتشار خارج از شرکتش</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note"><b>دسترسی مؤثر</b> از نقشِ تخصیص‌یافته محاسبه می‌شود (کاربر بدون تخصیص = «عضو عادی» r4). دسترسی راهبری = سطح سیستم/هلدینگ، یا نقشی که یکی از مجوزهای <code>users.create / users.edit / roles.edit / settings.system</code> را دارد. گاردِ سمت سرور برای مسیرهای admin الزامی است — پنهان‌کردن منو کافی نیست.</div>
+  </section>
+
+  <section class="phase">
+    <div class="phase-h"><span class="phase-n">۴</span><h2>الزامات API (برای هر دو بک‌اند)</h2></div>
+    <div class="tblwrap"><table>
+      <thead><tr><th class="n">#</th><th>الزام</th><th>جزئیات</th></tr></thead>
+      <tbody>
+        <tr><td class="n">۱</td><td>نشست در توکن/پاسخ <code>auth/me</code></td><td><code>memberCompanyIds[]</code>، <code>grant {roleId, level, holdingId?, companyId?, groupId?}</code> و مجوزهای مؤثر باید از <code>auth/me</code> برگردد؛ فرانت هیچ‌چیز را خودش استنتاج نمی‌کند.</td></tr>
+        <tr><td class="n">۲</td><td>فیلتر خواندن</td><td>همه‌ی endpointهای فهرست/جزئیات، قانون دیده‌شدن بخش ۲ را روی داده اعمال می‌کنند. آیتم خارج از دامنه = <code>404</code> (نه <code>403</code>، تا وجودش لو نرود).</td></tr>
+        <tr><td class="n">۳</td><td>اعتبارسنجی نوشتن</td><td><code>scope/holdingId/companyId</code>ی ارسالی باید داخل «دامنه‌های مجاز انتشار» نشست باشد؛ در غیر این صورت <code>422</code>. مقدار پیش‌فرض = دامنه‌ی فعال نشست.</td></tr>
+        <tr><td class="n">۴</td><td>زنجیره‌ی واگذاری</td><td>APIهای مدیریت هلدینگ/شرکت/عضویت/تخصیص نقش، قواعد بخش ۳ را سمت سرور اجرا می‌کنند.</td></tr>
+        <tr><td class="n">۵</td><td>سازگاری داده‌ی قدیمی</td><td>رکوردهای بدون <code>scope</code> = «سراسری». مهاجرت اولیه می‌تواند همه را سراسری بگذارد و به‌تدریج دامنه‌دار شود.</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="phase">
+    <div class="phase-h"><span class="phase-n">۵</span><h2>فیلدهای محتوایی جدید (قرارداد داده)</h2></div>
+    <p class="phase-goal">این فیلدها در نسخه‌ی نهایی دمو وجود دارند و باید در مدل و قرارداد هر دو بک‌اند بیایند (تسک B24).</p>
+    <div class="tblwrap"><table>
+      <thead><tr><th>موجودیت</th><th>فیلد</th><th>نوع/مقادیر</th><th>مصرف در UI</th></tr></thead>
+      <tbody>
+        <tr><td>رویداد</td><td><code>category</code></td><td><code>جلسه | کارگاه | وبینار | همایش | آموزش</code></td><td>چیپ فیلتر + نشان روی ردیف (عمومی و داشبورد)</td></tr>
+        <tr><td>رویداد</td><td><code>capacity</code></td><td><code>number</code></td><td>«X از Y ظرفیت» + وضعیت «در حال ثبت‌نام»</td></tr>
+        <tr><td>خبر</td><td><code>topic</code></td><td><code>اقتصادی | اجتماعی | فرهنگی | عمرانی | سازمانی</code></td><td>چیپ فیلتر + تگ روی هیرو/کارت/ردیف</td></tr>
+        <tr><td>رسانه</td><td><code>duration</code></td><td><code>"mm:ss"</code> — فقط ویدیو</td><td>نشان روی بندانگشتی</td></tr>
+        <tr><td>کاربر</td><td><code>companyIds</code></td><td><code>string[]</code></td><td>مبنای کل نشست — بخش ۲</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="phase">
+    <div class="phase-h"><span class="phase-n">۶</span><h2>سناریوهای مرجع پذیرش (داده‌ی seed دمو)</h2></div>
+    <p class="phase-goal">این پنج سناریو معیار پذیرش پیاده‌سازی بک‌اند است — با «ورود به‌عنوان» در demo.shub.ir قابل مشاهده‌اند.</p>
+    <div class="tblwrap"><table>
+      <thead><tr><th>کاربر</th><th>عضویت / نقش</th><th>رفتار مورد انتظار</th></tr></thead>
+      <tbody>
+        <tr><td>u1 — پایگاه اطلاع‌رسانی</td><td>بدون عضویت + r1 (سیستم)</td><td>همه‌چیز؛ سوییچر ۱۷ گزینه؛ هر سه دامنه‌ی انتشار؛ پنل راهبری کامل</td></tr>
+        <tr><td>u3 — عضو ۱ شرکت (بهنوش)</td><td><code>[c-behnoush]</code></td><td>سوییچر ندارد؛ فقط سراسری+بهنوش؛ فرم انتشار بدون گزینه («منتشر می‌شود برای: بهنوش»)؛ بدون پنل راهبری</td></tr>
+        <tr><td>u4 — عضو ۲ شرکت + r2 هلدینگ فردوس</td><td><code>[c-dashtnaz, c-ferdows-agri]</code></td><td>سوییچر: کل هلدینگ + ۲ شرکت؛ انتشار هلدینگ/شرکت؛ راهبریِ محدود به هلدینگ خودش</td></tr>
+        <tr><td>u7 — ناظم گروه g1</td><td><code>[c-ferdows-agri]</code> + r3/گروه/g1</td><td>دکمه‌های مدیریتی فقط در گروه g1؛ در g2 هیچ اکشن مدیریتی ندارد</td></tr>
+        <tr><td>u12 — عضو ۳ شرکت</td><td><code>[c-pak, c-behnoush, c-zamzam]</code></td><td>سوییچر دقیقاً همین ۳ شرکت؛ محتوای فهرست‌ها با سوییچ واقعاً عوض می‌شود</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <div class="foot">
+    docs.shub.ir · نگارش ۱ — ۱۴۰۵/۰۵/۱۴ · <a href="../../">بازگشت به فهرست اسناد</a>
+  </div>
+</div>
+</body></html>
