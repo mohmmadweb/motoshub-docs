@@ -79,6 +79,8 @@
   .subhd{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:12px 0 4px}
   .note{background:var(--panel);border:1px solid var(--line);border-inline-start:3px solid var(--p2);border-radius:10px;padding:12px 16px;margin:16px 0;font-size:13.4px}
   .foot{margin-top:46px;padding-top:16px;border-top:1px solid var(--line);font-family:var(--mono);font-size:11.5px;color:var(--muted);text-align:center;line-height:2}
+  .ac.dod{background:rgba(44,122,86,.06);border:1px solid var(--line);border-inline-start:3px solid var(--done);border-radius:9px;padding:8px 13px}
+  .ac.dod .lbl{color:var(--done)}
   a{color:var(--front)}
 </style>
 <body>
@@ -190,6 +192,10 @@
           <tr><td class="n">B1.6</td><td>پایه‌ی تست</td><td>راه‌اندازی <code>pytest-django</code> + factory + APIClient مبنا</td><td class="n">۵ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>پاکت پاسخ <code>{data,links,meta}</code>، صفحه‌بندی، بدنهٔ خطای یکسان (۴۰۱/۴۰۳/۴۰۴/۴۲۲)، CORS و آپلود مشترک — همگی با تست.</li>
+        <li>عبور از خط لولهٔ تحویل: تست واحد + تست قرارداد علیه OpenAPI + CI سبز + پذیرش PO روی staging (کالکشن Postman) — <a href="../../process/">فرآیند</a>.</li>
+      </ul></div>
       <div class="dep">وابستگی: ندارد (نقطه‌ی شروعِ Backend).</div>
     </div>
 
@@ -210,6 +216,10 @@
         <li>Given یک JWTِ معتبرِ PHP، When به endpointِ محافظت‌شده‌ی Django فرستاده شود، Then ۲۰۰ و همان کاربر resolve شود.</li>
         <li>Given توکنِ منقضی/دست‌کاری‌شده، When فرستاده شود، Then ۴۰۱ برگردد.</li>
       </ul></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>JWT HS256 با راز مشترک <code>OW_PASSWORD_PEPPER</code>؛ توکن PHP در Django معتبر و برعکس، با تست سازگاری متقابل.</li>
+        <li>عبور از خط لولهٔ تحویل: تست واحد + تست قرارداد علیه OpenAPI + CI سبز + پذیرش PO روی staging (کالکشن Postman) — <a href="../../process/">فرآیند</a>.</li>
+      </ul></div>
       <div class="dep">وابستگی: B1. مرجع: <a href="../../architecture/software/">معماری — بخش auth</a>.</div>
     </div>
 
@@ -226,6 +236,10 @@
           <tr><td class="n">B3.4</td><td>healthcheck و اجرای محلی</td><td>تأیید بالاآمدنِ کانتینر، <code>/api/v1/health</code>، اتصالِ دو DB</td><td class="n">۵ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li><code>production.py</code> کامل، Dockerfile سالم و بیلد‌پذیر، CI هر دو ریپو سبز، محیط staging بالا.</li>
+        <li>عبور از خط لولهٔ تحویل: تست واحد + تست قرارداد علیه OpenAPI + CI سبز + پذیرش PO روی staging (کالکشن Postman) — <a href="../../process/">فرآیند</a>.</li>
+      </ul></div>
       <div class="dep">وابستگی: مستقل؛ موازیِ B1/B2.</div>
     </div>
   </section>
@@ -249,6 +263,10 @@
           <tr><td class="n">B4.5</td><td>تست</td><td>login/refresh/register/۴۲۲؛ برابری با پاسخِ PHP</td><td class="n">۳ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>endpointهای <code>auth/login·me·refresh·logout·change-password</code> با تست موفق + خطاها.</li>
+        <li>عبور از خط لولهٔ تحویل: تست واحد + تست قرارداد علیه OpenAPI + CI سبز + پذیرش PO روی staging (کالکشن Postman) — <a href="../../process/">فرآیند</a>.</li>
+      </ul></div>
       <div class="dep">وابستگی: B1، B2.</div>
       <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): در نسخه‌ی نهایی، <code>auth/me</code> باید عضویت‌ها، تخصیص نقش و مجوزهای مؤثر را هم برگرداند ← <a href="#p8">B21.3</a>.</div>
     </div>
@@ -266,6 +284,10 @@
           <tr><td class="n">B5.4</td><td>سرویس‌های مشترک</td><td>لایه‌ی سرویسِ پایه، تراکنش روی دو DB، تستِ اتصال</td><td class="n">۴ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>تصمیم داده نهایی؛ مدل‌های legacy پایه (unmanaged، بدون ستون‌های حساس) با DB router.</li>
+        <li>عبور از خط لولهٔ تحویل: تست واحد + تست قرارداد علیه OpenAPI + CI سبز + پذیرش PO روی staging (کالکشن Postman) — <a href="../../process/">فرآیند</a>.</li>
+      </ul></div>
       <div class="dep">وابستگی: B1. پیش‌نیازِ همه‌ی منابعِ B6 به بعد.</div>
     </div>
   </section>
@@ -289,6 +311,10 @@
           <tr><td class="n">B6.5</td><td>تست + مجوز</td><td>تست‌های دسترسی/مالکیت، برابری با PHP</td><td class="n">۴ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>منبع کاربران/پروفایل: <code>/users</code> با جستجو/صفحه‌بندی، ویرایش خود، آواتار — با تست.</li>
+        <li>عبور از خط لولهٔ تحویل: تست واحد + تست قرارداد علیه OpenAPI + CI سبز + پذیرش PO روی staging (کالکشن Postman) — <a href="../../process/">فرآیند</a>.</li>
+      </ul></div>
       <div class="dep">وابستگی: B4، B5.</div>
     </div>
 
@@ -307,6 +333,10 @@
           <tr><td class="n">B7.6</td><td>تست</td><td>انتشار/تعامل/فیلترِ دسته</td><td class="n">۴ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>منبع فید: <code>/feed</code> با scope و پیوست؛ لایک/نظر/فوروارد — با تست.</li>
+        <li>عبور از خط لولهٔ تحویل: تست واحد + تست قرارداد علیه OpenAPI + CI سبز + پذیرش PO روی staging (کالکشن Postman) — <a href="../../process/">فرآیند</a>.</li>
+      </ul></div>
       <div class="dep">وابستگی: B5، B6.</div>
     </div>
 
@@ -322,6 +352,10 @@
           <tr><td class="n">B8.4</td><td>تست</td><td>lifecycle + دسترسی</td><td class="n">۴ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>منبع بلاگ: CRUD <code>/blogs</code> با مجوز — با تست.</li>
+        <li>عبور از خط لولهٔ تحویل: تست واحد + تست قرارداد علیه OpenAPI + CI سبز + پذیرش PO روی staging (کالکشن Postman) — <a href="../../process/">فرآیند</a>.</li>
+      </ul></div>
       <div class="dep">وابستگی: B5.</div>
     </div>
   </section>
@@ -342,6 +376,10 @@
           <tr><td class="n">B9.4</td><td>تست</td><td>lifecycle + دسترسی</td><td class="n">۴ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>منبع اخبار: CRUD <code>/news</code> + دسته‌بندی/scope انتشار — با تست lifecycle و دسترسی.</li>
+        <li>عبور از خط لولهٔ تحویل: تست واحد + تست قرارداد علیه OpenAPI + CI سبز + پذیرش PO روی staging (کالکشن Postman) — <a href="../../process/">فرآیند</a>.</li>
+      </ul></div>
       <div class="dep">وابستگی: B5.</div>
       <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): فیلد <code>topic</code> خبر (۵ مقدار) + فیلتر <code>?topic=</code> ← <a href="#p8">B24</a>.</div>
     </div>
@@ -358,6 +396,10 @@
           <tr><td class="n">B10.5</td><td>تست</td><td>عضویت/مجوز/فایل</td><td class="n">۴ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>منبع گروه‌ها: CRUD + عضویت + نقش ناظم — با تست IDOR.</li>
+        <li>عبور از خط لولهٔ تحویل: تست واحد + تست قرارداد علیه OpenAPI + CI سبز + پذیرش PO روی staging (کالکشن Postman) — <a href="../../process/">فرآیند</a>.</li>
+      </ul></div>
       <div class="dep">وابستگی: B5، B7 (الگوی فید).</div>
       <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): قواعد «ناظم گروه» سمت سرور (فقط گروه خودش) ← <a href="#p8">B22.4</a>.</div>
     </div>
@@ -374,6 +416,10 @@
           <tr><td class="n">B11.4</td><td>تست معادلِ Pest</td><td>پورتِ سناریوهای <code>EventControllerTest</code> به pytest</td><td class="n">۴ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>منبع رویدادها با دعوت/حضور — با تست.</li>
+        <li>عبور از خط لولهٔ تحویل: تست واحد + تست قرارداد علیه OpenAPI + CI سبز + پذیرش PO روی staging (کالکشن Postman) — <a href="../../process/">فرآیند</a>.</li>
+      </ul></div>
       <div class="dep">وابستگی: B5.</div>
       <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): فیلدهای <code>category</code> و <code>capacity</code> رویداد ← <a href="#p8">B24</a>.</div>
     </div>
@@ -391,6 +437,10 @@
           <tr><td class="n">B12.5</td><td>تست IDOR</td><td>عدمِ دسترسیِ غیرمالک به ویرایش/حذف</td><td class="n">۴ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>منبع رسانه (عکس/آلبوم/ویدیو) با حریم خصوصی — با تست.</li>
+        <li>عبور از خط لولهٔ تحویل: تست واحد + تست قرارداد علیه OpenAPI + CI سبز + پذیرش PO روی staging (کالکشن Postman) — <a href="../../process/">فرآیند</a>.</li>
+      </ul></div>
       <div class="dep">وابستگی: B5، B1.5 (آپلود).</div>
       <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): فیلد <code>duration</code> ویدیو ← <a href="#p8">B24</a>.</div>
     </div>
@@ -406,6 +456,10 @@
           <tr><td class="n">B13.4</td><td>مدیریت + تست</td><td>قفل/پین/انتقال با مجوز؛ تست</td><td class="n">۴ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>منبع فروم: بخش/موضوع/پست، قفل/پین/انتقال با مجوز — با تست.</li>
+        <li>عبور از خط لولهٔ تحویل: تست واحد + تست قرارداد علیه OpenAPI + CI سبز + پذیرش PO روی staging (کالکشن Postman) — <a href="../../process/">فرآیند</a>.</li>
+      </ul></div>
       <div class="dep">وابستگی: B5.</div>
     </div>
   </section>
@@ -427,6 +481,10 @@
           <tr><td class="n">B14.5</td><td>تست</td><td>ارسال/خواندن/دسترسیِ عضو</td><td class="n">۴ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>منبع پیام‌رسان در سطح فعلی: کانال/پیام/رشته/reaction روی WebSocket — با تست.</li>
+        <li>عبور از خط لولهٔ تحویل: تست واحد + تست قرارداد علیه OpenAPI + CI سبز + پذیرش PO روی staging (کالکشن Postman) — <a href="../../process/">فرآیند</a>.</li>
+      </ul></div>
       <div class="dep">وابستگی: B5. (WebSocket نیازمندِ ASGI؛ مرتبط با B3.)</div>
       <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): کانال‌ها دامنه‌دارند — فیلتر فهرست کانال بر اساس نشست ← <a href="#p8">B21.2</a> و <a href="#p8">B22.1</a>.</div>
       <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): ادامه‌ی این تسک برای هم‌ترازی کامل با تلگرام: <a href="#p9">B25–B28</a> — مرجع: <a href="../../spec/chat/">مشخصات پیام‌رسان</a>.</div>
@@ -443,6 +501,10 @@
           <tr><td class="n">B15.4</td><td>تست</td><td>چرخه‌ی دوستی/اعلان</td><td class="n">۴ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>منبع دوستان و اعلان: درخواست/تأیید، تولید اعلان از رویدادها، شمارش خوانده‌نشده — با تست.</li>
+        <li>عبور از خط لولهٔ تحویل: تست واحد + تست قرارداد علیه OpenAPI + CI سبز + پذیرش PO روی staging (کالکشن Postman) — <a href="../../process/">فرآیند</a>.</li>
+      </ul></div>
       <div class="dep">وابستگی: B5.</div>
     </div>
 
@@ -457,6 +519,10 @@
           <tr><td class="n">B16.4</td><td>تست</td><td>CRUD + persistِ ترتیب</td><td class="n">۴ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>منبع دانش و پروژه: آپلود/نسخه سند، بورد/تسک/گانت — با تست.</li>
+        <li>عبور از خط لولهٔ تحویل: تست واحد + تست قرارداد علیه OpenAPI + CI سبز + پذیرش PO روی staging (کالکشن Postman) — <a href="../../process/">فرآیند</a>.</li>
+      </ul></div>
       <div class="dep">وابستگی: B5. (اگر پروژه در اکسوال منبع ندارد، مدلِ جدید در <code>motoshub_new</code>.)</div>
     </div>
   </section>
@@ -478,6 +544,10 @@
           <tr><td class="n">B17.5</td><td>تست</td><td>CRUD + گردش‌کار</td><td class="n">۴ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>منبع ماژول‌های سازمانی: قرارداد/تیکت/صندوق/پژوهش/آموزش با گردش‌کار وضعیت — با تست.</li>
+        <li>عبور از خط لولهٔ تحویل: تست واحد + تست قرارداد علیه OpenAPI + CI سبز + پذیرش PO روی staging (کالکشن Postman) — <a href="../../process/">فرآیند</a>.</li>
+      </ul></div>
       <div class="dep">وابستگی: B5.</div>
     </div>
 
@@ -492,6 +562,10 @@
           <tr><td class="n">B18.4</td><td>تست</td><td>رأی/نتیجه/دسترسی</td><td class="n">۴ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>منبع نظرسنجی/مسابقه/ارزیابی با رأی و امتیازدهی — با تست.</li>
+        <li>عبور از خط لولهٔ تحویل: تست واحد + تست قرارداد علیه OpenAPI + CI سبز + پذیرش PO روی staging (کالکشن Postman) — <a href="../../process/">فرآیند</a>.</li>
+      </ul></div>
       <div class="dep">وابستگی: B5.</div>
     </div>
   </section>
@@ -512,6 +586,10 @@
           <tr><td class="n">B19.4</td><td>OpenAPI + تحویل</td><td>هم‌ترازیِ <code>drf-spectacular</code> با قراردادِ v1، انتشارِ داکِ نهایی</td><td class="n">۶ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>منبع جستجو (<code>/search</code>)، برابری قرارداد Django↔PHP، سوییچ Gateway مستند و OpenAPI هم‌تراز.</li>
+        <li>عبور از خط لولهٔ تحویل: تست واحد + تست قرارداد علیه OpenAPI + CI سبز + پذیرش PO روی staging (کالکشن Postman) — <a href="../../process/">فرآیند</a>.</li>
+      </ul></div>
       <div class="dep">وابستگی: همه‌ی منابعِ Backend.</div>
     </div>
   </section>
@@ -535,6 +613,10 @@
           <tr><td class="n">B20.4</td><td>تست</td><td>سناریوی موفق + ۴۰۱/۴۰۳/۴۲۲ + دسترسیِ کاربرِ دیگر</td><td class="n">۲ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>منبع تیکت (<code>/tickets</code>، دسته، سفارش) مستقر و بازسازی‌شده در Django با مجوز مالک/پشتیبان (IDOR) — با تست.</li>
+        <li>عبور از خط لولهٔ تحویل: تست واحد + تست قرارداد علیه OpenAPI + CI سبز + پذیرش PO روی staging (کالکشن Postman) — <a href="../../process/">فرآیند</a>.</li>
+      </ul></div>
       <div class="dep">وابستگی: B1، B4. مصرف‌کننده: F24.</div>
     </div>
 
@@ -568,6 +650,10 @@
           <tr><td class="n">B21.5</td><td>تست</td><td>pytest/Pest برای مدل و <code>auth/me</code></td><td class="n">۸ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>جدول‌های holding/company/عضویت/تخصیص + سه ستون scope روی همهٔ محتواها (مهاجرت = سراسری)؛ <code>auth/me</code> عضویت+نقش+مجوز مؤثر برمی‌گرداند؛ پنج سناریوی پذیرش seed — با تست.</li>
+        <li>عبور از خط لولهٔ تحویل: تست واحد + تست قرارداد علیه OpenAPI + CI سبز + پذیرش PO روی staging (کالکشن Postman) — <a href="../../process/">فرآیند</a>.</li>
+      </ul></div>
       <div class="dep">وابستگی: B2، B5. مصرف‌کننده: F25.</div>
     </div>
 
@@ -585,6 +671,10 @@
           <tr><td class="n">B22.5</td><td>تست نفوذ دامنه</td><td>برای هر ماژول: کاربر شرکت A نتواند آیتم شرکت B را بخواند/بسازد/ویرایش کند (IDOR بین‌دامنه‌ای)</td><td class="n">۱۲ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>یک لایه/میدل‌ور دامنه روی همهٔ خواندن‌ها؛ آیتم خارج از دامنه = ۴۰۴؛ انتشار نامجاز = ۴۲۲؛ گارد admin و ناظم گروه؛ <b>تست نفوذ بین‌دامنه‌ای (IDOR) برای هر ماژول سبز</b>.</li>
+        <li>عبور از خط لولهٔ تحویل: تست واحد + تست قرارداد علیه OpenAPI + CI سبز + پذیرش PO روی staging (کالکشن Postman) — <a href="../../process/">فرآیند</a>.</li>
+      </ul></div>
       <div class="dep">وابستگی: B21. مصرف‌کننده: F25، F26.</div>
     </div>
 
@@ -601,12 +691,20 @@
           <tr><td class="n">B23.4</td><td>تست اتصال SSO</td><td><code>POST /system/sso/test</code> — اعتبارسنجی endpoint بدون ذخیره</td><td class="n">۴ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li><code>/system/identity</code> (بدون افشای secret در GET)؛ CRUD هلدینگ/شرکت با قواعد واگذاری؛ عضویت و <code>RoleGrant</code>؛ <code>/system/sso/test</code> — با تست.</li>
+        <li>عبور از خط لولهٔ تحویل: تست واحد + تست قرارداد علیه OpenAPI + CI سبز + پذیرش PO روی staging (کالکشن Postman) — <a href="../../process/">فرآیند</a>.</li>
+      </ul></div>
       <div class="dep">وابستگی: B21، B22. مصرف‌کننده: F28.</div>
     </div>
 
     <div class="task b">
       <div class="task-h"><span class="task-id">B24</span><b>فیلدهای محتوایی جدید در مدل و قرارداد</b><span class="spacer"></span><span class="pill p-p2">P2</span><span class="pill p-todo">نساخته</span><span class="est">۲ روز</span></div>
       <p class="desc">مطابق قرارداد، بخش ۵: <code>event.category</code> (۵ مقدار) + <code>event.capacity</code>، <code>news.topic</code> (۵ مقدار)، <code>media.duration</code>. مهاجرت nullable + افزودن به Serializer/Resource و Swagger + پارامتر فیلترِ فهرست (<code>?category=</code>، <code>?topic=</code>).</p>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>فیلدهای <code>event.category+capacity</code>، <code>news.topic</code>، <code>media.duration</code> در مدل/Serializer/Swagger + پارامتر فیلتر (<code>?category=</code>،<code>?topic=</code>) — با تست.</li>
+        <li>عبور از خط لولهٔ تحویل: تست واحد + تست قرارداد علیه OpenAPI + CI سبز + پذیرش PO روی staging (کالکشن Postman) — <a href="../../process/">فرآیند</a>.</li>
+      </ul></div>
       <div class="dep">وابستگی: B9، B11، B12 (گسترش تحویل‌شده‌ی همان‌ها — بازکاری نیست). مصرف‌کننده: F27.</div>
     </div>
 
@@ -639,6 +737,10 @@
           <tr><td class="n">B25.6</td><td>تست</td><td>پنجره‌ها، حذف دوطرفه، فوروارد بین‌دامنه‌ای (باید ۴۲۲ شود)</td><td class="n">۱۰ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>ویرایش با پنجره و تاریخچهٔ نسخه؛ حذف دوطرفه با tombstone؛ فورواردِ چندمقصدی با گارد دامنه؛ زمان‌بندی؛ ذخیرهٔ entities قالب‌بندی (نه HTML خام) — با تست.</li>
+        <li>عبور از خط لولهٔ تحویل: تست واحد + تست قرارداد علیه OpenAPI + CI سبز + پذیرش PO روی staging (کالکشن Postman) — <a href="../../process/">فرآیند</a>.</li>
+      </ul></div>
       <div class="dep">وابستگی: B14، B21. مصرف‌کننده: F29.</div>
     </div>
 
@@ -655,6 +757,10 @@
           <tr><td class="n">B26.5</td><td>اعلان per-چت</td><td>ترجیحات بی‌صدا/مدت/فقط‌منشن per-کاربر per-چت + شمارنده‌های تفکیکی</td><td class="n">۶ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>پروتکل WS نسخه‌دار و مستند؛ رسید تحویل/خواندن + seen-by؛ sync چنددستگاهی و بازیابی offset پس از قطعی؛ جستجوی Elasticsearch دامنه‌محور — با تست.</li>
+        <li>عبور از خط لولهٔ تحویل: تست واحد + تست قرارداد علیه OpenAPI + CI سبز + پذیرش PO روی staging (کالکشن Postman) — <a href="../../process/">فرآیند</a>.</li>
+      </ul></div>
       <div class="dep">وابستگی: B14، B25. مصرف‌کننده: F29، F32.</div>
     </div>
 
@@ -671,6 +777,10 @@
           <tr><td class="n">B27.5</td><td>دسترسی فایل</td><td>URLهای امضاشده با انقضا — دانلود فقط برای اعضای همان چت/دامنه</td><td class="n">۶ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>آپلود قطعه‌قطعه با ازسرگیری و اسکن ضدویروس؛ استخراج بندانگشتی/مدت/شکل‌موج؛ گالری چت؛ unfurl امن؛ URL امضاشدهٔ دانلود per-دامنه — با تست.</li>
+        <li>عبور از خط لولهٔ تحویل: تست واحد + تست قرارداد علیه OpenAPI + CI سبز + پذیرش PO روی staging (کالکشن Postman) — <a href="../../process/">فرآیند</a>.</li>
+      </ul></div>
       <div class="dep">وابستگی: B25. مصرف‌کننده: F30.</div>
     </div>
 
@@ -688,6 +798,10 @@
           <tr><td class="n">B28.6</td><td>انطباق</td><td>Admin Log دائمی متصل به Audit؛ Compliance Export با تاریخچه‌ی ویرایش/حذف — فقط نقش انطباق</td><td class="n">۸ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>تاپیک؛ مجوز ریزدانهٔ ناظم و Slow Mode؛ لینک دعوت/Join Request/مهمان؛ کانال با امضا/بازدید/نظر؛ Poll/auto-delete/بلاک-گزارش؛ Admin Log دائمی + Compliance Export — با تست.</li>
+        <li>عبور از خط لولهٔ تحویل: تست واحد + تست قرارداد علیه OpenAPI + CI سبز + پذیرش PO روی staging (کالکشن Postman) — <a href="../../process/">فرآیند</a>.</li>
+      </ul></div>
       <div class="dep">وابستگی: B25، B22 (گارد دامنه). مصرف‌کننده: F31.</div>
     </div>
 
@@ -705,6 +819,10 @@
           <tr><td class="n">B29.5</td><td>رویدادهای چت (شروع/پایان/مدت) + تست بار ۲۰ شرکت‌کننده</td><td class="n">۱۰ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>استقرار self-host SDK پشت SSO و دامنه؛ توکن اتاق از JWT ما؛ گارد دامنهٔ اتاق کانال؛ ضبط با سیاست نگه‌داری؛ تست بار ۲۰ شرکت‌کننده.</li>
+        <li>عبور از خط لولهٔ تحویل: تست واحد + تست قرارداد علیه OpenAPI + CI سبز + پذیرش PO روی staging (کالکشن Postman) — <a href="../../process/">فرآیند</a>.</li>
+      </ul></div>
       <div class="dep">وابستگی: تصمیم PO. مصرف‌کننده: F33. خارج از جمع الحاقیه.</div>
     </div>
 

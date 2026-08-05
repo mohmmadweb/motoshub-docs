@@ -79,6 +79,8 @@
   .subhd{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:12px 0 4px}
   .note{background:var(--panel);border:1px solid var(--line);border-inline-start:3px solid var(--p2);border-radius:10px;padding:12px 16px;margin:16px 0;font-size:13.4px}
   .foot{margin-top:46px;padding-top:16px;border-top:1px solid var(--line);font-family:var(--mono);font-size:11.5px;color:var(--muted);text-align:center;line-height:2}
+  .ac.dod{background:rgba(44,122,86,.06);border:1px solid var(--line);border-inline-start:3px solid var(--done);border-radius:9px;padding:8px 13px}
+  .ac.dod .lbl{color:var(--done)}
   a{color:var(--front)}
 </style>
 <body>
@@ -191,6 +193,10 @@
           <tr><td class="n">F1.4</td><td>ESLint/type-check سبز</td><td>رفعِ importهای شکسته، اجرای <code>tsc --noEmit</code> و <code>lint</code></td><td class="n">۴ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>یک HTTP client فعال به‌عنوان تنها منبع درخواست‌ها؛ کد/وابستگی مرده حذف؛ <code>tsc --noEmit</code> و ESLint سبز.</li>
+        <li>عبور از خط لولهٔ تحویل: تست سه‌لایه + CI سبز + پذیرش PO روی staging (لایت/دارک، دسکتاپ و ۳۷۵px) — <a href="../../process/">فرآیند</a>؛ بدون TODO/console.log و مستندسازی به‌روز.</li>
+      </ul></div>
       <div class="dep">وابستگی: ندارد (نقطه‌ی شروعِ Front).</div>
     </div>
 
@@ -213,6 +219,10 @@
       <div class="ac"><span class="lbl">معیار پذیرش</span><ul>
         <li>Given تمِ تیره فعال، When صفحه رندر شود، Then همه‌ی کامپوننت‌ها رنگِ درست و کنتراستِ AA دارند.</li>
         <li>Given تعویضِ تم، When رفرش شود، Then تمِ قبلی بدون پرشِ رنگ بازیابی شود.</li>
+      </ul></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>توکن‌های طراحی و کامپوننت‌های پایه ساخته و مستند؛ سوییچ تم روشن/تیره ماندگار و بدون flash؛ کنتراست AA در هر دو تم.</li>
+        <li>عبور از خط لولهٔ تحویل: تست سه‌لایه + CI سبز + پذیرش PO روی staging (لایت/دارک، دسکتاپ و ۳۷۵px) — <a href="../../process/">فرآیند</a>؛ بدون TODO/console.log و مستندسازی به‌روز.</li>
       </ul></div>
       <div class="dep">وابستگی: F1.</div>
     </div>
@@ -245,6 +255,10 @@
         <li>Given نشستِ منقضی، When کاربر عملی انجام دهد، Then توکن بی‌صدا نو و عمل بدونِ خروج ادامه یابد.</li>
         <li>Given مهمان، When <code>/workspace</code> باز شود، Then به <code>/login</code> با پارامترِ بازگشت هدایت شود.</li>
       </ul></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>ورود/خروج واقعی؛ refresh خودکار روی ۴۰۱ با صف و retry یک‌باره؛ <code>middleware</code> مسیرهای خصوصی؛ هیدریشن نشست از <code>auth/me</code>؛ خطای ۴۲۲ فیلدی.</li>
+        <li>عبور از خط لولهٔ تحویل: تست سه‌لایه + CI سبز + پذیرش PO روی staging (لایت/دارک، دسکتاپ و ۳۷۵px) — <a href="../../process/">فرآیند</a>؛ بدون TODO/console.log و مستندسازی به‌روز.</li>
+      </ul></div>
       <div class="dep">وابستگی: F1؛ داده: B4 (تا آماده‌شدن به PHP <code>/auth/*</code> وصل شود).</div>
       <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): در نسخه‌ی نهایی، پاسخ <code>auth/me</code> عضویت و تخصیص نقش را هم می‌آورد و نشستِ دامنه از همان ساخته می‌شود ← <a href="#p8">F25</a> و <a href="../../spec/scope/">قرارداد دامنه‌بندی</a>.</div>
     </div>
@@ -264,6 +278,10 @@
           <tr><td class="n">F4.5</td><td>Breadcrumb و عنوان</td><td>عنوانِ صفحه‌ی پویا و مسیر بر اساس روت</td><td class="n">۳ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>پوسته/سایدبار/هدر ریسپانسیو تا ۳۷۵px بدون سرریز افقی؛ آیتم فعالِ مسیر هایلایت؛ ناوبری موبایل کامل.</li>
+        <li>عبور از خط لولهٔ تحویل: تست سه‌لایه + CI سبز + پذیرش PO روی staging (لایت/دارک، دسکتاپ و ۳۷۵px) — <a href="../../process/">فرآیند</a>؛ بدون TODO/console.log و مستندسازی به‌روز.</li>
+      </ul></div>
       <div class="dep">وابستگی: F2، F3.</div>
     </div>
 
@@ -281,6 +299,10 @@
           <tr><td class="n">F5.5</td><td>مدیریت خطا و توست</td><td>نگاشتِ ۴۲۲ به خطای فیلدی، توستِ سراسری، optimistic اختیاری</td><td class="n">۴ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>الگوی service+hook با کلید کش استاندارد؛ حالت loading=اسکلتون / empty=EmptyState / error=retry برای هر فهرست؛ invalidation پس از هر mutation.</li>
+        <li>عبور از خط لولهٔ تحویل: تست سه‌لایه + CI سبز + پذیرش PO روی staging (لایت/دارک، دسکتاپ و ۳۷۵px) — <a href="../../process/">فرآیند</a>؛ بدون TODO/console.log و مستندسازی به‌روز.</li>
+      </ul></div>
       <div class="dep">وابستگی: F1. پیش‌نیازِ همه‌ی تسک‌های محتوایی (F6 به بعد).</div>
     </div>
 
@@ -305,6 +327,10 @@
           <tr><td class="n">F6.4</td><td>چیدمان واکنش‌گرا</td><td>گریدِ ویجت‌ها، ترتیب موبایل، اسکلتون</td><td class="n">۴ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>داشبورد با دادهٔ واقعی API (بدون mock)؛ حالت خالی/loading؛ ویجت‌ها deep-link‌پذیر.</li>
+        <li>عبور از خط لولهٔ تحویل: تست سه‌لایه + CI سبز + پذیرش PO روی staging (لایت/دارک، دسکتاپ و ۳۷۵px) — <a href="../../process/">فرآیند</a>؛ بدون TODO/console.log و مستندسازی به‌روز.</li>
+      </ul></div>
       <div class="dep">وابستگی: F4، F5. داده: B7/B11/B15.</div>
     </div>
 
@@ -329,6 +355,10 @@
         <li>Given فایلِ PDF پیوست، When مطلب منتشر شود، Then در فید با لینکِ دانلود نمایش داده شود.</li>
         <li>Given انتشارِ عمومیِ دسته‌دار، When فیدِ عمومی با آن دسته فیلتر شود، Then فقط مطالبِ همان دسته دیده شوند.</li>
       </ul></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>اسکرول بی‌نهایت فید؛ کامپوزر با پیوست PDF/Word/عکس و نوار پیشرفت؛ دسته‌بندی انتشار عمومی؛ لایک/نظر/فوروارد optimistic با invalidation.</li>
+        <li>عبور از خط لولهٔ تحویل: تست سه‌لایه + CI سبز + پذیرش PO روی staging (لایت/دارک، دسکتاپ و ۳۷۵px) — <a href="../../process/">فرآیند</a>؛ بدون TODO/console.log و مستندسازی به‌روز.</li>
+      </ul></div>
       <div class="dep">وابستگی: F5. داده: B7.</div>
     </div>
 
@@ -346,6 +376,10 @@
           <tr><td class="n">F8.4</td><td>فهرست و فیلتر</td><td>صفحه‌بندی، جستجو، فیلترِ نویسنده/تاریخ</td><td class="n">۴ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>بلاگ کامل: فهرست/جزئیات/ساخت/ویرایش/حذف متصل به API؛ حالت‌های خالی/خطا.</li>
+        <li>عبور از خط لولهٔ تحویل: تست سه‌لایه + CI سبز + پذیرش PO روی staging (لایت/دارک، دسکتاپ و ۳۷۵px) — <a href="../../process/">فرآیند</a>؛ بدون TODO/console.log و مستندسازی به‌روز.</li>
+      </ul></div>
       <div class="dep">وابستگی: F5. داده: B8 (قرارداد PHP آماده است).</div>
     </div>
 
@@ -364,6 +398,10 @@
           <tr><td class="n">F9.5</td><td>تنظیمات حساب</td><td>یکپارچه‌سازی با تغییرِ رمز (F3.6)، حریمِ خصوصی، مسدودها</td><td class="n">۴ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>فهرست کاربران با جستجو/صفحه‌بندی؛ پروفایل عمومی؛ ویرایش پروفایل + آپلود/برش آواتار؛ تنظیمات حساب (رمز/حریم/مسدودها).</li>
+        <li>عبور از خط لولهٔ تحویل: تست سه‌لایه + CI سبز + پذیرش PO روی staging (لایت/دارک، دسکتاپ و ۳۷۵px) — <a href="../../process/">فرآیند</a>؛ بدون TODO/console.log و مستندسازی به‌روز.</li>
+      </ul></div>
       <div class="dep">وابستگی: F5. داده: B6.</div>
     </div>
 
@@ -389,6 +427,10 @@
           <tr><td class="n">F10.5</td><td>تنظیمات گروه</td><td>ویرایش/حریمِ خصوصی/حذف با مجوز</td><td class="n">۴ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>CRUD گروه؛ عضویت/خروج؛ تب‌های پست/انجمن/اعضا/اسناد؛ تغییر حریم خصوصی.</li>
+        <li>عبور از خط لولهٔ تحویل: تست سه‌لایه + CI سبز + پذیرش PO روی staging (لایت/دارک، دسکتاپ و ۳۷۵px) — <a href="../../process/">فرآیند</a>؛ بدون TODO/console.log و مستندسازی به‌روز.</li>
+      </ul></div>
       <div class="dep">وابستگی: F5، F7 (الگوی دیوار). داده: B10.</div>
       <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): نقش «ناظم گروه» در نسخه‌ی نهایی فقط در گروه خودش اکشن مدیریتی دارد ← <a href="#p8">F26.3</a>.</div>
     </div>
@@ -407,6 +449,10 @@
           <tr><td class="n">F11.4</td><td>ویجت داشبورد</td><td>اتصالِ آخرین اخبار به داشبورد</td><td class="n">۳ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>CRUD خبر با دامنهٔ انتشار (سراسری/هلدینگ/شرکت)؛ فقط نقش مدیر محتوا منتشر می‌کند.</li>
+        <li>عبور از خط لولهٔ تحویل: تست سه‌لایه + CI سبز + پذیرش PO روی staging (لایت/دارک، دسکتاپ و ۳۷۵px) — <a href="../../process/">فرآیند</a>؛ بدون TODO/console.log و مستندسازی به‌روز.</li>
+      </ul></div>
       <div class="dep">وابستگی: F5. داده: B9.</div>
       <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): خبر در نسخه‌ی نهایی فیلد <code>topic</code> (۵ مقدار) دارد ← <a href="#p8">F27.2</a>.</div>
     </div>
@@ -425,6 +471,10 @@
           <tr><td class="n">F12.4</td><td>جزئیات + پیوست</td><td>جزئیات، فایل‌ها، حذف با مجوز</td><td class="n">۵ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>CRUD رویداد؛ تقویم شمسی/میلادی؛ دعوت اعضا.</li>
+        <li>عبور از خط لولهٔ تحویل: تست سه‌لایه + CI سبز + پذیرش PO روی staging (لایت/دارک، دسکتاپ و ۳۷۵px) — <a href="../../process/">فرآیند</a>؛ بدون TODO/console.log و مستندسازی به‌روز.</li>
+      </ul></div>
       <div class="dep">وابستگی: F5. داده: B11 (آماده).</div>
       <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): رویداد در نسخه‌ی نهایی <code>category</code> و <code>capacity</code> دارد ← <a href="#p8">F27.1</a>.</div>
     </div>
@@ -443,6 +493,10 @@
           <tr><td class="n">F13.4</td><td>مدیریت آلبوم</td><td>ساخت/ویرایش/حذف، کاور، مجوزِ مالکیت</td><td class="n">۵ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>آپلود/ویرایش/حذف رسانه؛ آلبوم؛ حریم خصوصی per-آیتم.</li>
+        <li>عبور از خط لولهٔ تحویل: تست سه‌لایه + CI سبز + پذیرش PO روی staging (لایت/دارک، دسکتاپ و ۳۷۵px) — <a href="../../process/">فرآیند</a>؛ بدون TODO/console.log و مستندسازی به‌روز.</li>
+      </ul></div>
       <div class="dep">وابستگی: F5. داده: B12 (آماده، با اصلاحاتِ IDOR).</div>
       <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): ویدیو در نسخه‌ی نهایی نشانِ <code>duration</code> روی بندانگشتی دارد ← <a href="#p8">F27.3</a>.</div>
     </div>
@@ -461,6 +515,10 @@
           <tr><td class="n">F14.4</td><td>مدیریت</td><td>قفل/پین/انتقال با مجوزِ ناظر</td><td class="n">۴ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>CRUD موضوع و پاسخ؛ علامت «حل‌شده»؛ پذیرش پاسخ.</li>
+        <li>عبور از خط لولهٔ تحویل: تست سه‌لایه + CI سبز + پذیرش PO روی staging (لایت/دارک، دسکتاپ و ۳۷۵px) — <a href="../../process/">فرآیند</a>؛ بدون TODO/console.log و مستندسازی به‌روز.</li>
+      </ul></div>
       <div class="dep">وابستگی: F5. داده: B13.</div>
     </div>
 
@@ -484,6 +542,10 @@
           <tr><td class="n">F15.4</td><td>پیوست</td><td>ارسالِ فایل/عکس، پیش‌نمایش</td><td class="n">۶ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>کانال/DM/رشتهٔ پاسخ/reaction/پین/ذخیره/دستور اسلش در سطح فعلی دمو، همگی کارکردی.</li>
+        <li>عبور از خط لولهٔ تحویل: تست سه‌لایه + CI سبز + پذیرش PO روی staging (لایت/دارک، دسکتاپ و ۳۷۵px) — <a href="../../process/">فرآیند</a>؛ بدون TODO/console.log و مستندسازی به‌روز.</li>
+      </ul></div>
       <div class="dep">وابستگی: F5. داده: B14.</div>
       <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): کانال‌ها در نسخه‌ی نهایی موجودیتِ دامنه‌دارند و فهرست با نشست فیلتر می‌شود (DM بدون تغییر) ← <a href="#p8">F25.3</a>.</div>
       <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): خواسته‌ی نهایی، هم‌ترازی کامل با تلگرام است — ادامه‌ی این تسک در چهار تسک <a href="#p9">F29–F32</a> و مرجع کاملش <a href="../../spec/chat/">مشخصات پیام‌رسان</a> است.</div>
@@ -500,6 +562,10 @@
           <tr><td class="n">F16.3</td><td>افزودن سند</td><td>آپلود/دسته‌بندی با مجوز</td><td class="n">۵ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>آپلود/دسته‌بندی/جستجو/نسخه‌گذاری سند؛ سطل بازیافت ۳۰ روزه.</li>
+        <li>عبور از خط لولهٔ تحویل: تست سه‌لایه + CI سبز + پذیرش PO روی staging (لایت/دارک، دسکتاپ و ۳۷۵px) — <a href="../../process/">فرآیند</a>؛ بدون TODO/console.log و مستندسازی به‌روز.</li>
+      </ul></div>
       <div class="dep">وابستگی: F5. داده: B16.</div>
     </div>
 
@@ -517,6 +583,10 @@
           <tr><td class="n">F17.5</td><td>نماها</td><td>لیست/کانبان/تقویم، فیلترِ عضو/وضعیت</td><td class="n">۴ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>بورد کانبان با CRUD تسک؛ گانت؛ چت پروژه؛ بودجه.</li>
+        <li>عبور از خط لولهٔ تحویل: تست سه‌لایه + CI سبز + پذیرش PO روی staging (لایت/دارک، دسکتاپ و ۳۷۵px) — <a href="../../process/">فرآیند</a>؛ بدون TODO/console.log و مستندسازی به‌روز.</li>
+      </ul></div>
       <div class="dep">وابستگی: F5، F15. داده: B16.</div>
     </div>
 
@@ -541,6 +611,10 @@
           <tr><td class="n">F18.5</td><td>یکپارچه‌سازی منو</td><td>افزودن به سایدبار/داشبورد، مجوزها</td><td class="n">۴ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>چهار بخش قرارداد/صندوق/پژوهش/آموزش با فهرست/جزئیات/فرم و گردش‌کار وضعیت.</li>
+        <li>عبور از خط لولهٔ تحویل: تست سه‌لایه + CI سبز + پذیرش PO روی staging (لایت/دارک، دسکتاپ و ۳۷۵px) — <a href="../../process/">فرآیند</a>؛ بدون TODO/console.log و مستندسازی به‌روز.</li>
+      </ul></div>
       <div class="dep">وابستگی: F5. داده: B17.</div>
     </div>
 
@@ -563,6 +637,10 @@
           <tr><td class="n">F19.4</td><td>مدیریتِ محتوا/مجوز</td><td>ابزارهای مدیریتِ محتوا و نقش/دسترسی</td><td class="n">۶ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>پنل راهبری: مدیریت کاربر/نقش، ظاهر/برند per-tenant با پیش‌نمایش زنده، گزارش‌گیری.</li>
+        <li>عبور از خط لولهٔ تحویل: تست سه‌لایه + CI سبز + پذیرش PO روی staging (لایت/دارک، دسکتاپ و ۳۷۵px) — <a href="../../process/">فرآیند</a>؛ بدون TODO/console.log و مستندسازی به‌روز.</li>
+      </ul></div>
       <div class="dep">وابستگی: F5، F9. داده: endpointهای admin.</div>
       <div class="dep" style="color:var(--p3)">الحاقیه‌ی ۱۴۰۵/۰۵/۱۴ (این تسک را تغییر نمی‌دهد): پنل راهبری در نسخه‌ی نهایی «سیستم و ورود یکپارچه»، CRUD هلدینگ/شرکت و تخصیص (کاربر، نقش، دامنه) دارد ← <a href="#p8">F28</a>.</div>
     </div>
@@ -581,6 +659,10 @@
           <tr><td class="n">F20.6</td><td>تستِ E2E</td><td>سناریوهای کلیدی با Playwright</td><td class="n">۶ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>مرکز اعلان؛ جستجوی سراسری؛ راهنما/دستیار؛ پولیش a11y/RTL؛ Lighthouse سبز؛ E2E مسیرهای حیاتی.</li>
+        <li>عبور از خط لولهٔ تحویل: تست سه‌لایه + CI سبز + پذیرش PO روی staging (لایت/دارک، دسکتاپ و ۳۷۵px) — <a href="../../process/">فرآیند</a>؛ بدون TODO/console.log و مستندسازی به‌روز.</li>
+      </ul></div>
       <div class="dep">وابستگی: همه‌ی تسک‌های Front.</div>
     </div>
 
@@ -612,6 +694,10 @@
         <li>Given کاربرِ بدونِ حساب، When آدرسِ آیتمِ عمومی را باز کند، Then محتوا بدونِ ورود دیده شود.</li>
         <li>Given محتوای غیرِعمومی، When مهمان تلاش به دیدنش کند، Then به ورود هدایت شود و محتوا لو نرود.</li>
       </ul></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>لندینگ + ویترین عمومی + جزئیات آیتم، همگی بدون ورود؛ گاردِ اقدامِ نیازمند ورود؛ SEO و sitemap.</li>
+        <li>عبور از خط لولهٔ تحویل: تست سه‌لایه + CI سبز + پذیرش PO روی staging (لایت/دارک، دسکتاپ و ۳۷۵px) — <a href="../../process/">فرآیند</a>؛ بدون TODO/console.log و مستندسازی به‌روز.</li>
+      </ul></div>
       <div class="dep">وابستگی: F5. داده: endpointهای عمومیِ محتوا (نیازمندِ حالتِ بدونِ توکن — امروز همه‌ی مسیرها ۴۰۱ می‌دهند؛ تسکِ Backend متناظر باید تعریف شود).</div>
     </div>
 
@@ -629,6 +715,10 @@
           <tr><td class="n">F22.4</td><td>اتصال به F9</td><td>هم‌راستایی با تبِ دوستانِ پروفایل، حذفِ دوباره‌کاری</td><td class="n">۳ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>صفحهٔ مستقل دوستان: فهرست/درخواست/دنبال‌کردن؛ هم‌راستا با تب پروفایل (F9) بدون دوباره‌کاری.</li>
+        <li>عبور از خط لولهٔ تحویل: تست سه‌لایه + CI سبز + پذیرش PO روی staging (لایت/دارک، دسکتاپ و ۳۷۵px) — <a href="../../process/">فرآیند</a>؛ بدون TODO/console.log و مستندسازی به‌روز.</li>
+      </ul></div>
       <div class="dep">وابستگی: F5، F9. داده: B15. وضعیتِ امروز: <code>/friends</code> روی production مستقر نیست.</div>
     </div>
 
@@ -646,6 +736,10 @@
           <tr><td class="n">F23.4</td><td>یکپارچه‌سازی منو و مجوز</td><td>سایدبار، دسترسیِ نقش‌محور</td><td class="n">۴ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>نظرسنجی (رأی+نتیجه)، آزمون، مسابقه/چالش با ثبت‌نام و جدول امتیاز.</li>
+        <li>عبور از خط لولهٔ تحویل: تست سه‌لایه + CI سبز + پذیرش PO روی staging (لایت/دارک، دسکتاپ و ۳۷۵px) — <a href="../../process/">فرآیند</a>؛ بدون TODO/console.log و مستندسازی به‌روز.</li>
+      </ul></div>
       <div class="dep">وابستگی: F5. داده: B18. وضعیتِ امروز: هیچ‌کدام از این مسیرها روی production مستقر نیستند.</div>
     </div>
 
@@ -662,6 +756,10 @@
           <tr><td class="n">F24.3</td><td>گفتگوی تیکت</td><td>جزئیات، پاسخ‌ها، تغییرِ وضعیت</td><td class="n">۶ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>تیکت: فهرست/ثبت با پیوست/گفتگو/تغییر وضعیت.</li>
+        <li>عبور از خط لولهٔ تحویل: تست سه‌لایه + CI سبز + پذیرش PO روی staging (لایت/دارک، دسکتاپ و ۳۷۵px) — <a href="../../process/">فرآیند</a>؛ بدون TODO/console.log و مستندسازی به‌روز.</li>
+      </ul></div>
       <div class="dep">وابستگی: F5. داده: B20.</div>
     </div>
 
@@ -700,6 +798,10 @@
         <li>Given کاربر عضو یک شرکت، When وارد شود، Then سوییچر نبیند و فهرست‌ها فقط سراسری+شرکتش باشند.</li>
         <li>Given عضو ۳ شرکت، When سوییچر را باز کند، Then دقیقاً همان ۳ شرکت را ببیند و محتوای فهرست با سوییچ عوض شود.</li>
       </ul></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>نشست از <code>auth/me</code> ساخته می‌شود؛ سوییچر فقط برای چندعضویتی/راهبر؛ نشان دامنه روی همهٔ ردیف‌ها؛ انتشار مجوزمحور؛ پنج سناریوی پذیرشِ قرارداد (u1/u3/u4/u7/u12) عبور می‌کنند.</li>
+        <li>عبور از خط لولهٔ تحویل: تست سه‌لایه + CI سبز + پذیرش PO روی staging (لایت/دارک، دسکتاپ و ۳۷۵px) — <a href="../../process/">فرآیند</a>؛ بدون TODO/console.log و مستندسازی به‌روز.</li>
+      </ul></div>
       <div class="dep">وابستگی: F3، F5. داده: B21، B22.</div>
     </div>
 
@@ -715,6 +817,10 @@
           <tr><td class="n">F26.3</td><td>ناظم گروه</td><td>ویرایش/حذف گروه، اخراج عضو و تغییر حریم فقط برای <code>canModerateGroup</code> — مثبت و منفی (g1/g2) تست شود</td><td class="n">۵ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>آیتم‌های <code>adminOnly</code> بر اساس مجوز مؤثر پنهان؛ مسیر admin برای نقش بدون اختیار «دسترسی ندارید»؛ ناظم گروه فقط در گروه خودش (مثبت g1 / منفی g2).</li>
+        <li>عبور از خط لولهٔ تحویل: تست سه‌لایه + CI سبز + پذیرش PO روی staging (لایت/دارک، دسکتاپ و ۳۷۵px) — <a href="../../process/">فرآیند</a>؛ بدون TODO/console.log و مستندسازی به‌روز.</li>
+      </ul></div>
       <div class="dep">وابستگی: F25. داده: B21.</div>
     </div>
 
@@ -730,6 +836,10 @@
           <tr><td class="n">F27.3</td><td>رسانه</td><td>نشان مدت (mm:ss) روی بندانگشتی ویدیوها در هر دو نما</td><td class="n">۳ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>select دسته+ظرفیت رویداد، select موضوع خبر، نشان مدت ویدیو در فرم و فهرست؛ چیپ فیلتر «دسته/موضوع» در نمای عمومی.</li>
+        <li>عبور از خط لولهٔ تحویل: تست سه‌لایه + CI سبز + پذیرش PO روی staging (لایت/دارک، دسکتاپ و ۳۷۵px) — <a href="../../process/">فرآیند</a>؛ بدون TODO/console.log و مستندسازی به‌روز.</li>
+      </ul></div>
       <div class="dep">وابستگی: F11، F12، F13 (تحویل‌شده‌ی همان‌ها را گسترش می‌دهد — بازکاری نیست). داده: B24.</div>
     </div>
 
@@ -747,6 +857,10 @@
           <tr><td class="n">F28.4</td><td>عضویت کاربران</td><td>افزودن/حذف کاربر به شرکت توسط مدیر شرکت؛ نمایش عضویت‌ها در فهرست</td><td class="n">۶ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>فرم هویت+SSO با تست اتصال؛ CRUD هلدینگ/شرکت محدود به زیرمجموعهٔ مدیر؛ تخصیص (کاربر،نقش،دامنه) و عضویت — زنجیرهٔ واگذاری رعایت شود.</li>
+        <li>عبور از خط لولهٔ تحویل: تست سه‌لایه + CI سبز + پذیرش PO روی staging (لایت/دارک، دسکتاپ و ۳۷۵px) — <a href="../../process/">فرآیند</a>؛ بدون TODO/console.log و مستندسازی به‌روز.</li>
+      </ul></div>
       <div class="dep">وابستگی: F19، F25، F26. داده: B21، B23.</div>
     </div>
 
@@ -787,6 +901,10 @@
         <li>Given پیام ارسال‌شده، When پنجره‌ی ویرایش بگذرد، Then گزینه‌ی ویرایش غیرفعال شود و «حذف برای همه» طبق قاعده رفتار کند.</li>
         <li>Given انتخاب سه پیام، When فوروارد به دو مقصد شود، Then هر شش رونوشت با ترتیب درست و برچسب فرستنده ثبت شود.</li>
       </ul></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>ویرایش/حذف با پنجرهٔ زمانی؛ نقل‌قول جزئی؛ فوروارد چندتایی/چندمقصدی؛ پیام زمان‌بندی‌شده و بی‌صدا؛ قالب‌بندی کامل (تا اسپویلر)؛ پین چندتایی؛ واکنش با فهرست کاربران.</li>
+        <li>عبور از خط لولهٔ تحویل: تست سه‌لایه + CI سبز + پذیرش PO روی staging (لایت/دارک، دسکتاپ و ۳۷۵px) — <a href="../../process/">فرآیند</a>؛ بدون TODO/console.log و مستندسازی به‌روز.</li>
+      </ul></div>
       <div class="dep">وابستگی: F15. داده: B25، B26.</div>
     </div>
 
@@ -804,6 +922,10 @@
           <tr><td class="n">F30.6</td><td>اختیاری‌ها</td><td>پیام ویدیویی دایره‌ای، استیکر سازمانی، اشتراک کارت کاربر — پشت پرچم قابلیت</td><td class="n">۸ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>آلبوم گروه‌شده با کپشن؛ نمایشگر تمام‌صفحه؛ ویس با شکل موج و سرعت ۲×؛ آپلود قابل‌ازسرگیری؛ گالری اشتراکی چهار-تبی.</li>
+        <li>عبور از خط لولهٔ تحویل: تست سه‌لایه + CI سبز + پذیرش PO روی staging (لایت/دارک، دسکتاپ و ۳۷۵px) — <a href="../../process/">فرآیند</a>؛ بدون TODO/console.log و مستندسازی به‌روز.</li>
+      </ul></div>
       <div class="dep">وابستگی: F29. داده: B27.</div>
     </div>
 
@@ -821,6 +943,10 @@
           <tr><td class="n">F31.6</td><td>Poll درون‌چت + auto-delete + بلاک/گزارش</td><td>نظرسنجی/آزمون تلگرامی؛ تایمر حذف خودکار per-چت؛ بلاک در DM و گزارش تخلف</td><td class="n">۱۰ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>تاپیک‌های گروه؛ کانال با امضا/بازدید/نظرات؛ مجوز ریزدانهٔ ناظم؛ لینک دعوت+Join Request+Slow Mode؛ پوشهٔ چت؛ Poll و auto-delete.</li>
+        <li>عبور از خط لولهٔ تحویل: تست سه‌لایه + CI سبز + پذیرش PO روی staging (لایت/دارک، دسکتاپ و ۳۷۵px) — <a href="../../process/">فرآیند</a>؛ بدون TODO/console.log و مستندسازی به‌روز.</li>
+      </ul></div>
       <div class="dep">وابستگی: F29. داده: B28.</div>
     </div>
 
@@ -836,6 +962,10 @@
           <tr><td class="n">F32.4</td><td>آفلاین و sync</td><td>صف ارسال آفلاین با retry، بازگردانی خطای optimistic، sync وضعیت بین تب‌ها</td><td class="n">۸ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>جستجوی سراسری و درون‌چت با پرش به تاریخ شمسی؛ اعلان پیشرفته (بی‌صدا/فقط‌منشن)؛ جداکنندهٔ خوانده‌نشده و seen-by؛ صف آفلاین و sync بین تب‌ها.</li>
+        <li>عبور از خط لولهٔ تحویل: تست سه‌لایه + CI سبز + پذیرش PO روی staging (لایت/دارک، دسکتاپ و ۳۷۵px) — <a href="../../process/">فرآیند</a>؛ بدون TODO/console.log و مستندسازی به‌روز.</li>
+      </ul></div>
       <div class="dep">وابستگی: F29. داده: B26.</div>
     </div>
 
@@ -853,6 +983,10 @@
           <tr><td class="n">F33.5</td><td>تست دو-مرورگر + کیفیت اتصال ضعیف</td><td class="n">۶ ساعت</td></tr>
         </tbody>
       </table></div>
+            <div class="ac dod"><span class="lbl">تعریف انجام (DoD)</span><ul>
+        <li>تماس ۱:۱ صوتی/تصویری، گفتگوی صوتی گروهی با دست‌بلندکردن و ضبط، اشتراک صفحه؛ ادغام با هدر چت و تاریخچهٔ تماس؛ تست دو-مرورگر.</li>
+        <li>عبور از خط لولهٔ تحویل: تست سه‌لایه + CI سبز + پذیرش PO روی staging (لایت/دارک، دسکتاپ و ۳۷۵px) — <a href="../../process/">فرآیند</a>؛ بدون TODO/console.log و مستندسازی به‌روز.</li>
+      </ul></div>
       <div class="dep">وابستگی: تصمیم PO + B29. خارج از جمع الحاقیه.</div>
     </div>
 
